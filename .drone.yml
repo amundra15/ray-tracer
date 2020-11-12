@@ -1,0 +1,19 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: build
+    image: cguds/build-tools
+    pull: true
+    commands:
+      - mkdir build && cd build
+      - cmake -D CMAKE_BUILD_TYPE=Debug ..
+      - cmake --build . --target cgray
+
+  - name: test
+    image: cguds/cgray-tests
+    pull: true
+
+node:
+  env: cguds
