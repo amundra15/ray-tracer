@@ -3,7 +3,7 @@
 #include <rt/renderer.h>
 #include <rt/ray.h>
 #include <iostream>
-#include <rt/cameras/perspective.h>		//Added by Akshay
+#include <rt/cameras/camera.h>		//Added by Akshay
 
 namespace rt {
 
@@ -53,10 +53,9 @@ void Renderer::test_render2(Image& img) {
 	{
 		for(uint i = 0; i < width; i++)
 		{
-			float x = (two_by_width*(i+0.5)) - 1;
-			float y = (two_by_height*(j+0.5)) - 1;
-			// std::cout << x << " " << y << std::endl;
-			rt::Ray r = cam->getPrimaryRay(x,-y);
+			float x = (two_by_width*(i+0.5)) - 1.0;
+			float y = 1.0- (two_by_height*(j+0.5));
+			rt::Ray r = cam->getPrimaryRay(x,y);
 			img(i,j) = a2computeColor(r);
 		}
 	}

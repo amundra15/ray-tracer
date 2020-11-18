@@ -6,7 +6,6 @@ namespace rt {
 OrthographicCamera::OrthographicCamera(const Point& center, const Vector& forward, const Vector& up, float scaleX, float scaleY)
 {
 	this->center = center;
-	this->d = forward.length();
 	this->w = -forward.normalize();
 	this->u = scaleX * cross(up,w).normalize() / 2.0;
 	this->v = scaleY * cross(w,u).normalize() / 2.0;
@@ -14,7 +13,7 @@ OrthographicCamera::OrthographicCamera(const Point& center, const Vector& forwar
 }
 
 Ray OrthographicCamera::getPrimaryRay(float x, float y) const {
-    Point pixel_location = center + x*u + y*v;
+    Point pixel_location = center + x*u + y*v;	//image plane assumed to be at center
     return Ray(pixel_location,-w);
 }
 

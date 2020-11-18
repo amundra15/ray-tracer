@@ -21,7 +21,6 @@ public:
 
 	Point center;
 	Vector u,v,w;
-	float d;
 
 private:
 };

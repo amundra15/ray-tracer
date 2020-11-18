@@ -21,7 +21,7 @@ public:
 
 	Point center;
 	Vector u,v,w;
-	float d;
+	float d; //distance of plane from center
 };
 
 }
