@@ -8,7 +8,7 @@ Ray::Ray(const Point& o, const Vector& d)
 {
     assert(d != Vector::rep(0.0f));
     this->o = o;
-    this->d = d;
+    this->d = d;		//why should this not be normalised
 }
 
 Point Ray::getPoint(float distance) const {

@@ -66,7 +66,8 @@ float Vector::length() const {
 
 
 bool Vector::operator == (const Vector& b) const {
-    //TODO_a: should we implement the epsilon thing here?
+    //TODO_a: should we implement the epsilon thing here? Note: epsilon is given in scalar.h
+    //random: turns out you shouldn't get the absolute value of a float with abs() but rather with fabs()
     return (this->x == b.x) && (this->y == b.y) && (this->z == b.z);
 }
 

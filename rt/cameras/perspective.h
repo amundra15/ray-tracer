@@ -19,8 +19,6 @@ public:
 
     virtual Ray getPrimaryRay(float x, float y) const;
 
-//this may be out of order
-private:
 	Point center;
 	Vector u,v,w;
 	float d;
