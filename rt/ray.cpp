@@ -10,7 +10,7 @@ Ray::Ray(const Point& o, const Vector& d)
 }
 
 Point Ray::getPoint(float distance) const {
-	return o + distance*d;
+	return o + distance*d.normalize();		//TODO_a" this nomalize shouldnt be called everytime
 }
 
 }

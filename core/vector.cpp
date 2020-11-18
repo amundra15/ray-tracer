@@ -66,7 +66,7 @@ float Vector::length() const {
 
 
 bool Vector::operator == (const Vector& b) const {
-    //should we implement the epsilon thing here?
+    //TODO_a: should we implement the epsilon thing here?
     return (this->x == b.x) && (this->y == b.y) && (this->z == b.z);
 }
 
