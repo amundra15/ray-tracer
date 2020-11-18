@@ -8,8 +8,8 @@ OrthographicCamera::OrthographicCamera(const Point& center, const Vector& forwar
 	this->center = center;
 	this->d = forward.length();
 	this->w = -forward.normalize();
-	this->u = d * scaleX * cross(up,w).normalize();
-	this->v = d * scaleY * cross(w,u).normalize();
+	this->u = scaleX * cross(up,w).normalize();
+	this->v = scaleY * cross(w,u).normalize();
 
 }
 
