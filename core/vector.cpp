@@ -49,7 +49,7 @@ Vector operator / (const Vector& a, float scalar) {
 }
 
 Vector cross(const Vector& a, const Vector& b) {
-    return Vector(a.y*b.x-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x);
+    return Vector(a.y*b.z-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x);
 }
 
 float dot(const Vector& a, const Vector& b) {
