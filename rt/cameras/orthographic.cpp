@@ -14,7 +14,7 @@ OrthographicCamera::OrthographicCamera(const Point& center, const Vector& forwar
 }
 
 Ray OrthographicCamera::getPrimaryRay(float x, float y) const {
-    Point pixel_location = center -d*w + x*u + y*v;
+    Point pixel_location = center + x*u + y*v;
     return Ray(pixel_location,-w);
 }
 
