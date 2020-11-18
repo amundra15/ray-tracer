@@ -56,7 +56,7 @@ void Renderer::test_render2(Image& img) {
 			float x = (two_by_width*(i+0.5)) - 1;
 			float y = (two_by_height*(j+0.5)) - 1;
 			// std::cout << x << " " << y << std::endl;
-			rt::Ray r = cam->getPrimaryRay(x,y);
+			rt::Ray r = cam->getPrimaryRay(x,-y);
 			img(i,j) = a2computeColor(r);
 		}
 	}
