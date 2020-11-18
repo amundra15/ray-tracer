@@ -8,7 +8,9 @@ namespace rt {
 
 Point::Point(float x, float y, float z)
 {
-    /* TODO */
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 Point::Point(const Float4& f4)
@@ -17,31 +19,31 @@ Point::Point(const Float4& f4)
 }
 
 Vector Point::operator - (const Point& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(this->x - b.x, this->y - b.y, this->z - b.z);
 }
 
 bool Point::operator == (const Point& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return (this->x == b.x) && (this->y == b.y) && (this->z == b.z);
 }
 
 bool Point::operator != (const Point& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return !((this->x == b.x) && (this->y == b.y) && (this->z == b.z));
 }
 
 Point operator * (float scalar, const Point& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(scalar*b.x, scalar*b.y, scalar*b.z);
 }
 
 Point operator * (const Point& a, float scalar) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(scalar*a.x, scalar*a.y, scalar*a.z);
 }
 
 Point min(const Point& a, const Point& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(std::min(a.x,b.x),std::min(a.y,b.y),std::min(a.z,b.z));
 }
 
 Point max(const Point& a, const Point& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(std::max(a.x,b.x),std::max(a.y,b.y),std::max(a.z,b.z));
 }
 
 }

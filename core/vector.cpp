@@ -10,7 +10,9 @@ namespace rt {
 
 Vector::Vector(float x, float y, float z)
 {
-    /* TODO */
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 Vector::Vector(const Float4& f4)
@@ -19,76 +21,77 @@ Vector::Vector(const Float4& f4)
 }
 
 Vector Vector::operator + (const Vector& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(this->x + b.x, this->y + b.y, this->z + b.z);
 }
 
 Vector Vector::operator - (const Vector& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(this->x - b.x, this->y - b.y, this->z - b.z);
 }
 
 Vector Vector::operator - () const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(-1*this->x, -1*this->y, -1*this->z);
 }
 
 Vector Vector::normalize() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return *this/length();
 }
 
 Vector operator * (float scalar, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(scalar*b.x, scalar*b.y, scalar*b.z);
 }
 
 Vector operator * (const Vector& a, float scalar) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(scalar*a.x, scalar*a.y, scalar*a.z);
 }
 
 Vector operator / (const Vector& a, float scalar) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(a.x/scalar, a.y/scalar, a.z/scalar);
 }
 
 Vector cross(const Vector& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(a.y*b.x-a.z*b.y, a.z*b.x-a.x*b.z, a.x*b.y-a.y*b.x);
 }
 
 float dot(const Vector& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return (a.x*b.x)+(a.y*b.y)+(a.z*b.z);
 }
 
 float Vector::lensqr() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return x*x + y*y + z*z;
 }
 
 float Vector::length() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return std::sqrt(lensqr());
 }
 
 
 bool Vector::operator == (const Vector& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    //should we implement the epsilon thing here?
+    return (this->x == b.x) && (this->y == b.y) && (this->z == b.z);
 }
 
 bool Vector::operator != (const Vector& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return !((this->x == b.x) && (this->y == b.y) && (this->z == b.z));
 }
 
 Vector min(const Vector& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(std::min(a.x,b.x),std::min(a.y,b.y),std::min(a.z,b.z));
 }
 
 Vector max(const Vector& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Vector(std::max(a.x,b.x),std::max(a.y,b.y),std::max(a.z,b.z));
 }
 
 Point operator + (const Point& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 Point operator + (const Vector& a, const Point& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(a.x + b.x, a.y + b.y, a.z + b.z);
 }
 
 Point operator - (const Point& a, const Vector& b) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return Point(a.x - b.x, a.y - b.y, a.z - b.z);
 }
 
 Point operator * (const Float4& scale, const Point& p) {

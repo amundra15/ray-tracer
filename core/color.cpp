@@ -10,27 +10,30 @@ RGBColor::RGBColor(const Float4& f4)
 }
 
 RGBColor RGBColor::operator + (const RGBColor& c) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(this->r + c.r, this->g + c.g, this->b + c.b);
 }
 
 RGBColor RGBColor::operator - (const RGBColor& c) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(this->r - c.r, this->g - c.g, this->b - c.b);
 }
 
 RGBColor RGBColor::operator * (const RGBColor& c) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(this->r * c.r, this->g * c.g, this->b * c.b);
 }
 
 bool RGBColor::operator == (const RGBColor& c) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return (this->r == c.r) && (this->g == c.g) && (this->b == c.b);
 }
 
 bool RGBColor::operator != (const RGBColor& b) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return !((this->r == b.r) && (this->g == b.g) && (this->b == b.b));
 }
 
 RGBColor RGBColor::clamp() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    float r_clampped = std::min(1.0f,std::max(0.0f,this->r));
+    float g_clampped = std::min(1.0f,std::max(0.0f,this->g));
+    float b_clampped = std::min(1.0f,std::max(0.0f,this->b));
+    return RGBColor(r_clampped,g_clampped,b_clampped);
 }
 
 RGBColor RGBColor::gamma(float gam) const {
@@ -42,15 +45,15 @@ float RGBColor::luminance() const {
 }
 
 RGBColor operator * (float scalar, const RGBColor& c) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(scalar*c.r, scalar*c.g, scalar*c.b);
 }
 
 RGBColor operator * (const RGBColor& c, float scalar) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(scalar*c.r, scalar*c.g, scalar*c.b);
 }
 
 RGBColor operator / (const RGBColor& c, float scalar) {
-    /* TODO */ NOT_IMPLEMENTED;
+    return RGBColor(c.r/scalar, c.g/scalar, c.b/scalar);
 }
 
 }
