@@ -39,18 +39,18 @@ void a_cameras() {
 
     PerspectiveCamera pcam(Point(0, 0, 0), Vector(1, 0, 0.1f), Vector(0, 0, 1), pi/3, pi/3);
     Renderer r1(&pcam,0);
-    r1.test_render2(img);
+    // r1.test_render2(img);
     r1.test_render2(low);
-    img.writePNG("a1-2.png");
+    // img.writePNG("a1-2.png");
     low.writePNG("a1-2-low.png");
 
-    PerspectiveCamera pcam2(Point(0, 0, 0), Vector(0.5f, 0.5f, 0.3f), Vector(0, 0, 1), pi * 0.9f, pi * 0.9f);
-    Renderer r12(&pcam2,0);
-    r12.test_render2(img);
-    img.writePNG("a1-3.png");
+    // PerspectiveCamera pcam2(Point(0, 0, 0), Vector(0.5f, 0.5f, 0.3f), Vector(0, 0, 1), pi * 0.9f, pi * 0.9f);
+    // Renderer r12(&pcam2,0);
+    // r12.test_render2(img);
+    // img.writePNG("a1-3.png");
 
-    OrthographicCamera ocam(Point(0, 0, 0), Vector(0.1f, 0.1f, 1), Vector(0.2f, 1.0f, 0.2f), 10.f, 10.f);
-    Renderer r2(&ocam,0);
-    r2.test_render2(img);
-    img.writePNG("a1-4.png");
+    // OrthographicCamera ocam(Point(0, 0, 0), Vector(0.1f, 0.1f, 1), Vector(0.2f, 1.0f, 0.2f), 10.f, 10.f);
+    // Renderer r2(&ocam,0);
+    // r2.test_render2(img);
+    // img.writePNG("a1-4.png");
 }
