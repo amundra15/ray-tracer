@@ -23,7 +23,7 @@ RGBColor RayCastingDistIntegrator::getRadiance(const Ray& ray) const {
 		RGBColor interpolatedColor = nearColor * (1.0f-distanceFraction) + farColor * distanceFraction;
 	
 		float cosineVal = std::abs(dot(ray.d,intersectionObj.normal()));
-		return RGBColor(interpolatedColor*cosineVal);
+		return interpolatedColor*cosineVal;
 	}
 	else
 		return RGBColor::rep(0);
