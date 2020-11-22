@@ -1,4 +1,3 @@
-
 #include <core/assert.h>
 #include <core/scalar.h>
 #include <core/image.h>
@@ -33,7 +32,7 @@ void a_solids() {
 
     scene->add(new Disc(Point(-3, -0.75f, 1.5f), Vector(0, 0.5f, 0.5f), 1.5f, nullptr, nullptr));
 
- //    scene->add(new AABox(Point(2,1.5f,-0.5f), Point(3,2.5f,2.5f), nullptr, nullptr));
+    scene->add(new AABox(Point(2,1.5f,-0.5f), Point(3,2.5f,2.5f), nullptr, nullptr));
 
     World world;
     world.scene = scene;
@@ -46,8 +45,8 @@ void a_solids() {
     engine.render(img);
     img.writePNG("a2-1.png");
 
-    // RayCastingDistIntegrator integratorb(&world, RGBColor(1.0f,0.2f,0.0f), 4.0f, RGBColor(0.2f,1.0f,0.0f), 12.0f);
-    // Renderer engineb(&cam, &integratorb);
-    // engineb.render(img);
-    // img.writePNG("a2-2.png");
+    RayCastingDistIntegrator integratorb(&world, RGBColor(1.0f,0.2f,0.0f), 4.0f, RGBColor(0.2f,1.0f,0.0f), 12.0f);
+    Renderer engineb(&cam, &integratorb);
+    engineb.render(img);
+    img.writePNG("a2-2.png");
 }

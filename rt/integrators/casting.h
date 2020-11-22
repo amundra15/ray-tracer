@@ -6,7 +6,6 @@
 namespace rt {
 
 class RayCastingIntegrator : public Integrator {
-    
     World* world;
 public:
     RayCastingIntegrator(World* world) : Integrator(world) 

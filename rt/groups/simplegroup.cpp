@@ -9,13 +9,17 @@ BBox SimpleGroup::getBounds() const {
 
 Intersection SimpleGroup::intersect( const Ray& ray, float previousBestDistance) const {
 
-	Intersection intersectionObj ;
+	Intersection intersectionObj = Intersection::failure();
+	Intersection intersectionObj_temp = Intersection::failure();
 
 	for(uint iter=0; iter<this->primitives.size(); iter++)
 	{
-		intersectionObj = this->primitives[iter]->intersect(ray, previousBestDistance);
-		if(intersectionObj)
+		intersectionObj_temp = this->primitives[iter]->intersect(ray, previousBestDistance);
+		if(intersectionObj_temp)
+		{
+			intersectionObj = intersectionObj_temp;
 			previousBestDistance = intersectionObj.distance;
+		}
 	}
 
 	return intersectionObj;

@@ -83,6 +83,10 @@ Vector max(const Vector& a, const Vector& b) {
     return Vector(std::max(a.x,b.x),std::max(a.y,b.y),std::max(a.z,b.z));
 }
 
+Vector operator / (const Vector& a, const Vector& b) {
+    return Vector(a.x/b.x, a.y/b.y, a.z/b.z);
+}
+
 Point operator + (const Point& a, const Vector& b) {
     return Point(a.x + b.x, a.y + b.y, a.z + b.z);
 }

@@ -6,6 +6,9 @@
 namespace rt {
 
 class RayCastingDistIntegrator : public Integrator {
+    World* world;
+    RGBColor nearColor, farColor;
+    float nearDist, farDist;
 public:
     RayCastingDistIntegrator(World* world, const RGBColor& nearColor, float nearDist, const RGBColor& farColor, float farDist);
     virtual RGBColor getRadiance(const Ray& ray) const;

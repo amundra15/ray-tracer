@@ -6,6 +6,7 @@
 namespace rt {
 
 class AABox : public Solid {
+	Point corner1, corner2;
 public:
     AABox() {}
     AABox(const Point& corner1, const Point& corner2, CoordMapper* texMapper, Material* material);

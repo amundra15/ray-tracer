@@ -22,11 +22,11 @@ Intersection Intersection::failure() {
 }
 
 Point Intersection::hitPoint() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return ray.o + distance*ray.d;
 }
 
 Vector Intersection::normal() const {
-	return this->normal_vec;
+	return normal_vec;
 }
 
 Point Intersection::local() const {
