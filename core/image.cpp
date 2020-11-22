@@ -46,12 +46,12 @@ Image::~Image() {
 }
 
 RGBColor& Image::operator()( uint x, uint y ) {
-    assert(x < width_ && y < height_) << "Coordinates [" << x << "," << y << "] are out of bounds of an image [" << width_ << "," << height_ << "]";
+   // assert(x < width_ && y < height_) //<< "Coordinates [" << x << "," << y << "] are out of bounds of an image [" << width_ << "," << height_ << "]";
     return pixels[y*width_+x];
 }
 
 const RGBColor& Image::operator()( uint x, uint y ) const {
-    assert(x < width_ && y < height_) << "Coordinates [" << x << "," << y << "] are out of bounds of an image [" << width_ << "," << height_ << "]";
+   // assert(x < width_ && y < height_) //<< "Coordinates [" << x << "," << y << "] are out of bounds of an image [" << width_ << "," << height_ << "]";
     return pixels[y*width_+x];
 }
 
