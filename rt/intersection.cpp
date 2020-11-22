@@ -8,6 +8,7 @@ Intersection::Intersection(float distance, const Ray& ray, const Solid* solid, c
 	this->distance = distance;
 	this->solid = solid;
 	this->normal_vec = normal;
+  	this->local_point = local;
 	this->intersection_flag = true;
 }
 
@@ -30,7 +31,7 @@ Vector Intersection::normal() const {
 }
 
 Point Intersection::local() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return this->local_point;
 }
 
 }
