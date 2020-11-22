@@ -5,7 +5,7 @@ namespace rt {
 Disc::Disc(const Point& center, const Vector& normal, float radius, CoordMapper* texMapper, Material* material)
 {
     c = center;
-    n = normal;
+    n = normal.normalize();
     r = radius;
 }
 

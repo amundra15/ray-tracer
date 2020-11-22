@@ -5,7 +5,7 @@ namespace rt {
 InfinitePlane::InfinitePlane(const Point& origin, const Vector& normal, CoordMapper* texMapper, Material* material)
 {
     o = origin;
-    n = normal;
+    n = normal.normalize();
 }
 
 BBox InfinitePlane::getBounds() const {
