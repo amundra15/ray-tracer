@@ -16,27 +16,28 @@ RayCastingDistIntegrator::RayCastingDistIntegrator(World* world, const RGBColor&
 RGBColor RayCastingDistIntegrator::getRadiance(const Ray& ray) const {
 
 	Intersection intersectionObj = world->scene->intersect(ray);
-	RGBColor clr = RGBColor(0, 0, 0);
+	//RGBColor clr = RGBColor(0, 0, 0);
 
 	if(intersectionObj)
 	{
-		float interpolate = (intersectionObj.distance - nearDist) / (farDist - nearDist);
-		interpolate = interpolate < 0 ? 0 : interpolate;
-		interpolate = interpolate > 1 ? 1 : interpolate;
+		float distanceFraction = (intersectionObj.distance - nearDist) / (farDist - nearDist);
+		distanceFraction = distanceFraction < 0 ? 0 : distanceFraction;
+		distanceFraction = distanceFraction > 1 ? 1 : distanceFraction;
 
-		float cosineVal = (dot(intersectionObj.normal(),-ray.d));
-		cosineVal = cosineVal < 0 ? 0 : cosineVal;
+		float cosineVal = dot(-ray.d,intersectionObj.normal());
+		//cosineVal = cosineVal < 0 ? 0 : cosineVal;
 
 
-		clr = (
-					(interpolate * farColor) + ((1 - interpolate) * nearColor)
-				) * cosineVal;
+		RGBColor interpolatedColor = nearColor * (1.0f-distanceFraction) + farColor * distanceFraction;
+				
 	
-		
+		return interpolatedColor*cosineVal;	
 		
 	}
+	else
+		return RGBColor::rep(0);
 	
-		return clr;
+		
 }
 
 }
