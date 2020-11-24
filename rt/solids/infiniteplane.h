@@ -6,7 +6,7 @@
 namespace rt {
 
 class InfinitePlane : public Solid {
-Point o; //Doubt: is this a point on the plane?
+Point o;
 Vector n;
 public:
     InfinitePlane() {}

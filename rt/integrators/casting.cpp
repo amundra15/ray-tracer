@@ -7,11 +7,11 @@ RGBColor RayCastingIntegrator::getRadiance(const Ray& ray) const {
 
 	Intersection intersectionObj = world->scene->intersect(ray);
 
-	float grayVal;
+	float grayVal=0;
 	if(intersectionObj)
-		grayVal = std::abs(dot(ray.d,intersectionObj.normal()));
-	else
-		grayVal = 0;
+		grayVal = (dot(intersectionObj.normal(),-ray.d));
+		grayVal	= grayVal<0 ? 0: grayVal;
+	
 	return RGBColor::rep(grayVal);
 }
 

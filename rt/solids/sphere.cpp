@@ -40,7 +40,7 @@ Intersection Sphere::intersect(const Ray& ray, float previousBestDistance) const
 			t = std::min(t2,t);
 	}
 
-	//consider intersection only in it is in the direction of the camera
+	//consider intersection only if it is in the direction of the camera
 	if(t>0 && t<previousBestDistance)
 	{
 		Point intersectionPoint = ray.o + (t*ray.d);

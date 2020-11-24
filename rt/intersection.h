@@ -26,6 +26,8 @@ public:
     Point local() const;
 
     operator bool(); //this allows intersection object to be put directly in conditional statements. Becomes true iff there is an intersection
+
+  	Point local_point;
 };
 
 }

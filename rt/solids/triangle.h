@@ -6,7 +6,8 @@
 namespace rt {
 
 class Triangle : public Solid {
-public:
+public:	
+	Point v1, v2, v3;
     Triangle() {}
     Triangle(Point vertices[3], CoordMapper* texMapper, Material* material);
     Triangle(const Point& v1, const Point& v2, const Point& v3, CoordMapper* texMapper, Material* material);

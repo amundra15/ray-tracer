@@ -13,8 +13,11 @@ BBox InfinitePlane::getBounds() const {
 }
 
 Intersection InfinitePlane::intersect(const Ray& ray, float previousBestDistance) const {
-	float Nr = dot(this->o-ray.o, n);
-	float Dr = dot(ray.d, this->n);
+	
+	//intersection with a plane happens when p satisfies: (p-p0).n = 0 and p = origin+t*direction
+	//substituting p, you get t = {(p0-origin).n}/direction.n
+	float Nr = dot(this->o-ray.o, n);	//numerator
+	float Dr = dot(ray.d, this->n);		//denominator
 
 	if(Dr == 0)
 	{
