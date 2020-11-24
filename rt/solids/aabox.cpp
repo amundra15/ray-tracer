@@ -1,5 +1,9 @@
 #include <rt/solids/aabox.h>
 
+template <typename T> int sgn(T val) {
+    return (T(0) < val) - (val < T(0));
+}
+
 namespace rt {
 
 AABox::AABox(const Point& corner1, const Point& corner2, CoordMapper* texMapper, Material* material)
@@ -45,12 +49,12 @@ Intersection AABox::intersect(const Ray& ray, float previousBestDistance) const 
 			
 			//TODO_a: implemet this with switch
           	Vector n;
-			n = t_near_farthest == t1.x ? Vector(-1, 0, 0) : n;
-			n = t_near_farthest == t2.x ? Vector(1, 0, 0) : n;
-			n = t_near_farthest == t1.y ? Vector(0, -1, 0) : n;
-			n = t_near_farthest == t2.y ? Vector(0, 1, 0) : n;
-			n = t_near_farthest == t1.z ? Vector(0, 0, -1) : n;
-			n = t_near_farthest == t2.z ? Vector(0, 0, 1) : n;
+			n = t_near_farthest == t_near.x ? Vector(-1*sgn(ray.d.x), 0, 0) : n;
+			// n = t_near_farthest == t_far.x ? Vector(1, 0, 0) : n;
+			n = t_near_farthest == t_near.y ? Vector(0, -1*sgn(ray.d.y), 0) : n;
+			// n = t_near_farthest == t_far.y ? Vector(0, 1, 0) : n;
+			n = t_near_farthest == t_near.z ? Vector(0, 0, -1*sgn(ray.d.z)) : n;
+			// n = t_near_farthest == t_far.z ? Vector(0, 0, 1) : n;
 
 			return Intersection(t_near_farthest, ray, this, n, intersectionPoint);
 		}
