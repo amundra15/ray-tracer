@@ -40,10 +40,10 @@ void a_solids() {
     PerspectiveCamera cam(Point(0, 0, 10), Vector(0, 0, -1), Vector(0, 1, 0), pi/4, pi/3);
     
 
-    //RayCastingIntegrator integrator(&world);
-    //Renderer engine(&cam, &integrator);
-    //engine.render(img);
-    //img.writePNG("a2-1.png");
+    RayCastingIntegrator integrator(&world);
+    Renderer engine(&cam, &integrator);
+    engine.render(img);
+    img.writePNG("a2-1.png");
 
     RayCastingDistIntegrator integratorb(&world, RGBColor(1.0f,0.2f,0.0f), 4.0f, RGBColor(0.2f,1.0f,0.0f), 12.0f);
     Renderer engineb(&cam, &integratorb);
