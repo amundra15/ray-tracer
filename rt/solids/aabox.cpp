@@ -41,17 +41,14 @@ Intersection AABox::intersect(const Ray& ray, float previousBestDistance) const 
 		if(t_near_farthest>0 && t_near_farthest<previousBestDistance)
 		{
 			Point intersectionPoint = ray.o + t_near_farthest*ray.d;
-			Vector n;
-
-			//finding intersection plane and computing normal
-			if(t_near_farthest == t_near.x)		//intersected with plane parallel to x axis
-				n = Vector(1,0,0);
-			else if(t_near_farthest == t_near.y)		//intersected with plane parallel to y axis
-				n = Vector(0,1,0);			
-			else if(t_near_farthest == t_near.z)		//intersected with plane parallel to z axis
-				n = Vector(0,0,1);
-			else
-				std::cout << "Can't find AABB normal" << std::endl;
+			
+          	Vector n;
+			n = t_near_farthest == t1.x ? Vector(-1, 0, 0) : n;
+			n = t_near_farthest == t2.x ? Vector(1, 0, 0) : n;
+			n = t_near_farthest == t1.y ? Vector(0, -1, 0) : n;
+			n = t_near_farthest == t2.y ? Vector(0, 1, 0) : n;
+			n = t_near_farthest == t1.z ? Vector(0, 0, -1) : n;
+			n = t_near_farthest == t2.z ? Vector(0, 0, 1) : n;
 
 			return Intersection(t_near_farthest, ray, this, n, intersectionPoint);
 		}
