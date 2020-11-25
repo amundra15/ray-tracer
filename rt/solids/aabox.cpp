@@ -10,6 +10,9 @@ AABox::AABox(const Point& corner1, const Point& corner2, CoordMapper* texMapper,
 {
 	this->corner1 = corner1;	
 	this->corner2 = corner2;	
+  	minimum = min(corner1, corner2);
+	maximum = max(corner1, corner2);
+
 }
 
 BBox AABox::getBounds() const {
@@ -21,7 +24,12 @@ Solid::Sample AABox::sample() const {
 }
 
 float AABox::getArea() const {
-    /* TODO */ NOT_IMPLEMENTED;
+	float side_xy = (maximum.x - minimum.x) * (maximum.y - minimum.y);
+	float side_yz = (maximum.y - minimum.y) * (maximum.z - minimum.z);
+	float side_xz = (maximum.x - minimum.x) * (maximum.z - minimum.z);
+  	float area = 2 * (side_xy + side_yz + side_xz);
+
+	return area;
 }
 
 Intersection AABox::intersect(const Ray& ray, float previousBestDistance) const {
@@ -48,11 +56,13 @@ Intersection AABox::intersect(const Ray& ray, float previousBestDistance) const 
 		{
 			Point intersectionPoint = ray.o + t_near_farthest*ray.d;
 
-			//TODO_a: implemet this with switch
           	Vector n;
-			n = t_near_farthest == t_near.x ? Vector(-1*sgn(ray.d.x), 0, 0) : n;
-			n = t_near_farthest == t_near.y ? Vector(0, -1*sgn(ray.d.y), 0) : n;
-			n = t_near_farthest == t_near.z ? Vector(0, 0, -1*sgn(ray.d.z)) : n;
+			if(t_near_farthest == t_near.x)
+				n = Vector(-1*sgn(ray.d.x), 0, 0);
+			else if(t_near_farthest == t_near.y)
+				n = Vector(0, -1*sgn(ray.d.y), 0);
+			else
+				n = Vector(0, 0, -1*sgn(ray.d.z));
 
 			return Intersection(t_near_farthest, ray, this, n, intersectionPoint);
 		}

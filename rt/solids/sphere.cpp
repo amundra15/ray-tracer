@@ -57,7 +57,8 @@ Solid::Sample Sphere::sample() const {
 }
 
 float Sphere::getArea() const {
-    /* TODO */ NOT_IMPLEMENTED;
+	float area = 4.0f*pi*r*r;
+	return area;
 }
 
 }

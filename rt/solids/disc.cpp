@@ -48,7 +48,8 @@ Solid::Sample Disc::sample() const {
 }
 
 float Disc::getArea() const {
-    /* TODO */ NOT_IMPLEMENTED;
+	float area = pi*r*r;
+	return area;
 }
 
 }

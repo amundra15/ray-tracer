@@ -48,7 +48,8 @@ Solid::Sample Triangle::sample() const {
 }
 
 float Triangle::getArea() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    float area = cross ((v2-v1),(v3-v1)).length()/2.0f;
+    return area;
 }
 
 }
