@@ -34,10 +34,18 @@ void a_solids() {
 
     scene->add(new AABox(Point(2,1.5f,-0.5f), Point(3,2.5f,2.5f), nullptr, nullptr));
 
-    // scene->add(new Solid(1,1,1,0,0,0,-2,2,-2,-1, nullptr, nullptr));    //sphere
-    // scene->add(new Solid(1,2,2,0,0,0,-2,4,-4,-2, nullptr, nullptr));    //ellipsoid
-    // scene->add(new Solid(-1,1,1,0,0,0,2,2,-2,1, nullptr, nullptr));    //cone
-    // scene->add(new Solid(-1,1,0,0,0,0,2,2,1,-1, nullptr, nullptr));    //Paraboloid
+    //scene1
+    // scene->add(new Solid(1,-1,1,0,0,0,2,2,-2,1, nullptr, nullptr));    //cone
+    // scene->add(new Disc(Point(-3, -0.75f, 1.5f), Vector(0, 0.5f, 0.5f), 1.5f, nullptr, nullptr));
+    //scene2
+    // scene->add(new Solid(-1,1,1,0,0,0,2,2,10,24, nullptr, nullptr));    //Hyperboloid
+    // scene->add(new Solid(1,4,4,0,0,0,-4,0,-8,7, nullptr, nullptr));    //ellipsoid
+    // scene->add(new Solid(1,0,1,0,0,0,6,0,-2,9, nullptr, nullptr));    //cylinder
+    // scene->add(new Solid(1,1,1,0,0,0,4,-2,-2,3, nullptr, nullptr));    //sphere
+    //scene3
+    // scene->add(new Solid(1,-1,0,0,0,0,2,2,1,-1, nullptr, nullptr));    //Paraboloid
+    // scene->add(new Solid(1,4,4,0,0,0,0,8,-35,80, nullptr, nullptr));    //ellipsoid
+    // scene->add(new InfinitePlane(Point(0,- 1, 0), Vector(0, 1, 0), nullptr, nullptr));
 
     World world;
     world.scene = scene;
