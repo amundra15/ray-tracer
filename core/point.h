@@ -28,6 +28,7 @@ public:
 
 Point operator*(float scalar, const Point& b);
 Point operator*(const Point& a, float scalar);
+Point operator + (const Point& a, const Point& b);
 
 Point min(const Point& a, const Point& b);
 Point max(const Point& a, const Point& b);

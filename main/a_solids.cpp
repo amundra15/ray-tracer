@@ -20,19 +20,24 @@ void a_solids() {
     Image img(640, 480);
 
     SimpleGroup* scene = new SimpleGroup();
-    scene->add(new Sphere(Point(-2.f,  1.7f,  0), 2   , nullptr, nullptr));
-    scene->add(new Sphere(Point(1,    -1,     1), 2.2f, nullptr, nullptr));
-    scene->add(new Sphere(Point(3.f,   0.8f, -2), 2, nullptr, nullptr));
+ //    scene->add(new Sphere(Point(-2.f,  1.7f,  0), 2   , nullptr, nullptr));
+ //    scene->add(new Sphere(Point(1,    -1,     1), 2.2f, nullptr, nullptr));
+ //    scene->add(new Sphere(Point(3.f,   0.8f, -2), 2, nullptr, nullptr));
 
-    scene->add(new InfinitePlane(Point(0,- 1, 0), Vector(0, 1, 0), nullptr, nullptr));
+ //    scene->add(new InfinitePlane(Point(0,- 1, 0), Vector(0, 1, 0), nullptr, nullptr));
 
-    scene->add(new Triangle(Point(-2, 3.7f, 0), Point(1, 2,  1), Point( 3, 2.8f, -2), nullptr, nullptr));
-    scene->add(new Triangle(Point(3,  2,    3), Point(3, 2, -3), Point(-3, 2   , -3), nullptr, nullptr));
-	scene->add(new Quad(Point(1,  -0.9f,    4.5f), Vector(-2, 0, 0), Vector(0, 0.1f, -2), nullptr, nullptr));
+ //    scene->add(new Triangle(Point(-2, 3.7f, 0), Point(1, 2,  1), Point( 3, 2.8f, -2), nullptr, nullptr));
+ //    scene->add(new Triangle(Point(3,  2,    3), Point(3, 2, -3), Point(-3, 2   , -3), nullptr, nullptr));
+	// scene->add(new Quad(Point(1,  -0.9f,    4.5f), Vector(-2, 0, 0), Vector(0, 0.1f, -2), nullptr, nullptr));
 
-    scene->add(new Disc(Point(-3, -0.75f, 1.5f), Vector(0, 0.5f, 0.5f), 1.5f, nullptr, nullptr));
+ //    scene->add(new Disc(Point(-3, -0.75f, 1.5f), Vector(0, 0.5f, 0.5f), 1.5f, nullptr, nullptr));
 
-    scene->add(new AABox(Point(2,1.5f,-0.5f), Point(3,2.5f,2.5f), nullptr, nullptr));
+ //    scene->add(new AABox(Point(2,1.5f,-0.5f), Point(3,2.5f,2.5f), nullptr, nullptr));
+
+    // scene->add(new Solid(1,1,1,0,0,0,-2,2,-2,-1, nullptr, nullptr));    //sphere
+    scene->add(new Solid(1,2,2,0,0,0,-2,4,-4,-2, nullptr, nullptr));    //ellipsoid
+    // scene->add(new Solid(-1,1,1,0,0,0,2,2,-2,1, nullptr, nullptr));    //cone
+    // scene->add(new Solid(-1,1,0,0,0,0,2,2,1,-1, nullptr, nullptr));    //Paraboloid
 
     World world;
     world.scene = scene;

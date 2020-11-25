@@ -22,11 +22,17 @@ public:
 
     Material* material;
     CoordMapper* texMapper;
+    float a,b,c,d,e,f,g,h,i,j;
     explicit Solid(CoordMapper* texMapper = nullptr, Material* material = nullptr);
-    virtual Sample sample() const = 0;
-    virtual float getArea() const = 0;
+    Solid(const float& a, const float& b, const float& c, const float& d, const float& e, const float& f, const float& g, const float& h, const float& i, const float& j, CoordMapper* texMapper, Material* material);
+    
+    virtual BBox getBounds() const;
+    virtual Sample sample() const;
+    virtual float getArea() const;
     virtual void setMaterial(Material* m) { material = m; }
     virtual void setCoordMapper(CoordMapper* cm) { texMapper = cm; }
+
+    virtual Intersection intersect(const Ray& ray, float previousBestDistance) const;
 };
 
 }
