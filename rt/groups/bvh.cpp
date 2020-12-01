@@ -1,7 +1,6 @@
 #include <rt/groups/bvh.h>
 #include <tuple>
 #include <numeric>
- #include <time.h>
 
 namespace rt {
 
@@ -17,9 +16,7 @@ namespace rt {
         root->p = primitives;
         root->box = root->getBounds();
 
-        const clock_t begin_time = clock();
         buildRecursive(root); 
-         std::cout << "reconstruction time: " << float( clock () - begin_time ) /  CLOCKS_PER_SEC << std::endl;
     }
 
     void BVH::buildRecursive(BVHNode* parent) {
