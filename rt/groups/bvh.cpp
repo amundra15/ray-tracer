@@ -141,6 +141,6 @@ namespace rt {
 
     void BVH::setCoordMapper(CoordMapper* cm) {
         /* TODO */ NOT_IMPLEMENTED;
-
+    }
 
 }
