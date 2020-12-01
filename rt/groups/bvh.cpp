@@ -49,7 +49,6 @@ namespace rt {
 
                 if (
                     pmiddle < split 
-                    //(pmiddle == split && parent->left != nullptr && parent->right != nullptr && parent->left->p.size() < parent->right->p.size())
                 ) {
                     // Add to left child
                     if (parent->left == nullptr) {parent->left = new BVHNode();}
