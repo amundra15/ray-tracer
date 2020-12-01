@@ -126,11 +126,7 @@ namespace rt {
     }
 
     BBox BVH::getBounds() const {
-    //  BBox b = BBox::empty();
-    //  for (uint i = 0; i < primitives.size(); i++) {
-    //      b.extend(primitives[i]->getBounds());
-    //  };
-    //  return b;
+   
     }
 
     void BVH::add(Primitive* p) {
