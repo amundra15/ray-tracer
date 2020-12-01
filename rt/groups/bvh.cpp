@@ -126,6 +126,7 @@ namespace rt {
     }
 
     BBox BVH::getBounds() const {
+      /* TODO */ NOT_IMPLEMENTED;
    
     }
 
@@ -134,16 +135,12 @@ namespace rt {
     }
 
     void BVH::setMaterial(Material* m) {
-        for (uint i = 0; i < primitives.size(); i++) {
-            primitives[i]->setMaterial(m);
-        }
+        /* TODO */ NOT_IMPLEMENTED;
+        
     }
 
     void BVH::setCoordMapper(CoordMapper* cm) {
-        for (uint i = 0; i < primitives.size(); i++) {
-            primitives[i]->setCoordMapper(cm);
-        }
-    }
+        /* TODO */ NOT_IMPLEMENTED;
 
 
 }
