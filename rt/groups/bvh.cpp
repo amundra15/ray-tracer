@@ -9,9 +9,6 @@ namespace rt {
     BVH::BVH() {
     }
 
-    BVH::~BVH() {
-    }
-
     void BVH::rebuildIndex() {
         root->p = primitives;
         root->box = root->getBounds();
