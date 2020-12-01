@@ -4,6 +4,9 @@
 #include <utility>
 #include <core/point.h>
 #include <core/vector.h>
+#include <rt/ray.h>
+#include <rt/bbox.h>
+#include <float.h>
 
 namespace rt {
 
@@ -11,12 +14,24 @@ class Ray;
 
 class BBox {
 public:
-    Point min, max;
-
+     Point min, max;
+    bool _flag = false;
     BBox() {}
     BBox(const Point& min, const Point& max)
     {
-        /* TODO */
+        if(min != rt::min(min,max)) 
+        {   
+            //"negative" box; empty box created; no intersection will succeed
+            this->max = Point(FLT_MIN,FLT_MIN,FLT_MIN);
+            this->min = Point(FLT_MAX,FLT_MAX,FLT_MAX);
+        }
+        else
+        {
+            this->min = min;
+            this->max = max;
+          //  this->centre = 0.5f * Point(min.x+max.x, min.y+max.y, min.z+max.z);
+        }
+
     }
 
     static BBox empty();
@@ -26,11 +41,14 @@ public:
     void extend(const BBox& bbox);
 
     Vector diagonal() const {
-        /* TODO */ NOT_IMPLEMENTED;
+        return max - min;
     }
 
     float area() const {
-        /* TODO */ NOT_IMPLEMENTED;
+        float area_xy = (max.x - min.x) * (max.y - min.y);
+        float area_yz = (max.y - min.y) * (max.z - min.z);
+        float area_xz = (max.x - min.x) * (max.z - min.z);
+        return 2 * (area_xy + area_yz + area_xz); 
     }
 
     std::pair<float, float> intersect(const Ray& ray) const;

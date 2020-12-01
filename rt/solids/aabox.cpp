@@ -16,7 +16,7 @@ AABox::AABox(const Point& corner1, const Point& corner2, CoordMapper* texMapper,
 }
 
 BBox AABox::getBounds() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return BBox(minimum, maximum);
 }
 
 Solid::Sample AABox::sample() const {

@@ -10,7 +10,8 @@ Disc::Disc(const Point& center, const Vector& normal, float radius, CoordMapper*
 }
 
 BBox Disc::getBounds() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return BBox(c - Vector(r, r, r), c + Vector(r, r, r));
+
 }
 
 Intersection Disc::intersect(const Ray& ray, float previousBestDistance) const {

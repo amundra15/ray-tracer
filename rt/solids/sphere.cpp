@@ -9,7 +9,7 @@ Sphere::Sphere(const Point& center, float radius, CoordMapper* texMapper, Materi
 }
 
 BBox Sphere::getBounds() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return BBox(c - Vector(r, r, r), c + Vector(r, r, r));
 }
 
 Intersection Sphere::intersect(const Ray& ray, float previousBestDistance) const {
