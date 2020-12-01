@@ -48,7 +48,7 @@ public:
     virtual void add(Primitive* prim);
     virtual void setMaterial(Material* m);
     virtual void setCoordMapper(CoordMapper* cm);
-    virtual float getArea() const;
+
 };
 
 }
