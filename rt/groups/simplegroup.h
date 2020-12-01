@@ -14,6 +14,7 @@ public:
     virtual void setMaterial(Material* m);
     virtual void setCoordMapper(CoordMapper* cm);
 private:
+    Primitives primitive;
 	BBox b;
 };
 
