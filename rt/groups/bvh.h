@@ -37,7 +37,6 @@ class BVH : public Group {
 public:
     BVHNode* root = new BVHNode();
     BVH();
-    virtual ~BVH();
     int bin = 16;
     float bins[16], bins_n[16];
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
