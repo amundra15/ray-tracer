@@ -156,8 +156,5 @@ namespace rt {
         }
     }
 
-    float BVH::getArea() const {
-        //return 0;
-    }
 
 }
