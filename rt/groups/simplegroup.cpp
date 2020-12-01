@@ -4,7 +4,7 @@
 namespace rt {
 
 BBox SimpleGroup::getBounds() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return b;
 }
 
 Intersection SimpleGroup::intersect( const Ray& ray, float previousBestDistance) const {
