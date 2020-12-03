@@ -50,8 +50,34 @@ public:
     virtual void setMaterial(Material* m);
     virtual void setCoordMapper(CoordMapper* cm);   
     virtual float getArea() const;
+   struct SerializedNode {
+        bool isLeaf;
+        BBox bbox;
 
+        // For leaves only
+        std::vector<Primitive*> primitives;
 
+        // For internal nodes only
+        size_t leftChildId;
+        size_t rightChildId;
+    };
+
+    // Implement this function if you want to take part in the BVH speed competition
+    struct Output {
+        virtual void setNodeCount(size_t nodeCount) = 0;
+        virtual void setRootId(size_t rootId) = 0;
+        virtual void writeNode(size_t nodeId, const SerializedNode& node) = 0;
+    };
+    void serialize(Output& output);
+
+    // Implementing this is optional and not needed for the BVH speed competition,
+    // but it will allow you to run the benchmark utility and test your BVH exporter.
+    struct Input {
+        virtual size_t getNodeCount() = 0;
+        virtual size_t getRootId() = 0;
+        virtual const SerializedNode& readNode(size_t nodeId) = 0;
+    };
+    void deserialize(Input& input);
 };
 
 }
