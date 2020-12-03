@@ -3,8 +3,13 @@
 
 namespace rt {
 
+
 BBox SimpleGroup::getBounds() const {
-    return b;
+    BBox b = BBox::empty();
+	for (uint i = 0; i < primitives.size(); i++) {
+		b.extend(primitives[i]->getBounds());
+	};
+	return b;
 }
 
 Intersection SimpleGroup::intersect( const Ray& ray, float previousBestDistance) const {
@@ -40,5 +45,7 @@ void SimpleGroup::setMaterial(Material* m) {
 void SimpleGroup::setCoordMapper(CoordMapper* cm) {
     /* TODO */ NOT_IMPLEMENTED;
 }
-
+float SimpleGroup::getArea() const {
+		return 0;
+	}
 }
