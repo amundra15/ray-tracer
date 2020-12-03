@@ -44,9 +44,7 @@ namespace rt {
                 else if (bool_axis == 1) {pmiddle = (pbox.max.y + pbox.min.y) / 2;}
                 else if (bool_axis == 2) {pmiddle = (pbox.max.z + pbox.min.z) / 2;}
 
-                if (
-                    pmiddle < split || (pmiddle == split && parent->left != nullptr && parent->right != nullptr && parent->left->p.size() < parent->right->p.size())
-                ) {
+                if ( pmiddle < split    ) {
                     // Add to left child
                     if (parent->left == nullptr) {parent->left = new BVHNode();}
                     parent->left->add(temp_p);
