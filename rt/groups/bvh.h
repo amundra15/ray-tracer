@@ -22,14 +22,14 @@ public:
         p.push_back(primitive);
     }
 
-     BBox getBounds() const {
+     std::pair<float, BBox> getBounds() const {
         BBox b = BBox::empty();
         float a = 0;
         for (uint i = 0; i < p.size(); i++) {
             b.extend(p[i]->getBounds());
-            
+            a = a + p[i]->getArea();
         };
-        return b;
+        return std::make_pair(a, b);
     }
 };
 
@@ -37,16 +37,20 @@ class BVH : public Group {
 public:
     BVHNode* root = new BVHNode();
     BVH();
+    bool SAH = true;
     int bin = 16;
-    float bins[16], bins_n[16];
+    float bins[16], bins_n[16], binr[16],cost[16];
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
     virtual BBox getBounds() const;
     virtual float MiddleSplit(int bool_axis, BVHNode* parent);
+    virtual float SAHSplit(int bool_axis, float len_axis, BVHNode* parent);
     virtual void rebuildIndex();
     virtual void buildRecursive(BVHNode* parent);
     virtual void add(Primitive* prim);
     virtual void setMaterial(Material* m);
-    virtual void setCoordMapper(CoordMapper* cm);
+    virtual void setCoordMapper(CoordMapper* cm);   
+    virtual float getArea() const;
+
 
 };
 
