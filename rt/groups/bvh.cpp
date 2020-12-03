@@ -1,7 +1,6 @@
 #include <rt/groups/bvh.h>
 #include <tuple>
 #include <numeric>
-#include <math.h> 
 
 namespace rt {
 
@@ -12,7 +11,7 @@ namespace rt {
 
     void BVH::rebuildIndex() {
         root->p = primitives;
-        root->box = root->getBounds();
+       std::tie(root->area, root->box) = root->getBounds();
 
         buildRecursive(root); 
     }
@@ -28,8 +27,8 @@ namespace rt {
             bool_axis = len_axis == leny ? 1 : bool_axis;
 
             float split;
-            
-            split = MiddleSplit(bool_axis, parent);
+            if (SAH) {split = SAHSplit(bool_axis, len_axis, parent);}
+            else {split = MiddleSplit(bool_axis, parent);}
 
             std::vector<Primitive *> primitives_list;
             primitives_list = parent->p;
@@ -41,12 +40,12 @@ namespace rt {
                 BBox pbox = temp_p->getBounds();
                 // Get middle point of the primitive
                 float pmiddle;
-                if (bool_axis == 0) {pmiddle = pbox.center.x;}
-                else if (bool_axis == 1) {pmiddle = pbox.center.y;}
-                else if (bool_axis == 2) {pmiddle = pbox.center.z;}
+                if (bool_axis == 0) {pmiddle = (pbox.max.x + pbox.min.x) / 2;}
+                else if (bool_axis == 1) {pmiddle = (pbox.max.y + pbox.min.y) / 2;}
+                else if (bool_axis == 2) {pmiddle = (pbox.max.z + pbox.min.z) / 2;}
 
                 if (
-                    pmiddle < split 
+                    pmiddle < split || (pmiddle == split && parent->left != nullptr && parent->right != nullptr && parent->left->p.size() < parent->right->p.size())
                 ) {
                     // Add to left child
                     if (parent->left == nullptr) {parent->left = new BVHNode();}
@@ -63,14 +62,13 @@ namespace rt {
              
 
             if (parent->left != nullptr) {
-                 parent->left->box = parent->left->getBounds();
+                 std::tie(parent->left->area, parent->left->box) = parent->left->getBounds();
                 if (parent->left->p.size() != parent->p.size()) buildRecursive(parent->left);
             }
             if (parent->right != nullptr) {
-                 parent->right->box = parent->right->getBounds();
+                std::tie(parent->right->area, parent->right->box) = parent->right->getBounds();
                 if (parent->right->p.size() != parent->p.size()) buildRecursive(parent->right);
             }
-                
         }
     }
 
@@ -81,6 +79,75 @@ namespace rt {
         else if (bool_axis == 1) {split = (parent->box.min.y + parent->box.max.y) / 2;}
         else if (bool_axis == 2) {split = (parent->box.min.z + parent->box.max.z) / 2;}
         return split;
+    }
+
+    float BVH::SAHSplit(int bool_axis, float len_axis, BVHNode* parent) {
+        for (int i = 0; i < bin; i++) {
+            bins[i] = 0; bins_n[i] = 0;
+           // binr[i] = (i+1)*(len_axis/bin);
+            
+        }
+
+        //assign primitives to bin
+        float mid; int num;
+        // Implement Binning SAH
+        for (int i = 0; i < parent->p.size(); i++) {
+            BBox pbox = parent->p[i]->getBounds();
+            if (bool_axis == 0) {
+                mid = (pbox.min.x + pbox.max.x) / 2;
+                num = roundf((mid - parent->box.min.x) / len_axis * (bin - 1));
+            } else if (bool_axis == 1) {
+                mid = (pbox.min.y + pbox.max.y) / 2;
+                num = roundf((mid - parent->box.min.y) / len_axis * (bin - 1));
+            } else if (bool_axis == 2) {
+                mid = (pbox.min.z + pbox.max.z) / 2;
+                num = roundf((mid - parent->box.min.z) / len_axis * (bin - 1));
+            }
+            bins[num] += pbox.area();
+            bins_n[num] ++;
+        }
+        // Compute cost
+        float SA_Left = 0, Primitives_Left = 0;
+        float minCost = 10000;
+        float cost_left;
+        float cost_right;
+        float sah_split;
+        for (int i = 1; i <= bin; i++) {
+            SA_Left = 0;
+            Primitives_Left = 0;
+            for (int j = 0; j < i; j++) {
+                SA_Left = SA_Left + bins[j]; Primitives_Left = Primitives_Left + bins_n[j];
+            };
+            cost_left = SA_Left / parent->area * Primitives_Left;
+            cost_right = (parent->area - SA_Left) / parent->area * (parent->p.size() - Primitives_Left);
+            //cost[i]=cost_left + cost_right;
+            // std::cout<<cost[i]<<std::endl;
+            if (cost_left + cost_right < minCost) 
+                {
+                    sah_split = i; minCost = cost_left + cost_right;
+            }
+        }
+         //std::cout<<cleft+cright<<std::endl;
+        
+        //float minCost = 10000;
+        //int minCostSplitBucket = 0;
+        //for (int i = 1; i <= bin; i++) {
+            //std::cout<<cost[i]<<std::endl;
+          //  if (cost[i] < minCost) {
+        //minCost = cost[i];
+      //  minCostSplitBucket = i;
+       
+    //}
+  //  sah_split = minCostSplitBucket;
+    //std::cout<<sah_split<<std::endl;
+
+//}
+
+       // }
+        
+        if (bool_axis == 0) return parent->box.min.x + ((sah_split/bin) * len_axis);
+        if (bool_axis == 1) return parent->box.min.y + ((sah_split/bin) * len_axis);
+        if (bool_axis == 2) return parent->box.min.z + ((sah_split/bin) * len_axis);
     }
 
     Intersection BVH::intersect(const Ray& ray, float previousBestDistance) const {
@@ -192,6 +259,9 @@ namespace rt {
 
     void BVH::setCoordMapper(CoordMapper* cm) {
         /* TODO */ NOT_IMPLEMENTED;
+    }
+   float BVH::getArea() const {
+        return 0;
     }
 
 }
