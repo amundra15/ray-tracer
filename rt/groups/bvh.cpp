@@ -1,6 +1,7 @@
 #include <rt/groups/bvh.h>
 #include <tuple>
 #include <numeric>
+#include <math.h> 
 
 namespace rt {
 
@@ -40,9 +41,9 @@ namespace rt {
                 BBox pbox = temp_p->getBounds();
                 // Get middle point of the primitive
                 float pmiddle;
-                if (bool_axis == 0) {pmiddle = (pbox.max.x + pbox.min.x) / 2;}
-                else if (bool_axis == 1) {pmiddle = (pbox.max.y + pbox.min.y) / 2;}
-                else if (bool_axis == 2) {pmiddle = (pbox.max.z + pbox.min.z) / 2;}
+                if (bool_axis == 0) {pmiddle = pbox.center.x;}
+                else if (bool_axis == 1) {pmiddle = pbox.center.y;}
+                else if (bool_axis == 2) {pmiddle = pbox.center.z;}
 
                 if (
                     pmiddle < split 
@@ -69,6 +70,7 @@ namespace rt {
                  parent->right->box = parent->right->getBounds();
                 if (parent->right->p.size() != parent->p.size()) buildRecursive(parent->right);
             }
+                
         }
     }
 
@@ -82,23 +84,25 @@ namespace rt {
     }
 
     Intersection BVH::intersect(const Ray& ray, float previousBestDistance) const {
+        
         Intersection primitive_hit = Intersection::failure();
         BBox b = BBox();
         float d = previousBestDistance;
 
         std::vector<BVHNode*> nodes;
         nodes.push_back(this->root);
-        //std::cout<<nodes.size()<<std::endl;
 
         BVHNode* n = new BVHNode();
 
         
         while (nodes.size() > 0) {
+
             n = nodes.back();
             nodes.pop_back();
-            //
+
+            
             if (n->left == nullptr && n->right == nullptr) {
-                // Leaf
+                // Leaf       
                 for (auto primitive: n->p) {
                     Intersection primitive_hit_temp = primitive->intersect(ray, d);
                     if (primitive_hit_temp && primitive_hit_temp.distance < d) {
@@ -108,17 +112,65 @@ namespace rt {
                 }
             } else {
                 // Non-Leaf
+                // float bmin, bmax;
+                // if (n->left != nullptr) {
+                //     b = n->left->box;
+                //     std::tie(bmin, bmax) = b.intersect(ray);
+                //     if (bmin < FLT_MAX && bmax > FLT_MIN) {nodes.push_back(n->left);};
+                // }
+                // if (n->right != nullptr) {
+                //     b = n->right->box;
+                //     std::tie(bmin, bmax) = b.intersect(ray);
+                //     if (bmin < FLT_MAX && bmax > FLT_MIN) {nodes.push_back(n->right);};
+                // }
+
+
+
+                //check if the current node is behind the any previously computed primitive intersection
                 float bmin, bmax;
+                std::tie(bmin, bmax) = n->box.intersect(ray);
+                if(d < std::min(fabs(bmin),fabs(bmax)))
+                    continue;
+                    // return primitive_hit;
+
+                bool leftIntersection = 0;
+                bool rightIntersection = 0;
+                float bmin1, bmin2, bmax1, bmax2;
                 if (n->left != nullptr) {
                     b = n->left->box;
-                    std::tie(bmin, bmax) = b.intersect(ray);
-                    if (bmin < FLT_MAX && bmax > FLT_MIN) {nodes.push_back(n->left);};
+                    std::tie(bmin1, bmax1) = b.intersect(ray);
+                    leftIntersection = (bmin1 < FLT_MAX && bmax1 > FLT_MIN && !n->left->p.empty());
+                    //intersection criteria: intersects with the box, and there is atleast one primitive there
                 }
                 if (n->right != nullptr) {
                     b = n->right->box;
-                    std::tie(bmin, bmax) = b.intersect(ray);
-                    if (bmin < FLT_MAX && bmax > FLT_MIN) {nodes.push_back(n->right);};
+                    std::tie(bmin2, bmax2) = b.intersect(ray);
+                    rightIntersection = (bmin2 < FLT_MAX && bmax2 > FLT_MIN && !n->right->p.empty());
                 }
+
+
+                if (leftIntersection && rightIntersection)
+                {
+                    //estimate the farther node and put in stack first (so that it pops later)
+                    float leftIntersectionDistance = std::min(fabs(bmin1),fabs(bmax1));
+                    float rightIntersectionDistance = std::min(fabs(bmin2),fabs(bmax2));
+                
+                    if(leftIntersectionDistance >= rightIntersectionDistance)
+                    {
+                        nodes.push_back(n->left);
+                        nodes.push_back(n->right);
+                    }
+                    else
+                    {
+                        nodes.push_back(n->right);                        
+                        nodes.push_back(n->left);
+                    }
+                }
+                else if (leftIntersection) 
+                    nodes.push_back(n->left);
+                else if (rightIntersection) 
+                    nodes.push_back(n->right);
+
             }
         }
 
@@ -126,8 +178,7 @@ namespace rt {
     }
 
     BBox BVH::getBounds() const {
-      /* TODO */ NOT_IMPLEMENTED;
-   
+        return root->box;
     }
 
     void BVH::add(Primitive* p) {

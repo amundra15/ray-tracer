@@ -29,7 +29,7 @@ namespace rt {
 			min = rt::min(min, point);
 			max = rt::max(max, point);
 		}
-		
+        center = 0.5f * (min+max);
 	}
 
 	void BBox::extend(const BBox& bbox) {
@@ -42,7 +42,7 @@ namespace rt {
 			min = rt::min(min, bbox.min);
 			max = rt::max(max, bbox.max);
 		}
-		
+    center = 0.5f * (min+max);
 	}
 
 	std::pair<float, float> BBox::intersect(const Ray& ray) const {

@@ -14,7 +14,8 @@ class Ray;
 
 class BBox {
 public:
-     Point min, max;
+    Point min, max;
+    Point center;
     bool _flag = false;
     BBox() {}
     BBox(const Point& min, const Point& max)
@@ -29,7 +30,7 @@ public:
         {
             this->min = min;
             this->max = max;
-          //  this->centre = 0.5f * Point(min.x+max.x, min.y+max.y, min.z+max.z);
+            this->center = 0.5f * (min+max);
         }
 
     }
