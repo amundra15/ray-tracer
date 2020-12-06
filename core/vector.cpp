@@ -17,7 +17,10 @@ Vector::Vector(float x, float y, float z)
 
 Vector::Vector(const Float4& f4)
 {
-    /* TODO */
+    assert(f4.w==0); 
+    this->x = f4.x;
+    this->y = f4.y;
+    this->z = f4.z;
 }
 
 Vector Vector::operator + (const Vector& b) const {
