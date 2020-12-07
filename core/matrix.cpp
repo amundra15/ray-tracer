@@ -26,9 +26,9 @@ Matrix::Matrix(const Float4& r1, const Float4& r2, const Float4& r3, const Float
 }
 
 Float4& Matrix::operator[](int idx) {
-    // Float4 result = Float4(mat[idx][0],mat[idx][1],mat[idx][2],mat[idx][3]);
-    // return &result;
-    /* TODO */ NOT_IMPLEMENTED;
+    Float4 *result = new Float4(mat[idx][0],mat[idx][1],mat[idx][2],mat[idx][3]);
+    return *result;
+    // /* TODO */ NOT_IMPLEMENTED;
 }
 
 Float4 Matrix::operator[](int idx) const {
