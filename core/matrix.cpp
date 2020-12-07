@@ -40,7 +40,7 @@ Matrix Matrix::operator+(const Matrix& b) const {
 }
 
 Matrix Matrix::operator-(const Matrix& b) const {
-    return Matrix(-b[0],-b[1],-b[2],-b[3]);
+    return Matrix(r0-b[0],r1-b[1],r2-b[2],r3-b[3]);
 }
 
 Matrix Matrix::transpose() const {
@@ -106,27 +106,14 @@ bool Matrix::operator!=(const Matrix& b) const {
 }
 
 Matrix product(const Matrix& a, const Matrix& b) {
-    //not sure if this is correct
-    Matrix result;
+    Matrix b_ = b.transpose();
 
-    result[0][0] = a[0][0]*b[0][0] + a[0][1]*b[1][0] + a[0][2]*b[2][0] + a[0][3]*b[3][0];
-    result[0][1] = a[0][0]*b[0][0] + a[0][1]*b[1][0] + a[0][2]*b[2][0] + a[0][3]*b[3][0];
-    result[0][2] = a[0][0]*b[0][0] + a[0][1]*b[1][0] + a[0][2]*b[2][0] + a[0][3]*b[3][0];
-    result[0][3] = a[0][0]*b[0][0] + a[0][1]*b[1][0] + a[0][2]*b[2][0] + a[0][3]*b[3][0];
-    result[1][0] = a[1][0]*b[0][1] + a[1][1]*b[1][1] + a[1][2]*b[2][1] + a[1][3]*b[3][1];
-    result[1][1] = a[1][0]*b[0][1] + a[1][1]*b[1][1] + a[1][2]*b[2][1] + a[1][3]*b[3][1];
-    result[1][2] = a[1][0]*b[0][1] + a[1][1]*b[1][1] + a[1][2]*b[2][1] + a[1][3]*b[3][1];
-    result[1][3] = a[1][0]*b[0][1] + a[1][1]*b[1][1] + a[1][2]*b[2][1] + a[1][3]*b[3][1];
-    result[2][0] = a[2][0]*b[0][2] + a[2][1]*b[1][2] + a[2][2]*b[2][2] + a[2][3]*b[3][2];
-    result[2][1] = a[2][0]*b[0][2] + a[2][1]*b[1][2] + a[2][2]*b[2][2] + a[2][3]*b[3][2];
-    result[2][2] = a[2][0]*b[0][2] + a[2][1]*b[1][2] + a[2][2]*b[2][2] + a[2][3]*b[3][2];
-    result[2][3] = a[2][0]*b[0][2] + a[2][1]*b[1][2] + a[2][2]*b[2][2] + a[2][3]*b[3][2];
-    result[3][0] = a[3][0]*b[0][3] + a[3][1]*b[1][3] + a[3][2]*b[2][3] + a[3][3]*b[3][3];
-    result[3][1] = a[3][0]*b[0][3] + a[3][1]*b[1][3] + a[3][2]*b[2][3] + a[3][3]*b[3][3];
-    result[3][2] = a[3][0]*b[0][3] + a[3][1]*b[1][3] + a[3][2]*b[2][3] + a[3][3]*b[3][3];
-    result[3][3] = a[3][0]*b[0][3] + a[3][1]*b[1][3] + a[3][2]*b[2][3] + a[3][3]*b[3][3];
+    Float4 row0 = Float4(dot(a[0],b[0]), dot(a[0],b[1]), dot(a[0],b[2]), dot(a[0],b[3]));
+    Float4 row1 = Float4(dot(a[1],b[0]), dot(a[1],b[1]), dot(a[1],b[2]), dot(a[1],b[3]));
+    Float4 row2 = Float4(dot(a[2],b[0]), dot(a[2],b[1]), dot(a[2],b[2]), dot(a[2],b[3]));
+    Float4 row3 = Float4(dot(a[3],b[0]), dot(a[3],b[1]), dot(a[3],b[2]), dot(a[3],b[3]));
 
-    return result;
+    return Matrix(row0, row1, row2, row3);
 }
 
 Matrix operator*(const Matrix& a, float scalar) {
@@ -143,8 +130,7 @@ Float4 Matrix::operator*(const Float4& b) const {
 
 Vector Matrix::operator*(const Vector& b) const {
     Float4 b_ = Float4(b);
-    float w = dot(r3,b_);
-    return Vector(dot(r0,b_)/w,dot(r1,b_)/w,dot(r2,b_)/w);
+    return Vector(dot(r0,b_),dot(r1,b_),dot(r2,b_));
 }
 
 Point Matrix::operator*(const Point& b) const {
@@ -178,9 +164,9 @@ Matrix Matrix::zero() {
 
 Matrix Matrix::identity() {
     Float4 row0 = Float4(1.0f,0.0f,0.0f,0.0f);
-    Float4 row1 = Float4(0.0f,2.0f,0.0f,0.0f);
-    Float4 row2 = Float4(0.0f,0.0f,3.0f,0.0f);
-    Float4 row3 = Float4(0.0f,0.0f,0.0f,4.0f);
+    Float4 row1 = Float4(0.0f,1.0f,0.0f,0.0f);
+    Float4 row2 = Float4(0.0f,0.0f,1.0f,0.0f);
+    Float4 row3 = Float4(0.0f,0.0f,0.0f,1.0f);
     return Matrix(row0, row1, row2, row3);
 }
 
