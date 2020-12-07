@@ -46,7 +46,7 @@ Float4 Float4::operator + (const Float4& b) const {
 }
 
 Float4 Float4::operator - (const Float4& b) const {
-    return Float4(-1*this->x, -1*this->y, -1*this->z, -1*this->w);
+    return Float4(this->x - b.x, this->y - b.y, this->z - b.z, this->w - b.w);
 }
 
 Float4 Float4::operator * (const Float4& b) const {
@@ -82,7 +82,7 @@ bool Float4::operator == (const Float4& b) const {
 }
 
 bool Float4::operator != (const Float4& b) const {
-    return !(this->x == b.x) && (this->y == b.y) && (this->z == b.z) && (this->w == b.w);
+    return !((this->x == b.x) && (this->y == b.y) && (this->z == b.z) && (this->w == b.w));
 }
 
 Float4 min(const Float4& a, const Float4& b) {
