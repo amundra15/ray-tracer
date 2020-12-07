@@ -7,6 +7,7 @@ namespace rt {
 
 class Matrix {
 public:
+    float mat[4][4];
     Matrix() {}
     Matrix(const Float4& r1, const Float4& r2, const Float4& r3, const Float4& r4);
 

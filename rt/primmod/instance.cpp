@@ -47,4 +47,8 @@ BBox Instance::getBounds() const {
     /* TODO */ NOT_IMPLEMENTED;
 }
 
+float Instance::getArea() const {
+    /* TODO */ NOT_IMPLEMENTED;
+}
+
 }
