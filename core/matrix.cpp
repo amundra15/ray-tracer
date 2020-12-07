@@ -108,10 +108,10 @@ bool Matrix::operator!=(const Matrix& b) const {
 Matrix product(const Matrix& a, const Matrix& b) {
     Matrix b_ = b.transpose();
 
-    Float4 row0 = Float4(dot(a[0],b[0]), dot(a[0],b[1]), dot(a[0],b[2]), dot(a[0],b[3]));
-    Float4 row1 = Float4(dot(a[1],b[0]), dot(a[1],b[1]), dot(a[1],b[2]), dot(a[1],b[3]));
-    Float4 row2 = Float4(dot(a[2],b[0]), dot(a[2],b[1]), dot(a[2],b[2]), dot(a[2],b[3]));
-    Float4 row3 = Float4(dot(a[3],b[0]), dot(a[3],b[1]), dot(a[3],b[2]), dot(a[3],b[3]));
+    Float4 row0 = Float4(dot(a[0],b_[0]), dot(a[0],b_[1]), dot(a[0],b_[2]), dot(a[0],b_[3]));
+    Float4 row1 = Float4(dot(a[1],b_[0]), dot(a[1],b_[1]), dot(a[1],b_[2]), dot(a[1],b_[3]));
+    Float4 row2 = Float4(dot(a[2],b_[0]), dot(a[2],b_[1]), dot(a[2],b_[2]), dot(a[2],b_[3]));
+    Float4 row3 = Float4(dot(a[3],b_[0]), dot(a[3],b_[1]), dot(a[3],b_[2]), dot(a[3],b_[3]));
 
     return Matrix(row0, row1, row2, row3);
 }
