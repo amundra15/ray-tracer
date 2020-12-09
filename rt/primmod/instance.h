@@ -29,7 +29,7 @@ public:
     virtual void setCoordMapper(CoordMapper* cm);
     virtual float getArea() const;
 };
-
+ 
 }
 
 #endif
