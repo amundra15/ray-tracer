@@ -15,7 +15,8 @@ public:
 
     Matrix T;       //will be used only for updating the normal after the intersection
     Matrix T_inv;   //to save computation, we will keep updating T_inv along with T
-    
+    BBox bbox;
+
     void reset(); //reset transformation back to identity
     void translate(const Vector& t);
     void rotate(const Vector& axis, float angle);

@@ -8,6 +8,7 @@ Instance::Instance(Primitive* content)
     primitive = content;
     T = Matrix::identity();
     T_inv = Matrix::identity();
+    bbox = BBox::empty();
 }
 
 Primitive* Instance::content() {
@@ -29,6 +30,10 @@ void Instance::translate(const Vector& t) {
     invertedTranslation[0][3] = -t.x;
     invertedTranslation[1][3] = -t.y;
     invertedTranslation[2][3] = -t.z;
+
+    bbox.min = bbox.min + t;
+    bbox.max = bbox.max + t;
+    bbox.center = 0.5f * (bbox.min + bbox.max);
 
     T = product(translation,T);
     T_inv = product(T_inv,invertedTranslation);
@@ -66,6 +71,10 @@ void Instance::rotate(const Vector& nnaxis, float angle) {
     Matrix compositeRotation = product(systemChange, product(rotation,systemChange.transpose()));
     Matrix compositeRotation_inv = product(systemChange, product(rotation.transpose(),systemChange.transpose()));
 
+    bbox.min = compositeRotation * bbox.min;
+    bbox.max = compositeRotation * bbox.max;
+    bbox.center = 0.5f * (bbox.min + bbox.max);
+
     T = product(compositeRotation,T);
     T_inv = product(T_inv,compositeRotation_inv);
 }
@@ -82,6 +91,10 @@ void Instance::scale(float f) {
     invertedScaling[1][1] = inverted_f;
     invertedScaling[2][2] = inverted_f;
 
+    bbox.min = f * bbox.min;
+    bbox.max = f * bbox.max;
+    bbox.center = 0.5f * (bbox.min + bbox.max);
+ 
     T = product(scaling,T);
     T_inv = product(T_inv,invertedScaling);
 }
@@ -97,8 +110,11 @@ void Instance::scale(const Vector& s) {
     invertedScaling[1][1] = 1.0f/s.y;
     invertedScaling[2][2] = 1.0f/s.z;
 
+    bbox.min = scaling * bbox.min;
+    bbox.max = scaling * bbox.max;
+    bbox.center = 0.5f * (bbox.min + bbox.max);
+ 
     //since we are using T only for the normals, we will be replacing scaling with transpose(inverse(scaling)) for this case (non-uniform scaling) - check lecture slides for details
-    // T = product(scaling, T_inv.transpose());
     T = product(invertedScaling.transpose(),T);
     T_inv = product(T_inv,invertedScaling);
 }
@@ -131,18 +147,21 @@ Intersection Instance::intersect(const Ray& ray, float previousBestDistance) con
         //the ray in the intersection object should be the original ray
         intersectionObj.ray = ray;
         intersectionObj.distance *= 1.0f/scalingFactor;
-        intersectionObj.normal_vec = (T * intersectionObj.normal_vec).normalize();      //TODO_a: make sure T is supposed to be used here and not T_inv
+        intersectionObj.normal_vec = (T * intersectionObj.normal_vec).normalize();
     }
 
     return intersectionObj;
 }
 
 BBox Instance::getBounds() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    return bbox;
 }
 
 float Instance::getArea() const {
-    /* TODO */ NOT_IMPLEMENTED;
+    float area_xy = (bbox.max.x - bbox.min.x) * (bbox.max.y - bbox.min.y);
+    float area_yz = (bbox.max.y - bbox.min.y) * (bbox.max.z - bbox.min.z);
+    float area_xz = (bbox.max.x - bbox.min.x) * (bbox.max.z - bbox.min.z);
+    return 2 * (area_xy + area_yz + area_xz); 
 }
 
 }
