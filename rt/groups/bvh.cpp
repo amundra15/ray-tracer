@@ -251,7 +251,8 @@ namespace rt {
     }
 
     void BVH::setMaterial(Material* m) {
-        /* TODO */ NOT_IMPLEMENTED;
+        for(uint iter=0; iter<this->primitives.size(); iter++)
+            primitives[iter]->setMaterial(m);
         
     }
 
