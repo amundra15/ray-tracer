@@ -8,7 +8,8 @@ DummyMaterial::DummyMaterial() {
 }
 
 RGBColor DummyMaterial::getReflectance(const Point& texPoint, const Vector& normal, const Vector& outDir, const Vector& inDir) const {
-	return RGBColor::rep(1.0f * dot(outDir,normal));
+	float cosTheta = dot(outDir,normal) / (outDir.length()*normal.length());
+	return RGBColor::rep(1.0f * cosTheta);
 }
 
 RGBColor DummyMaterial::getEmission(const Point& texPoint, const Vector& normal, const Vector& outDir) const {
