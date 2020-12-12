@@ -13,6 +13,6 @@ void a_smooth();
 void a_bumpmappers();
 
 int main(int argc, char* argv[]) {
-    a_instancing();
+    a_lighting();
     return 0;
 }
