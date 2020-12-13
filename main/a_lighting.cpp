@@ -93,12 +93,12 @@ void renderCornellboxB(float scale, const char* filename) {
     world.light.push_back(new PointLight(Point(288*scale,529.99f*scale,279.5f*scale),RGBColor::rep(20000.0f*scale*scale)));
 
     //spot light
-    world.light.push_back(new SpotLight(Point(70.f, 400.f, 230.f)*scale, Vector(0.0f, -1.0f, 0.0f),  pi/4, 8.0f, RGBColor(0,60000.0f*scale*scale,0)));
-    world.light.push_back(new SpotLight(Point(520.f, 300.f, 230.f)*scale, Vector(-1.0f, -1.0f, 0.0f),  pi/3, 3.0f, RGBColor(60000.0f*scale*scale,0,0)));
+    // world.light.push_back(new SpotLight(Point(70.f, 400.f, 230.f)*scale, Vector(0.0f, -1.0f, 0.0f),  pi/4, 8.0f, RGBColor(0,60000.0f*scale*scale,0)));
+    // world.light.push_back(new SpotLight(Point(520.f, 300.f, 230.f)*scale, Vector(-1.0f, -1.0f, 0.0f),  pi/3, 3.0f, RGBColor(60000.0f*scale*scale,0,0)));
 
     //directional light
-    DirectionalLight dirl(Vector(0.2f,-0.5f,0.5f).normalize(), RGBColor(0.25f,0.25f,0.5f));
-    world.light.push_back(&dirl);
+    // DirectionalLight dirl(Vector(0.2f,-0.5f,0.5f).normalize(), RGBColor(0.25f,0.25f,0.5f));
+    // world.light.push_back(&dirl);
 
     RayTracingIntegrator integrator(&world);
 

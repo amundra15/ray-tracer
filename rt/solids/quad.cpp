@@ -16,6 +16,7 @@ Quad::Quad(const Point& origin, const Vector& span1, const Vector& span2, CoordM
 	this->t1 = Triangle(a, b, c, texMapper, material);
 	this->t2 = Triangle(b, d, c, texMapper, material);
 
+	this->material = material;
 }
 
 BBox Quad::getBounds() const {

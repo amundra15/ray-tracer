@@ -11,6 +11,8 @@ Triangle::Triangle(Point vertices[3], CoordMapper* texMapper, Material* material
     Point min_point = rt::min(rt::min(this->v1, this->v2), this->v3);
 	Point max_point = rt::max(rt::max(this->v1, this->v2), this->v3);
 	this->bbox = BBox(min_point, max_point);
+
+	this->material = material;
 }
 
 Triangle::Triangle(const Point& v1, const Point& v2, const Point& v3, CoordMapper* texMapper, Material* material)
@@ -22,6 +24,8 @@ Triangle::Triangle(const Point& v1, const Point& v2, const Point& v3, CoordMappe
     Point min_point = rt::min(rt::min(this->v1, this->v2), this->v3);
 	Point max_point = rt::max(rt::max(this->v1, this->v2), this->v3);
 	this->bbox = BBox(min_point, max_point);
+	
+	this->material = material;
 }
 
 BBox Triangle::getBounds() const {

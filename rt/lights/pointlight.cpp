@@ -6,15 +6,25 @@ namespace rt {
 
 PointLight::PointLight(const Point& position, const RGBColor& intensity)
 {
-    /* TODO */
+	this->position = position;
+	this->intensity = intensity;
 }
 
 LightHit PointLight::getLightHit(const Point& p) const {
-    /* TODO */ NOT_IMPLEMENTED;
+    
+    Vector dir = position - p;
+    float len = dir.length();
+
+    LightHit l;
+    l.direction = dir/len;
+    l.distance = len;
+    l.normal = -dir/len;
+
+    return l;
 }
 
 RGBColor PointLight::getIntensity(const LightHit& irr) const {
-    /* TODO */ NOT_IMPLEMENTED;
+	return intensity/(irr.distance * irr.distance);
 }
 
 }
