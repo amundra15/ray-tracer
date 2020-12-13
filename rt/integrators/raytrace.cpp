@@ -40,6 +40,8 @@ RGBColor RayTracingIntegrator::getRadiance(const Ray& ray) const {
 			RGBColor reflectedIntensity = intensity * materialObj->getReflectance(intersectionObj.local(), intersectionObj.normal(), -ray.d, -lightHit.direction);
 			RGBColor emittedIntensity = intensity * materialObj->getEmission(intersectionObj.local(), intersectionObj.normal(), -ray.d);
 
+			// std::cout << reflectedIntensity.r << " " << reflectedIntensity.g << " " << reflectedIntensity.b << std::endl;
+
 			totalIntensity = totalIntensity + reflectedIntensity + emittedIntensity;
 		}
 
