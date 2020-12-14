@@ -14,6 +14,7 @@
 #include <rt/lights/pointlight.h>
 #include <rt/lights/spotlight.h>
 #include <rt/lights/directional.h>
+#include <rt/lights/projectivelight.h>
 
 #include <rt/integrators/raytrace.h>
 
@@ -59,9 +60,14 @@ void renderCornellboxA(float scale, const char* filename) {
     makeBox(scene, Point(265.f, 000.1f, 296.f)*scale, Vector(049.f, 000.f, 160.f)*scale, Vector(158.f, 000.f, -049.f)*scale, Vector(000.f, 330.f, 000.f)*scale, nullptr, mat);
 
     //point light
-    world.light.push_back(new PointLight(Point(288*scale,529.99f*scale,279.5f*scale),RGBColor::rep(40000.0f*scale*scale)));
-    world.light.push_back(new PointLight(Point(490*scale,329.99f*scale,279.5f*scale),RGBColor(60000.0f*scale*scale,0,0)));
-    world.light.push_back(new PointLight(Point(40*scale,329.99f*scale,279.5f*scale),RGBColor(0,60000.0f*scale*scale,0)));
+    // world.light.push_back(new PointLight(Point(288*scale,529.99f*scale,279.5f*scale),RGBColor::rep(40000.0f*scale*scale)));
+    // world.light.push_back(new PointLight(Point(490*scale,329.99f*scale,279.5f*scale),RGBColor(60000.0f*scale*scale,0,0)));
+    // world.light.push_back(new PointLight(Point(40*scale,329.99f*scale,279.5f*scale),RGBColor(0,60000.0f*scale*scale,0)));
+
+
+    //projective light
+    world.light.push_back(new ProjectiveLight(Point(200.0f*scale,200.0f*scale,-100.0f*scale),RGBColor::rep(40000.0f*scale*scale)));
+
 
     RayTracingIntegrator integrator(&world);
 
@@ -111,6 +117,6 @@ void renderCornellboxB(float scale, const char* filename) {
 void a_lighting() {
     renderCornellboxA(0.001f, "a5-1.png");
     renderCornellboxA(0.01f, "a5-2.png");
-    renderCornellboxB(0.001f, "a5-3.png");
-    renderCornellboxB(0.01f, "a5-4.png");
+    // renderCornellboxB(0.001f, "a5-3.png");
+    // renderCornellboxB(0.01f, "a5-4.png");
 }

@@ -28,7 +28,7 @@ RGBColor RayTracingIntegrator::getRadiance(const Ray& ray) const {
 				continue;
 			
 			//trace shadow ray
-			Ray shadowRay = Ray(intersectionObj.hitPoint(), lightHit.direction.normalize());
+			Ray shadowRay = Ray(intersectionObj.hitPoint() + 0.0001*lightHit.direction, lightHit.direction.normalize());
 			Intersection shadowObj = world->scene->intersect(shadowRay, lightHit.distance);
 			if(shadowObj)
 				continue;
@@ -45,7 +45,7 @@ RGBColor RayTracingIntegrator::getRadiance(const Ray& ray) const {
 			totalIntensity = totalIntensity + reflectedIntensity + emittedIntensity;
 		}
 
-		return totalIntensity;
+		return totalIntensity.clamp();
 	}
 	else
 		return RGBColor::rep(0);

@@ -6,6 +6,7 @@ set(MY_ADDITIONAL_SOURCES
     rt/lights/directional.cpp
     rt/lights/pointlight.cpp
     rt/lights/spotlight.cpp
+    rt/lights/projectivelight.cpp
     rt/integrators/raytrace.cpp
 )
 
