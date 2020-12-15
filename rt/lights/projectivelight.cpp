@@ -41,7 +41,7 @@ ProjectiveLight::ProjectiveLight(const Point& position, const RGBColor& intensit
 }
 
 RGBColor ProjectiveLight::getIntensity(const LightHit& irr) const {
-	return a1computeLightColor(irr.direction);
+	return a1computeLightColor(irr.direction) * intensity/(irr.distance * irr.distance);
 }
 
 }
