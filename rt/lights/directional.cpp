@@ -6,15 +6,21 @@ namespace rt {
 
 DirectionalLight::DirectionalLight(const Vector& direction, const RGBColor& color)
 {
-    /* TODO */
+   this->dir=direction;
+   this->intensity=color;
 }
 
-LightHit DirectionalLight::getLightHit(const Point& p) const {
-    /* TODO */ NOT_IMPLEMENTED;
+LightHit DirectionalLight::getLightHit(const Point& p) const 
+{
+	LightHit l;
+	l.direction = -dir;
+	l.distance = FLT_MAX;
+	l.normal = l.direction.normalize();
+	return l;
 }
 
 RGBColor DirectionalLight::getIntensity(const LightHit& irr) const {
-    /* TODO */ NOT_IMPLEMENTED;
+	return intensity;
 }
 
 }

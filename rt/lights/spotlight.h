@@ -9,8 +9,14 @@ namespace rt {
 
 class SpotLight : public PointLight {
 public:
+	Point pos;
+	Vector direction;
+	float angle;
+	float power;
+	RGBColor intensity;
 	SpotLight() {}
 	SpotLight(const Point& position, const Vector& direction, float angle, float exp, const RGBColor& intensity);
+    virtual LightHit getLightHit(const Point& p) const;
     virtual RGBColor getIntensity(const LightHit& irr) const;
 };
 
