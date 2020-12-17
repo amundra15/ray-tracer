@@ -128,7 +128,7 @@ void renderCornellboxC(float scale, const char* filename) {
     makeBox(scene, Point(265.f, 000.1f, 296.f)*scale, Vector(049.f, 000.f, 160.f)*scale, Vector(158.f, 000.f, -049.f)*scale, Vector(000.f, 330.f, 000.f)*scale, nullptr, mat);
 
     //projective light
-    world.light.push_back(new ProjectiveLight(Point(200.0f*scale,200.0f*scale,-100.0f*scale),RGBColor::rep(40000.0f*scale*scale)));
+    world.light.push_back(new ProjectiveLight(Point(200.0f*scale,200.0f*scale,-100.0f*scale),RGBColor::rep(80000.0f*scale*scale)));
 
     RayTracingIntegrator integrator(&world);
 
