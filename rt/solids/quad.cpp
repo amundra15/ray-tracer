@@ -1,4 +1,5 @@
 #include <rt/solids/quad.h>
+#include <core/random.h>
 
 namespace rt {
 
@@ -8,66 +9,58 @@ Quad::Quad(const Point& origin, const Vector& span1, const Vector& span2, CoordM
 	this->span1 = span1;
 	this->span2 = span2;
 	this->n = cross(span1, span2).normalize();
-	a = origin;
-	b = origin + span1;
-	c = origin + span2;
-	d = origin + span1 + span2;
 
-	this->t1 = Triangle(a, b, c, texMapper, material);
-	this->t2 = Triangle(b, d, c, texMapper, material);
+	this->bbox = BBox(min(origin, origin+span1+span2), max(origin, origin+span1+span2));
 
 	this->material = material;
+	this->texMapper = texMapper;
 }
 
 BBox Quad::getBounds() const {
-	BBox b = BBox::empty();
-		b.extend(t1.getBounds());
-		b.extend(t2.getBounds());
-		return b;
+	return bbox;
 }
 
 Intersection Quad::intersect(const Ray& ray, float previousBestDistance) const {
 
-	Intersection t1_intersect = t1.intersect(ray, previousBestDistance);
-	
-	Vector s = t1_intersect.hitPoint() - a;
-	Vector vec1 = Vector(a.x, a.y, a.z);
-	Vector vec2 = Vector(b.x, b.y, c.z);
-	Vector vec3 = Vector(c.x, c.y, c.z);
-	//Vector s  = ray.0-vec1;
-	Vector e1 = vec2-vec1;
-	Vector e2 = vec3-vec1;  
-	float denom = dot(cross(ray.d, e2), e1);
-	float b1 = dot(cross(ray.d, e2), s) / denom;
-	float b2 = dot(cross(s, e1), ray.d) / denom;
-	if (t1_intersect && t1_intersect.distance > 0 && t1_intersect.distance < previousBestDistance) 
-	{
-    	//Point intersectionPoint = Point(dot(p_a, span1) / denom, dot(p_a, span2) / denom, 0);
-    	return Intersection(t1_intersect.distance, ray, this, t1_intersect.normal(),  Point((1-b1-b2), b1, b2));
-    }
-    		
-    Intersection t2_intersect = t2.intersect(ray, previousBestDistance);
-    if (t2_intersect && t2_intersect.distance > 0 && t2_intersect.distance < previousBestDistance) {
-    	Vector s = t2_intersect.hitPoint() - a;
-    	Vector vec1 = Vector(a.x, a.y, a.z);
-    	Vector vec2 = Vector(b.x, b.y, c.z);
-    	Vector vec3 = Vector(c.x, c.y, c.z);
-    	//Vector s  = ray.0-vec1;
-    	Vector e1 = vec2-vec1;
-    	Vector e2 = vec3-vec1;  
-    	float denom = dot(cross(ray.d, e2), e1);
-    	float b1 = dot(cross(ray.d, e2), s) / denom;
-    	float b2 = dot(cross(s, e1), ray.d) / denom;
+	//edge projection
+	Vector pvec = cross(ray.d, span2);
+	float det = dot(span1, pvec);
 
-		//Point intersectionPoint = Point(dot(p_a, span1) / denom, dot(p_a, span2) / denom, 0);
-    	return Intersection(t2_intersect.distance, ray, this, t2_intersect.normal(), Point((1-b1-b2), b1, b2));
-    	}
+	//reject intersection if parallel to the plane
+	if(fabs(det) <= epsilon)
+		return Intersection::failure();
 
-    	return Intersection::failure();
+	const Vector tvec = ray.o - origin;
+	const Vector qvec = cross(tvec, span1);
+
+	const float u = dot(tvec, pvec) / det;
+	const float v = dot(ray.d, qvec) / det;
+	//no w as in triangle
+
+	//these are not barycentric coordinates, but each of them has to be >=0 and <=1
+	if(u < -epsilon || v < -epsilon || u > 1.0f + epsilon || v > 1.0f + epsilon)
+		return Intersection::failure();
+
+	const float dist = dot(span2, qvec) / det;
+
+	//if all solutions are behind the ray, return failure
+	if(dist < epsilon)
+		return Intersection::failure();		
+
+	//if found solution is better than previousBestDistance, use it, else return failure
+	if(dist < previousBestDistance)
+		return Intersection(dist, ray, this, n, Point(u,v,0));
+
+	//nothing found -> return failure
+	return Intersection::failure();
 }
 
 Solid::Sample Quad::sample() const {
-    /* TODO */ NOT_IMPLEMENTED;
+	float eps1 = rt::random();
+	float eps2 = rt::random();
+
+	struct Sample s = {origin + eps1*span1 + eps2*span2, n};
+	return s;
 }
 
 float Quad::getArea() const {
@@ -76,3 +69,6 @@ float Quad::getArea() const {
 }
 
 }
+
+
+//credit: intersection code taken from Omercan Yazici's tutorial presentaion.

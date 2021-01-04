@@ -8,6 +8,7 @@ namespace rt {
 class Triangle : public Solid {
 public:	
 	Point v1, v2, v3;
+	Vector n;
 	BBox bbox;
     Triangle() {}
     Triangle(Point vertices[3], CoordMapper* texMapper, Material* material);

@@ -6,6 +6,9 @@ InfinitePlane::InfinitePlane(const Point& origin, const Vector& normal, CoordMap
 {
     o = origin;
     n = normal.normalize();
+    
+	this->material = material;
+	this->texMapper = texMapper;
 }
 
 BBox InfinitePlane::getBounds() const {

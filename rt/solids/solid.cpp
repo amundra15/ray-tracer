@@ -29,6 +29,9 @@ Solid::Solid(const float& a, const float& b, const float& c, const float& d, con
 	this->h = h;
 	this->i = i;
 	this->j = j;
+
+	this->material = material;
+	this->texMapper = texMapper;
 }
 
 

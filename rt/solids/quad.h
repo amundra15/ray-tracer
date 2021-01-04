@@ -9,8 +9,8 @@ namespace rt {
 class Quad : public Solid {
 public:
 	Vector span1, span2, n;
-	Point origin, a, b, c, d;
-	Triangle t1, t2;
+	Point origin;
+	BBox bbox;
 	Quad() {}
 	Quad(const Point& v1, const Vector& span1, const Vector& span2, CoordMapper* texMapper, Material* material);
 

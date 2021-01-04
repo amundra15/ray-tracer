@@ -1,4 +1,5 @@
 #include <core/scalar.h>
+#include <core/random.h>
 #include <core/image.h>
 #include <rt/renderer.h>
 #include <rt/ray.h>
@@ -20,15 +21,35 @@ void Renderer::render(Image& img) {
 	float two_by_width = 2.0/width;
 	float two_by_height = 2.0/height;
 
-	for(uint j = 0; j < height; j++)
-	{
-		for(uint i = 0; i < width; i++)
-		{
-			float x = (two_by_width*(i+0.5)) - 1.0;
-			float y = 1.0- (two_by_height*(j+0.5));
-			rt::Ray r = cam->getPrimaryRay(x,y);
-			// std::cout << integrator->getRadiance(r).r << std::endl;
-			img(i,j) = integrator->getRadiance(r);
+	for(uint j = 0; j < height; j++) {
+		for(uint i = 0; i < width; i++) {
+			
+			RGBColor radiance = RGBColor::rep(0.0f);
+			float disp_x, disp_y;
+
+			for(int iter = 0; iter < this->samples; iter++)
+			{
+				if(this->samples == 1)
+				{
+					disp_x = 0.5f;
+					disp_y = 0.5f;
+				}
+				else
+				{
+					//super sampling
+					disp_x = random();
+					disp_y = random();
+				}
+					
+				float x = (two_by_width*(i+disp_x)) - 1.0;
+				float y = 1.0- (two_by_height*(j+disp_y));
+	
+				rt::Ray r = cam->getPrimaryRay(x,y);
+				radiance = radiance + integrator->getRadiance(r);
+			}
+			
+			img(i,j) = radiance / this->samples;
+
 		}
 	}
 }
