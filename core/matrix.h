@@ -7,10 +7,8 @@ namespace rt {
 
 class Matrix {
 public:
-    float mat[4][4];
-    Float4 r0, r1, r2, r3;
     Matrix() {}
-    Matrix(const Float4& r0, const Float4& r1, const Float4& r2, const Float4& r3);
+    Matrix(const Float4& r1, const Float4& r2, const Float4& r3, const Float4& r4);
 
     Float4& operator[](int idx);
     Float4 operator[](int idx) const;
@@ -35,11 +33,15 @@ public:
     static Matrix identity();
 
     static Matrix system(const Vector& e1, const Vector& e2, const Vector& e3);
+
+    Float4 r[4];
 };
 
 Matrix product(const Matrix& a, const Matrix& b);
 Matrix operator*(const Matrix& a, float scalar);
 Matrix operator*(float scalar, const Matrix& a);
+Matrix translation(Point& t);
+
 
 }
 

@@ -10,6 +10,11 @@ class Vector;
 
 class DOFPerspectiveCamera : public Camera {
 public:
+    Point center;
+    Vector u,v,w;
+    float d; //distance of plane from center
+    float focalDistance, apertureRadius;
+
     DOFPerspectiveCamera(
         const Point& center,
         const Vector& forward,

@@ -11,15 +11,13 @@ class Vector;
 
 class ALIGN(16) Float4 {
 public:
-    float x, y, z, w;
-
     Float4() {}
     Float4(float x, float y, float z, float w);
     explicit Float4(const Point& p);
     explicit Float4(const Vector& v);
 
     static Float4 rep(float v) {
-        return Float4(v,v,v,v);
+        return Float4(v, v, v, v);
     }
 
     float& operator [] (int idx);
@@ -34,6 +32,8 @@ public:
 
     bool operator == (const Float4& b) const;
     bool operator != (const Float4& b) const;
+
+    float x, y, z, w;
 };
 
 Float4 operator * (float scalar, const Float4& b);

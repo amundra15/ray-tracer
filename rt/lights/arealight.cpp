@@ -18,7 +18,8 @@ LightHit AreaLight::getLightHit(const Point& p) const {
 
     LightHit l;
     l.direction = dir/len;
-    l.distance = len;
+    l.distance = len - 0.0001*len;	//you always need to reduce the distance of a light which is gonna appear in your scene. this is so that the shadow ray doesn't intersect with the light solid and create shadow everywhere in your scene.
+    l.distance = len - 0.0001*len;
     l.normal = source->sample().normal;
 
     return l;
@@ -32,7 +33,9 @@ RGBColor AreaLight::getIntensity(const LightHit& irr) const {
 	RGBColor intensity = source->material->getEmission(Point(), Vector(), Vector());
 	float cosTheta = std::abs(dot(irr.normal,irr.direction));
 
-	return  intensity * source->getArea() * cosTheta/(irr.distance * irr.distance);
+	RGBColor temp = intensity * source->getArea() * cosTheta/(irr.distance * irr.distance);
+
+	return intensity * source->getArea() * cosTheta/(irr.distance * irr.distance);
 }
 
 }

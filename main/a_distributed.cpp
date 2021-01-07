@@ -75,17 +75,11 @@ void renderCornellbox(float scale, const char* filename, Camera* cam, Material* 
     Quad* light = new Quad(Point(213*scale,549.99f*scale,227*scale), Vector(130*scale,0,0), Vector(0,0,105*scale), nullptr, lightsource);
     AreaLight als(light);
     world.light.push_back(&als);
-    // scene->add(light);
+    scene->add(light);
 
     //point light
     world.light.push_back(new PointLight(Point(490*scale,159.99f*scale,279.5f*scale),RGBColor(40000.0f*scale*scale,0,0)));
     world.light.push_back(new PointLight(Point(40*scale,159.99f*scale,249.5f*scale),RGBColor(5000.0f*scale*scale,30000.0f*scale*scale,5000.0f*scale*scale)));
-
-
-    //point light - added by akshay
-    // world.light.push_back(new PointLight(Point((278)*scale,529.99f*scale,(279.5f)*scale),RGBColor::rep(150000.0f*scale*scale)));
-    // world.light.push_back(new PointLight(Point((278)*scale,229.99f*scale,(-359.5f)*scale),RGBColor::rep(50000.0f*scale*scale)));
-
 
     RecursiveRayTracingIntegrator integrator(&world);
 
@@ -100,20 +94,18 @@ void renderCornellbox(float scale, const char* filename, Camera* cam, Material* 
 
 void a_distributed() {
     PerspectiveCamera* cam = new PerspectiveCamera(Point(0.278f, 0.273f, -0.800f), Vector(0, 0, 1), Vector(0, 1, 0), 0.686f, 0.686f);
-    // DOFPerspectiveCamera* dofcam = new DOFPerspectiveCamera(Point(0.278f, 0.273f, -0.8f), Vector(0, 0, 1), Vector(0, 1, 0), 0.686f, 0.686f, 1.025f, 0.045f);
+    DOFPerspectiveCamera* dofcam = new DOFPerspectiveCamera(Point(0.278f, 0.273f, -0.8f), Vector(0, 0, 1), Vector(0, 1, 0), 0.686f, 0.686f, 1.025f, 0.045f);
 
     Texture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
     Texture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
     Material* floorMaterial1 = new LambertianMaterial(blacktex, whitetex);
     Material* floorMaterial2 = new FuzzyMirrorMaterial(2.485f, 3.433f, 0.05f);
-    // Material* floorMaterial2 = new MirrorMaterial(2.485f, 3.433f);
 
     Material* sphereMaterial1 = floorMaterial1;
     Material* sphereMaterial2 = new GlassMaterial(2.0f);
 
-    renderCornellbox(0.001f, "a6-5.png", cam, sphereMaterial1, floorMaterial1);
-    // renderCornellbox(0.001f, "a6-5.png", cam, sphereMaterial1, floorMaterial1, 30);
-    // renderCornellbox(0.001f, "a6-6.png", cam, sphereMaterial2, floorMaterial2, 30);
-    // renderCornellbox(0.001f, "a6-7a.png", dofcam, sphereMaterial2, floorMaterial2, 30);
-    // renderCornellbox(0.001f, "a6-7b.png", dofcam, sphereMaterial2, floorMaterial2, 1000);
+    renderCornellbox(0.001f, "a6-5.png", cam, sphereMaterial1, floorMaterial1, 30);
+    renderCornellbox(0.001f, "a6-6.png", cam, sphereMaterial2, floorMaterial2, 30);
+    renderCornellbox(0.001f, "a6-7a.png", dofcam, sphereMaterial2, floorMaterial2, 30);
+    renderCornellbox(0.001f, "a6-7b.png", dofcam, sphereMaterial2, floorMaterial2, 1000);
 }

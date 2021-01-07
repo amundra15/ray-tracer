@@ -1,19 +1,21 @@
 #include <rt/coordmappers/plane.h>
+#include <rt/intersection.h>
 
-namespace rt {
 
-PlaneCoordMapper::PlaneCoordMapper(const Vector& e1, const Vector& e2) {
-    this->e1 = e1;
-    this->e2 = e2;
-}
+namespace rt
+{
+    PlaneCoordMapper::PlaneCoordMapper(const Vector& e1, const Vector& e2)
+    :e1(e1), e2(e2)
+    {
+        Vector normal = cross(e1, e2);
+        transformation = Matrix::system(e1, e2, normal).invert();
+    }
+    Point PlaneCoordMapper::getCoords(const Intersection& hit) const 
+    {
+        //Point hitPoint = hit.hitPoint();
+        Point translatedPoint = transformation * hit.local();
+        //std::cout<<translatedPoint.x / e1.length()<<std::endl;
+        return translatedPoint;
 
-Point PlaneCoordMapper::getCoords(const Intersection& hit) const {
-    
-    Vector hp = hit.hitPoint() - Point::rep(0.0f);
-    float u = dot(hp, e1) / e1.lensqr();
-    float v = dot(hp, e2) / e2.lensqr();
-
-    return Point(u, v, 0.0f);
-}
-
+    } 
 }
