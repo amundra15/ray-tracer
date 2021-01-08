@@ -52,7 +52,7 @@ Intersection Disc::intersect(const Ray& ray, float previousBestDistance) const {
 Vector polar2cartesian(float r, float theta, Vector n)
 {
     //construct an orthogonal basis using disc normal
-    float minVal = std::min(std::min(n.x,n.y),n.z);
+    float minVal = rt::min(std::abs(n.x), std::abs(n.y), std::abs(n.z));
 
     Vector s_;
     if(abs(minVal-n.x) <= epsilon)
@@ -77,6 +77,7 @@ Solid::Sample Disc::sample() const {
 	float e2 = rt::random();
 
 	Vector perturbation = polar2cartesian(e1*r, sqrt(e2)*2*pi, n);
+	// std::cout << n.x << " " << n.y << " " << n.z << std::endl;
 
 	Sample sample = {c + perturbation, n};
 		
