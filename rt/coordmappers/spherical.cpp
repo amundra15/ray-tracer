@@ -30,8 +30,8 @@ Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
     //finding the angle between the transformed vector and the y axis of the new base
     float yAngle = std::acos(-tranvec.y / dist);
     return Point(
-        (-xAngle)*(1/(2* pi)) *(1/ scaleX),
-        yAngle * (1 / pi) / scaleY,
+        (-xAngle)*(1/ scaleX) /(2* pi) + 0.5,
+        yAngle * (1 / scaleY)/pi + 0.5 ,
         0.f
     );
 }
