@@ -1,38 +1,41 @@
 #include <rt/coordmappers/spherical.h>
-#include <rt/intersection.h>
-#include <core/scalar.h>
 
 namespace rt {
 
 SphericalCoordMapper::SphericalCoordMapper(const Point& origin, const Vector& zenith, const Vector& azimuthRef)
 {
-    this->center = origin;
-    this->zenith = zenith.normalize();
-    this->azimuthRef = azimuthRef.normalize();
+    this->o = origin;
 
+    // zenith — the direction towards the north pole of the sphere.
+    // The magnitude defines the scaling along the y texture direction. 
+    this->zen = zenith;
 
-    Vector y = this->zenith;
-    Vector z = cross(this->azimuthRef, y).normalize();     
-    Vector x = cross(y, z).normalize();
+    // a direction defining the prime meridian
+    // The magnitude defines the scaling along the x texture direction
+    this->azimuth = azimuthRef;
 
-    this->base = Matrix::system(x,y,z).invert();
-
-    this->scaleX = zenith.length();
-    this->scaleY = azimuthRef.length();
 }
 
 Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
-    Vector hitOrigin = this->center - hit.local();
-    Vector tranvec = Vector(base * Float4(hitOrigin));
-    float dist = tranvec.length();
-    //finding the angle between the transformed vector and the x axis of the new base
-    float xAngle = std::atan(-tranvec.z / tranvec.x);
-    //finding the angle between the transformed vector and the y axis of the new base
-    float yAngle = std::acos(-tranvec.y / dist);
+    
+    // Similar to Cylinder
+    Vector p = hit.local() - o;
+    Vector zen_n = zen.normalize();
+    Vector azimuth_n = azimuth.normalize();
+
+    Vector z = cross(zen_n, azimuth_n).normalize()*azimuth.length();
+
+    float theta = acosf(dot(p.normalize(), zen.normalize()));
+
+    float u = dot(p, azimuth) / azimuth.lensqr();
+    float v = dot(p, z) / z.lensqr();
+
+    float phi = acosf(dot(Vector(u, 0.0f, v).normalize(), azimuth_n));
+
     return Point(
-        (-xAngle)*(1/ scaleX) /(2* pi) + 0.5,
-        yAngle * (1 / scaleY)/pi + 0.5 ,
-        0.f
+        -phi / (2 * pi * azimuth.length()),
+        theta / (pi * azimuth.length()),
+        0.0f
     );
 }
 
