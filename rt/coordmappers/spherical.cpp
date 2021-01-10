@@ -14,14 +14,14 @@ SphericalCoordMapper::SphericalCoordMapper(const Point& origin, const Vector& ze
 Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
     Vector hitvect  = hit.local()-sphorigin;
 
-    Vector z = cross(sphzenith, sphazimuthRef).normalize() ;
+    Vector z = cross(sphzenith, sphazimuthRef).normalize()*sphscaleX;
 
     float theta = acosf(dot(hitvect.normalize(), sphzenith.normalize()));
 
     //float u = dot(hitvect, sphazimuthRef) /sphazimuthRef.lensqr();
     //float v = dot(hitvect, z) / z.lensqr();
     float u = dot(hitvect.normalize(), sphazimuthRef.normalize());
-    float v = dot(hitvect.normalize(), z);
+    float v = dot(hitvect.normalize(), z.normalize());
     //float phi = atan2f(dot(Vector(0,v,0),sphazimuthRef.normalize()),dot(Vector(u,0,0),sphazimuthRef.normalize()) );
     float phi = atan2f(v,-u);
     //float phi = atan2f(dot(Vector(u,v,0).normalize(),z),dot(Vector(0,u,v).normalize(),sphazimuthRef.normalize()) );
