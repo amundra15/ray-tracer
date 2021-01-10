@@ -18,8 +18,10 @@ Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
 
     float theta = acosf(dot(hitvect.normalize(), sphzenith.normalize()));
 
-    float u = dot(hitvect, sphazimuthRef) /sphazimuthRef.lensqr();
-    float v = dot(hitvect, z) / z.lensqr();
+    //float u = dot(hitvect, sphazimuthRef) /sphazimuthRef.lensqr();
+    //float v = dot(hitvect, z) / z.lensqr();
+    float u = dot(hitvect.normalize(), sphazimuthRef.normalize());
+    float v = dot(hitvect.normalize(), z.normalize());
     //float phi = atan2f(dot(Vector(0,v,0).normalize(),sphazimuthRef.normalize()),dot(Vector(u,0,0).normalize(),sphazimuthRef.normalize()) );
     float phi = atan2f(v,u);
     //float phi = acosf(dot(Vector(u, 0.0f, v).normalize(), sphazimuthRef.normalize()));
