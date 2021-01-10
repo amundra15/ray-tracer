@@ -36,7 +36,8 @@ Vector Vector::operator - () const {
 }
 
 Vector Vector::normalize() const {
-    return *this/length();
+    float l = this->length();
+	return Vector(this->x / l, this->y / l, this->z / l);
 }
 
 Vector operator * (float scalar, const Vector& b) {
