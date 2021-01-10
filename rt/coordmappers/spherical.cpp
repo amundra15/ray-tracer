@@ -14,7 +14,7 @@ SphericalCoordMapper::SphericalCoordMapper(const Point& origin, const Vector& ze
 Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
     Vector hitvect  = hit.local()-sphorigin;
 
-    Vector z = cross(sphzenith, sphazimuthRef).normalize()*sphscaleX;
+    Vector z = cross(sphzenith, sphazimuthRef).normalize();
 
     float theta = acosf(dot(hitvect.normalize(), sphzenith.normalize()));
 
