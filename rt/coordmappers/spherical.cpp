@@ -1,39 +1,27 @@
-#include <rt/coordmappers/spherical.h>
+#include "spherical.h"
+#include <core/assert.h>
 #include <rt/intersection.h>
-#include <core/scalar.h>
 
-namespace rt {
-
-SphericalCoordMapper::SphericalCoordMapper(const Point& origin, const Vector& zenith, const Vector& azimuthRef)
+namespace rt
 {
-    this->center = origin;
-    this->zenith = zenith.normalize();
-    this->azimuthRef = azimuthRef.normalize();
-
-
-    Vector y = this->zenith;
-    Vector z = cross(this->azimuthRef, y).normalize();     
-    Vector x = cross(y, z).normalize();
-
-    this->base = Matrix::system(x,y,z).invert();
-
-    this->scaleX = zenith.length();
-    this->scaleY = azimuthRef.length();
-}
-
-Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
-    Vector hitOrigin = this->center - hit.local();
-    Vector tranvec = Vector(base * Float4(hitOrigin));
-    float dist = tranvec.length();
-    //finding the angle between the transformed vector and the x axis of the new base
-    float xAngle = std::atan(-tranvec.z / tranvec.x);
-    //finding the angle between the transformed vector and the y axis of the new base
-    float yAngle = std::acos(-tranvec.y / dist);
-    return Point(
-        (-xAngle)*(1/(2* pi)) *(1/ scaleX),
-        yAngle * (1 / pi) / scaleY,
-        0.f
-    );
-}
-
+    SphericalCoordMapper::SphericalCoordMapper()
+    {}
+    SphericalCoordMapper::SphericalCoordMapper(const Point & origin, const Vector & zenith, const Vector & azimuthRef)
+    :origin(origin), zenith(zenith), azimuthRef(azimuthRef)
+    {
+        zScale = zenith.length();
+        aScale = azimuthRef.length();
+        thirdZ = cross(this->azimuthRef, this->zenith).normalize();
+        transformation = Matrix::system(azimuthRef.normalize(), zenith.normalize(), thirdZ).invert();
+        Point nOrigin = Point(-origin.x, -origin.y, -origin.z);
+        transformation = product(transformation.transpose(), translation(nOrigin));
+    }
+    Point SphericalCoordMapper::getCoords(const Intersection & hit) const
+    {
+        Point translatedPoint = transformation * hit.local();
+        float phi = atan2(translatedPoint.y, translatedPoint.x);
+        float r = sqrt(translatedPoint.x * translatedPoint.x + translatedPoint.y * translatedPoint.y+ translatedPoint.z * translatedPoint.z);
+        float theta = acos(translatedPoint.z / r);
+        return Point (-phi / (2 * pi * aScale), theta / (pi * zScale), 0);
+    }
 }
