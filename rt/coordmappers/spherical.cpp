@@ -21,11 +21,12 @@ Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
     float u = dot(hitvect, sphazimuthRef) /sphazimuthRef.lensqr();
     float v = dot(hitvect, z) / z.lensqr();
     //float phi = atan2f(dot(Vector(0,v,0).normalize(),sphazimuthRef.normalize()),dot(Vector(u,0,0).normalize(),sphazimuthRef.normalize()) );
-    float phi = acosf(dot(Vector(u, 0.0f, v).normalize(), sphazimuthRef.normalize()));
+    float phi = atan2f(v,u);
+    //float phi = acosf(dot(Vector(u, 0.0f, v).normalize(), sphazimuthRef.normalize()));
 
 
 
-    return Point (-phi / (2 * pi *sphscaleX), theta/(pi*sphscaleY), hitvect.z);
+    return Point (-phi / (2 * pi *sphscaleX), theta/(pi*sphscaleY), hitvect.length());
 
         
 }
