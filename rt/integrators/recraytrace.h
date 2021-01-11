@@ -10,7 +10,7 @@ class RecursiveRayTracingIntegrator : public Integrator {
 public:
     RecursiveRayTracingIntegrator(World* world) : Integrator(world) {}
     virtual RGBColor getRadiance(const Ray& ray) const;
-    virtual RGBColor recRadiance(const Ray& ray, int depth) const;
+    virtual RGBColor getRadiance(const Ray& ray, int depth) const;
     WorldMapper* tex_nullptr = new WorldMapper(Vector::rep(1.0f));
 };
 
