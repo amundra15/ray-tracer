@@ -1,3 +1,4 @@
+
 #include <rt/integrators/recraytrace.h>
 #include <rt/intersection.h>
 #include <rt/world.h>
@@ -13,10 +14,11 @@ namespace rt {
 	#define MAX_DEPTH 6
 
 	RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray) const {
-		return recRadiance(ray, 0);
+		int depth = 1;
+		return getRadiance(ray, depth);
 	}
 
-	RGBColor RecursiveRayTracingIntegrator::recRadiance(const Ray& ray, int depth) const {
+	RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) const {
 		RGBColor totalIntensity = RGBColor(0, 0, 0);
 		if (depth >= MAX_DEPTH) {return totalIntensity;}
 
@@ -58,7 +60,7 @@ namespace rt {
 				Vector in_dir = sample.direction.normalize();
 
 				Ray secondary_ray = Ray(hp + in_dir * epsilon, in_dir);
-				totalIntensity = totalIntensity + sample.reflectance * this->recRadiance(secondary_ray, depth + 1);
+				totalIntensity = totalIntensity + sample.reflectance * this->getRadiance(secondary_ray, depth + 1);
 			} else if (intersectionObj.solid->material->useSampling() == Material::Sampling::SAMPLING_SECONDARY) {
 				for (auto light: this->world->light) {
 					LightHit lh = light->getLightHit(hp);
@@ -77,17 +79,20 @@ namespace rt {
 				Material::SampleReflectance sample = intersectionObj.solid->
 					material->getSampleReflectance(tex_p, hn, -out_dir);
 				Vector in_dir = sample.direction.normalize();
-				RGBColor refl_totalIntensity = this->recRadiance(
+				RGBColor refl_totalIntensity = this->getRadiance(
 					Ray(hp + epsilon * in_dir, in_dir),
 					depth + 1
 				);
 				totalIntensity = totalIntensity + refl_totalIntensity * sample.reflectance;
 			}
-
+				return totalIntensity;
 			
 		}
+		else
+		return RGBColor::rep(0);
+
 		
-		return totalIntensity.clamp();
+		
 	}
 
 }
