@@ -27,9 +27,9 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 
 	//refraction index value depends on whether the ray is entering or leaving a material 
 	float eta_t;
-	if(dot(outDir,normal) > 0.0f)	//incoming ray from above the solid
+	if(dot(outDir,normal) > 0.0f)	//incoming ray from outside the solid
 		eta_t = eta;
-	else							//incoming ray coming from below the solid
+	else							//incoming ray from within the solid
 		eta_t = 1.0f/eta;
 
 
@@ -66,12 +66,8 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 		//note: we needed to multiply sign variable with normal above because normal faces opposite directions wrt outDir when a ray enter and leaves a material 
 		//see the derivation sheet attached
 
-		//transmittance = (1 - reflectance) / sqr(eta of the refracted ray material)
-		float transmittance;
-		// if(dot(outDir,normal) > 0.0f)
-			transmittance = (1.0f-reflectance)/sqr(eta_t);
-		// else
-		// 	transmittance = 1.0f-reflectance;		//eta of refracted ray material = 1
+		//transmittance = (1 - reflectance) / sqr(eta of the refracted ray material) - this part is not entirely clear to me, and has been suggested by a tutor.
+		float transmittance = (1.0f-reflectance)/sqr(eta_t);
 
 		return SampleReflectance(refractedRay, 2*RGBColor::rep(transmittance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
 	}
