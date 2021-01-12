@@ -56,14 +56,6 @@ void initTextures() {
 
 }
 
-void a7prepMaterials0(Material** materials) {
-    materials[0] = new DummyMaterial();
-    materials[1] = new DummyMaterial();
-    materials[2] = new DummyMaterial();
-    materials[3] = new DummyMaterial();
-    materials[4] = new DummyMaterial();
-}
-
 void a7prepMaterials1(Material** materials) {
     materials[0] = new LambertianMaterial(blacktex, whitetex);
     materials[1] = new LambertianMaterial(blacktex, redtex);
@@ -154,8 +146,6 @@ void a7renderCornellbox(float scale, const char* filename, Material** materials)
 void a_materials() {
     Material** materials = new Material*[5];
     initTextures();
-    a7prepMaterials0(materials);
-    a7renderCornellbox(0.001f, "a6-0.png", materials);
     a7prepMaterials1(materials);
     a7renderCornellbox(0.001f, "a6-1a.png", materials);
     a7prepMaterials2(materials);
