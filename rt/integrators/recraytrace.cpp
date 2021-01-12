@@ -23,6 +23,7 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray) const {
 RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) const 
 {
 	RGBColor totalIntensity = RGBColor::rep(0.0f);
+	const float acneShift = 0.000001f;
 	
 	//check recurssion depth
 	if (depth >= MAX_DEPTH) 
@@ -60,8 +61,8 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 					
 				//trace shadow ray
 				Vector in_dir = lh.direction.normalize();
-				Ray shadowRay = Ray(hp + epsilon * in_dir, in_dir);
-				Intersection shadowObj = world->scene->intersect(shadowRay, lh.distance - 2.0f * epsilon);
+				Ray shadowRay = Ray(hp + acneShift * in_dir, in_dir);
+				Intersection shadowObj = world->scene->intersect(shadowRay, lh.distance - 2.0f * acneShift);
 				if(shadowObj)
 					continue;
 
@@ -70,17 +71,19 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 				totalIntensity = totalIntensity + (refl_totalIntensity * light->getIntensity(lh));
 			}
 		} 
+
 		else if (objMaterial->useSampling() == Material::Sampling::SAMPLING_ALL) 
 		{
 			// SAMPLING_ALL - mirror material
-			//shoot a secondary ray in the reflected ray direction
+			//shoot a secondary ray in the reflected/refracted ray direction
 			//hn = dot(ray.d, intersectionObj.normal()) > 0 ? -intersectionObj.normal() : intersectionObj.normal();
 			Material::SampleReflectance sample = objMaterial->getSampleReflectance(tex_p, hn, -out_dir);
 			Vector in_dir = sample.direction.normalize();
 
-			Ray secondary_ray = Ray(hp + in_dir * epsilon, in_dir);
+			Ray secondary_ray = Ray(hp + in_dir * acneShift, in_dir);
 			totalIntensity = totalIntensity + sample.reflectance * getRadiance(secondary_ray, depth + 1);
 		} 
+
 		else if (objMaterial->useSampling() == Material::Sampling::SAMPLING_SECONDARY) 
 		{
 			// SAMPLING_SECONDARY - combination of mirror and non-mirror
@@ -95,7 +98,7 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 					
 				//trace shadow ray
 				Vector in_dir = lh.direction.normalize();
-				Ray shadowRay = Ray(hp + epsilon * in_dir, in_dir);
+				Ray shadowRay = Ray(hp + acneShift * in_dir, in_dir);
 				Intersection shadowObj = world->scene->intersect(shadowRay, lh.distance);
 				if(shadowObj)
 					continue;
@@ -105,11 +108,11 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 				totalIntensity = totalIntensity + (refl_totalIntensity * light->getIntensity(lh));
 			}
 
-			//shoot a secondary ray in the reflected ray direction
+			//shoot a secondary ray in the reflected/refracted ray direction
 			Material::SampleReflectance sample = objMaterial->getSampleReflectance(tex_p, hn, -out_dir);
 			Vector in_dir = sample.direction.normalize();
 
-			Ray secondary_ray = Ray(hp + in_dir * epsilon, in_dir);
+			Ray secondary_ray = Ray(hp + in_dir * acneShift, in_dir);
 			RGBColor refl_totalIntensity = getRadiance(secondary_ray, depth + 1);
 			
 			totalIntensity = totalIntensity + refl_totalIntensity * sample.reflectance;

@@ -33,7 +33,6 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 	float cosTheta_i = std::abs(dot(outDir,normal) / (outDir.length()*normal.length()));
 	float cosTheta_t_sqr = 1 - (1 - sqr(cosTheta_i))/sqr(eta_t);
 
-
 	//total internal reflection - all the energy is reflected, non transmitted
 	if(cosTheta_t_sqr < 0.0f)
 	{
@@ -57,9 +56,9 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 	}
 	else
 	{
+		//refracted ray
 		int sign = (dot(outDir,normal)>0) ? 1 : -1;
 
-		//refracted ray
 		Vector refractedRay = ((cosTheta_i*normal*sign - outDir) / eta_t) - normal * sign * cosTheta_t;
 		//note: we needed to multiply sign variable with normal above because normal faces opposite directions wrt outDir when a ray enter and leaves a material 
 		//see the derivation sheet attached
