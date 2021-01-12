@@ -19,7 +19,7 @@ RGBColor GlassMaterial::getEmission(const Point& texPoint, const Vector& normal,
 
 Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& texPoint, const Vector& normal, const Vector& outDir) const {
 	
-	//TODO: or the competetion, you can implement reflectivity as a function of incident angle, given by Fresnel equation.
+	//TODO: for the competetion, you can implement reflectivity as a function of incident angle, given by Fresnel equation.
 	//check the pdf for the formula.
 
 	//Wiki: For low-precision applications involving unpolarized light, such as computer graphics, 
@@ -69,9 +69,9 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 		//transmittance = (1 - reflectance) / sqr(eta of the refracted ray material)
 		float transmittance;
 		// if(dot(outDir,normal) > 0.0f)
-		// 	transmittance = (1.0f-reflectance)/sqr(eta_t);
+			transmittance = (1.0f-reflectance)/sqr(eta_t);
 		// else
-			transmittance = 1.0f-reflectance;		//eta of refracted ray material = 1
+		// 	transmittance = 1.0f-reflectance;		//eta of refracted ray material = 1
 
 		return SampleReflectance(refractedRay, 2*RGBColor::rep(transmittance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
 	}
