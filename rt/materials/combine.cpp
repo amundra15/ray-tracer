@@ -55,7 +55,11 @@ Material::SampleReflectance CombineMaterial::getSampleReflectance(const Point& t
 	for(int iter = 0; iter < materialsVector.size(); iter++)
 	{
 		if(materialsVector[iter]->useSampling() == Material::SAMPLING_ALL)
-			return materialsVector[iter]->getSampleReflectance(texPoint, normal, outDir);
+		{
+			SampleReflectance s = materialsVector[iter]->getSampleReflectance(texPoint, normal, outDir);
+			float w = weightsVector[iter];
+			return SampleReflectance(s.direction, w * s.reflectance);
+		}
 	}
 
 	return SampleReflectance();
