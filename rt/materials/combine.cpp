@@ -12,6 +12,8 @@ void CombineMaterial::add(Material* m, float w) {
 	weightsVector.push_back(w);
 }
 
+//TODO: consider the case when weights dont add up to 
+
 RGBColor CombineMaterial::getReflectance(const Point& texPoint, const Vector& normal, const Vector& outDir, const Vector& inDir) const {
     
     RGBColor reflectance = RGBColor::rep(0.0f);
