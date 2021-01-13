@@ -15,9 +15,9 @@ class SphericalCoordMapper : public CoordMapper {
 public:
     SphericalCoordMapper(const Point& origin, const Vector& zenith, const Vector& azimuthRef);
     virtual Point getCoords(const Intersection& hit) const;
-    Point sphorigin;
-    Vector sphzenith, sphazimuthRef;
-    float radius, sphscaleX, sphscaleY;
+    Point origin;
+    Vector zenith, azimuth;
+    float radius, scaleX, scaleY;
 };
 
 }
