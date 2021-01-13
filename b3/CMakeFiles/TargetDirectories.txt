@@ -1,0 +1,3 @@
+/Users/kartikteotia/a6i/group2B/b3/CMakeFiles/rebuild_cache.dir
+/Users/kartikteotia/a6i/group2B/b3/CMakeFiles/edit_cache.dir
+/Users/kartikteotia/a6i/group2B/b3/CMakeFiles/cgray.dir

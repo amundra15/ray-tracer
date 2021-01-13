@@ -21,7 +21,7 @@
 #include <rt/materials/phong.h>
 #include <rt/materials/mirror.h>
 #include <rt/materials/combine.h>
-
+#include <rt/materials/cooktorrance.h>
 #include <rt/integrators/recraytrace.h>
 
 #define numSamples 4
@@ -96,6 +96,14 @@ void a7prepMaterials3(Material** materials) {
     materials[4] = combined;
 }
 
+void a7prepMaterials4(Material** materials) {
+    materials[0] = new LambertianMaterial(blacktex, whitetex);
+    materials[1] = new LambertianMaterial(blacktex, redtex);
+    materials[2] = new LambertianMaterial(blacktex, greentex);
+
+    materials[3] = new CookTorranceMaterial(greentex, .3, 0.5, 0.7, 0.3);
+}
+
 void a7renderCornellbox(float scale, const char* filename, Material** materials) {
     Image img(400, 400);
     World world;
@@ -152,5 +160,7 @@ void a_materials() {
     a7renderCornellbox(0.001f, "a6-1b.png", materials);
     a7prepMaterials3(materials);
     a7renderCornellbox(0.001f, "a6-1c.png", materials);
+    a7prepMaterials4(materials);
+    a7renderCornellbox(0.001f, "a6_cook_torrance.png", materials);
     delete [] materials;
 }

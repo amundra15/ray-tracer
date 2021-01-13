@@ -32,6 +32,8 @@ set(ASSIGNMENT_SOURCES
     rt/materials/lambertian.h
     rt/materials/phong.cpp
     rt/materials/phong.h
+    rt/materials/cooktorrance.h
+    rt/materials/cooktorrance.cpp
     rt/materials/mirror.cpp
     rt/materials/mirror.h
     rt/materials/combine.cpp

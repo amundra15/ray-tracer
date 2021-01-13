@@ -14,10 +14,10 @@ void a_bumpmappers();
 
 int main(int argc, char* argv[]) {
     a_materials();
-    a_textures();
-    a_local();
-    a_mappers();
-    a_distributed();
+    //a_textures();
+    //a_local();
+    //a_mappers();
+    //a_distributed();
     a_smooth();
     return 0;
 }

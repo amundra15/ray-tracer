@@ -24,7 +24,7 @@ Point CylindricalCoordMapper::getCoords(const Intersection& hit) const {
 	float h = dot(p, la) / (la.length() * pa.length());
 
 	return Point(
-        theta / (2 * pi * pa.length()), 
+        -theta / (2 * pi * pa.length()), 
         h, 
         0.f);
 }
