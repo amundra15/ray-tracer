@@ -21,22 +21,9 @@ void Instance::reset() {
 }
 
 void Instance::translate(const Vector& t) {
-    Matrix translation = Matrix::identity();
-    translation[0][3] = t.x;
-    translation[1][3] = t.y;
-    translation[2][3] = t.z;
-
-    Matrix invertedTranslation = Matrix::identity();
-    invertedTranslation[0][3] = -t.x;
-    invertedTranslation[1][3] = -t.y;
-    invertedTranslation[2][3] = -t.z;
-
-    bbox.min = bbox.min + t;
-    bbox.max = bbox.max + t;
-    bbox.center = 0.5f * (bbox.min + bbox.max);
-
-    T = product(translation,T);
-    T_inv = product(T_inv,invertedTranslation);
+      T_inv[0][3] += t.x;
+        T_inv[1][3] += t.y;
+        T_inv[2][3] += t.z;
 }
 
 void Instance::rotate(const Vector& nnaxis, float angle) {

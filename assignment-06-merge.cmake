@@ -23,6 +23,8 @@ set(ASSIGNMENT_SOURCES
     rt/coordmappers/tmapper.h
     rt/coordmappers/world.cpp
     rt/coordmappers/world.h
+    rt/coordmappers/environment.cpp
+    rt/coordmappers/environment.h
     rt/integrators/recraytrace.cpp
     rt/integrators/recraytrace.h
     rt/lights/arealight.cpp
@@ -55,6 +57,7 @@ set(ASSIGNMENT_SOURCES
     rt/textures/imagetex.h
     rt/textures/perlin.cpp
     rt/textures/perlin.h
+    rt/motionblur.h
     ${MY_ADDITIONAL_SOURCES}
     main/a_materials.cpp
     main/a_textures.cpp
