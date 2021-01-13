@@ -12,15 +12,16 @@ SphericalCoordMapper::SphericalCoordMapper(const Point& origin, const Vector& ze
 }
 
 Point SphericalCoordMapper::getCoords(const Intersection& hit) const {
+    Vector azimuth_new = azimuth - (dot(azimuth,zenith)/dot(zenith,zenith))*zenith;
     Vector hitvect  = hit.local()-origin;
 
-    Vector z = cross(zenith, azimuth).normalize();
+    Vector z = cross(zenith, azimuth_new).normalize();
 
     float theta = acosf(dot(hitvect.normalize(), zenith.normalize()));
 
     //float u = dot(hitvect, azimuth) /azimuth.lensqr();
     //float v = dot(hitvect, z) / z.lensqr();
-    float u = dot(hitvect.normalize(), azimuth.normalize());
+    float u = dot(hitvect.normalize(), azimuth_new.normalize());
     float v = dot(hitvect.normalize(), z.normalize());
     //float phi = atan2f(dot(Vector(0,v,0),azimuth.normalize()),dot(Vector(u,0,0),azimuth.normalize()) );
     float phi = -atan2f(v,u);
