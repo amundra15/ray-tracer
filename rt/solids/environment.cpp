@@ -1,27 +1,26 @@
-#ifndef CG1RAYTRACER_SOLIDS_ENV_HEADER
-#define CG1RAYTRACER_SOLIDS_ENV_HEADER
-
-#include <rt/solids/solid.h>
-#include <rt/intersection.h>
+#include <rt/solids/environment.h>
 
 namespace rt {
 
-class Env : public Solid {
-public:
-    Environment() {}
-    Environment(CoordMapper* texMapper, Material* material);
+	Environment::Environment(CoordMapper* texMapper, Material* material){
+		this->texMapper = texMapper;
+		this->material = material;
+	}
 
-    virtual BBox getBounds() const;
-    virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
-    virtual Sample sample() const;
-    virtual float getArea() const;
+	BBox Environment::getBounds() const {
+		return BBox::full();
+	}
 
-private:
-	Point center;
-    float radius;
-	Vector normal;
-};
+	Intersection Environment::intersect(const Ray& ray, float previousBestDistance) const {
+		return Intersection(FLT_MAX, ray, this, ray.d, Point::rep(0.0f));
+	}
+
+	Solid::Sample Environment::sample() const {
+		/* TODO */ NOT_IMPLEMENTED;
+	}
+
+	float Environment::getArea() const {
+		return FLT_MAX;
+	}
 
 }
-
-#endif
