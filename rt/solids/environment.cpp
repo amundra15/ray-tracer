@@ -9,7 +9,7 @@ namespace rt {
 class Env : public Solid {
 public:
     Environment() {}
-    Envvironment(CoordMapper* texMapper, Material* material);
+    Environment(CoordMapper* texMapper, Material* material);
 
     virtual BBox getBounds() const;
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
