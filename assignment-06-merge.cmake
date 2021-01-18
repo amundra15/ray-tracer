@@ -63,6 +63,7 @@ set(ASSIGNMENT_SOURCES
     main/a_distributed.cpp
     main/a_smooth.cpp
     main/a_renderingcompetition.cpp
+    main/a_scene.cpp
 )
 
 file(COPY

@@ -1,8 +1,8 @@
-void a_renderingcompetition();
+void a_scene();
 
 int main(int argc, char* argv[]) {
     
-    a_renderingcompetition();
+    a_scene();
     
     return 0;
 }

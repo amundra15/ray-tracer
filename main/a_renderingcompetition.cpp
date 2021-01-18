@@ -1,3 +1,4 @@
+
 #include <utility>
 #include <map> 
 #include <string>
@@ -37,7 +38,7 @@ using namespace rt;
 
 void renderScene(const char* filename)
 {
-    Image img(40, 40);        
+    Image img(100, 100);        
     SimpleGroup* scene = new SimpleGroup();
     
 
@@ -45,16 +46,16 @@ void renderScene(const char* filename)
     Texture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
     // Material* grey = new LambertianMaterial(blacktex, whitetex);
     Material* grey = new DummyMaterial();
-	
-	typedef std::map<std::string, Material*> MatLib;
-	MatLib matlib;
-	matlib.insert(std::make_pair("Cup", grey));
-	matlib.insert(std::make_pair("Lid", grey));
-	matlib.insert(std::make_pair("Sleeve", grey));
+    
+    typedef std::map<std::string, Material*> MatLib;
+    MatLib matlib;
+    matlib.insert(std::make_pair("Cup", grey));
+    matlib.insert(std::make_pair("Lid", grey));
+    matlib.insert(std::make_pair("Sleeve", grey));
 
 
-    loadOBJ(scene, "models/scene1/", "teapot.obj");
-    // loadOBJ(scene, "models/coffeecup/", "coffeecup.obj", &matlib);
+    // loadOBJ(scene, "models/scene1/", "teapot.obj");
+    loadOBJ(scene, "models/coffeecup/", "coffeecup.obj");
 
     World world;
     world.scene = scene;
@@ -68,7 +69,7 @@ void renderScene(const char* filename)
     Renderer engine(cam, &integrator);
     // if (numSamples>1)
     //     engine.setSamples(numSamples);
-	std::cout << "HERE: 3" << std::endl;
+    std::cout << "HERE: 3" << std::endl;
     engine.render(img);
     img.writePNG(filename);
 
@@ -78,5 +79,5 @@ void renderScene(const char* filename)
 
 void a_renderingcompetition()
 {
-	renderScene("scene.png");
+    renderScene("scene.png");
 }

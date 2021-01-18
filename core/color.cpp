@@ -1,3 +1,4 @@
+
 #include <core/color.h>
 #include <core/scalar.h>
 #include <core/float4.h>
@@ -37,7 +38,7 @@ RGBColor RGBColor::clamp() const {
 }
 
 RGBColor RGBColor::gamma(float gam) const {
-    /* TODO */ NOT_IMPLEMENTED;
+        return RGBColor(powf(r, gam), powf(g, gam), powf(b, gam));
 }
 
 float RGBColor::luminance() const {

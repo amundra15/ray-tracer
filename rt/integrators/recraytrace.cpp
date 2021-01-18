@@ -118,7 +118,7 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 			totalIntensity = totalIntensity + refl_totalIntensity * sample.reflectance;
 		}
 		
-		return totalIntensity;	
+		return totalIntensity.clamp();	
 	}
 	
 	else

@@ -7,6 +7,8 @@
 #include <rt/cameras/camera.h>
 #include <rt/integrators/integrator.h>
 
+#include <omp.h>
+
 namespace rt {
 
 Renderer::Renderer(Camera* cam, Integrator* integrator)
@@ -15,18 +17,20 @@ Renderer::Renderer(Camera* cam, Integrator* integrator)
 
 void Renderer::render(Image& img) {
 
-	uint height = img.height();
-	uint width = img.width();
+	const uint height = img.height();
+	const uint width = img.width();
 
-	float two_by_width = 2.0/width;
-	float two_by_height = 2.0/height;
+	const float two_by_width = 2.0/width;
+	const float two_by_height = 2.0/height;
 
-	for(uint j = 0; j < height; j++) {
-		for(uint i = 0; i < width; i++) {
-			
+	#pragma omp parallel for
+	for(uint j = 0; j < height; j++) 
+	{
+		for(uint i = 0; i < width; i++) 
+		{
 			RGBColor radiance = RGBColor::rep(0.0f);
 			float disp_x, disp_y;
-
+	
 			for(int iter = 0; iter < this->samples; iter++)
 			{
 				if(this->samples == 1)
@@ -43,13 +47,13 @@ void Renderer::render(Image& img) {
 					
 				float x = (two_by_width*(i+disp_x)) - 1.0;
 				float y = 1.0- (two_by_height*(j+disp_y));
-	
+		
 				rt::Ray r = cam->getPrimaryRay(x,y);
 				radiance = radiance + integrator->getRadiance(r);
 			}
 			
 			img(i,j) = radiance / this->samples;
-
+			img(i,j) = img(i,j).gamma(1.0f/2.2f);
 		}
 	}
 }
