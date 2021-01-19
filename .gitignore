@@ -30,7 +30,7 @@
 *.out
 *.app
 
-# mac files
+# Mac files
 .DS_Store
 
 # Folders

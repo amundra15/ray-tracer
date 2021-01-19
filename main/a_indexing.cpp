@@ -1,3 +1,4 @@
+
 #include <core/assert.h>
 #include <core/scalar.h>
 #include <core/image.h>
@@ -29,7 +30,7 @@ void a_indexing() {
   
     // auto start = high_resolution_clock::now(); 
 
-	scene->rebuildIndex();
+    scene->rebuildIndex();
     World world;
     world.scene = scene;
     RayCastingIntegrator integrator(&world);
