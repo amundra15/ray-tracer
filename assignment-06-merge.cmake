@@ -66,6 +66,9 @@ set(ASSIGNMENT_SOURCES
     main/a_smooth.cpp
     main/a_renderingcompetition.cpp
     main/a_scene.cpp
+    rt/solids/environment.cpp
+    rt/solids/environment.h
+
 )
 
 file(COPY

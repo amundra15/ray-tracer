@@ -122,7 +122,23 @@ RGBColor RecursiveRayTracingIntegrator::getRadiance(const Ray& ray, int depth) c
 	}
 	
 	else
-		return RGBColor::rep(0.0f);
+	{
+		//Intersection not found with any scene object - use environment map instead
+        if(this->world->envSolid != nullptr){
+            Intersection envInterObj = world->envSolid->intersect(ray, FLT_MAX);
+
+			Vector hn = envInterObj.normal().normalize();
+			Vector out_dir = ray.d.normalize();		//note that out_dir is incoming at a point here, whereas, it is outgoing in the slides
+	
+			// Texture
+			auto tex = envInterObj.solid->texMapper;
+			if (tex == nullptr) {tex = tex_nullptr;}
+			Point tex_p = tex->getCoords(envInterObj);
+	
+            totalIntensity = world->envSolid->material->getEmission(tex_p, hn, -out_dir);
+        }
+        return totalIntensity.clamp();
+	}
 			
 }
 

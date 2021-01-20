@@ -1,5 +1,4 @@
 #include <rt/groups/simplegroup.h>
-// #include <rt/intersection.h>
 
 namespace rt {
 
@@ -12,8 +11,8 @@ BBox SimpleGroup::getBounds() const {
 	return b;
 }
 
-Intersection SimpleGroup::intersect( const Ray& ray, float previousBestDistance) const {
-
+Intersection SimpleGroup::intersect( const Ray& ray, float previousBestDistance) const 
+{
 	Intersection intersectionObj = Intersection::failure();
 	Intersection intersectionObj_temp = Intersection::failure();
 

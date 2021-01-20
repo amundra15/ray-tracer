@@ -13,6 +13,7 @@ public:
     Primitive* scene;
 	typedef std::vector<Light*> LightVector;
     LightVector light;
+    Solid* envSolid = nullptr;	//env map
 };
 
 }
