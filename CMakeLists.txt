@@ -21,6 +21,9 @@ else()
     message(FATAL_ERROR "libpng-dev is required to build the CG1-raytracer.\nPlease install libpng-dev.")
 endif ()
 
+find_package(OpenMP REQUIRED)
+set(ASSIGNMENT_LIBRARIES ${ASSIGNMENT_LIBRARIES} OpenMP::OpenMP_CXX)
+
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 set(ALL_ASSIGNMENT_SOURCES)
 
