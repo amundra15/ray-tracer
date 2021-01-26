@@ -11,7 +11,8 @@ public:
     Point o;
     Vector d;
 
-    Ray() {}
+    // Ray() {}
+    Ray() {d = Vector(0,0, 1);}
     Ray(const Point& o, const Vector& d);
     Point getPoint(float distance) const;
 };

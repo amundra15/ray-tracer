@@ -23,7 +23,7 @@ void Renderer::render(Image& img) {
 	const float two_by_width = 2.0/width;
 	const float two_by_height = 2.0/height;
 
-	// #pragma omp parallel for
+	#pragma omp parallel for
 	for(uint j = 0; j < height; j++) 
 	{
 		for(uint i = 0; i < width; i++) 
