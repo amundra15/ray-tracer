@@ -155,7 +155,10 @@ namespace rt {
         float d = previousBestDistance;
 
         std::vector<BVHNode*> nodes;
+
+        // mtx.lock();
         nodes.push_back(this->root);
+        // mtx.unlock();
 
         BVHNode* n = new BVHNode();
 

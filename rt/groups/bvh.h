@@ -4,6 +4,7 @@
 #include <vector>
 #include <rt/groups/group.h>
 #include <rt/bbox.h>    
+// #include <mutex>
 
 namespace rt {
 
@@ -36,10 +37,12 @@ public:
 class BVH : public Group {
 public:
     BVHNode* root = new BVHNode();
+    // mutable std::recursive_mutex mtx;   
     BVH();
     bool SAH = false;
     int bin = 16;
     float bins[16], bins_n[16], binr[16],cost[16];
+
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
     virtual BBox getBounds() const;
     virtual float MiddleSplit(int bool_axis, BVHNode* parent);
@@ -50,7 +53,8 @@ public:
     virtual void setMaterial(Material* m);
     virtual void setCoordMapper(CoordMapper* cm);   
     virtual float getArea() const;
-   struct SerializedNode {
+
+    struct SerializedNode {
         bool isLeaf;
         BBox bbox;
 
