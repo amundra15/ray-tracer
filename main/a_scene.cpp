@@ -172,18 +172,36 @@ MatLib* getWineBottleMatlib() {
     matlib->insert(std::pair<std::string, Material*>("wire_225088199", new GlassMaterial(1.45f)));
     return matlib;
 }
+
+MatLib* getGlassCups() {
+    MatLib* matlib = new MatLib;
+
+    matlib->insert(std::pair<std::string, Material*>("glass", new GlassMaterial(1.45f)));
+    matlib->insert(std::pair<std::string, Material*>("glass.001", new GlassMaterial(1.45f)));
+    matlib->insert(std::pair<std::string, Material*>("water-air", new GlassMaterial(0.75f)));
+    matlib->insert(std::pair<std::string, Material*>("water-glass", new GlassMaterial(1.09f)));
+    return matlib;
+}
+
+
 void a_scene() {
     
+    // Image img(128,128);
     Image img(256,256);
+    // Image img(512,512);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
     World world;
     BVH* scene = new BVH();
     world.scene = scene;
   
+    //decreasing y takes it lower
+    //decreasing x takes things towards right side of the scene
+    //decreasing z takes it away from the back wall
 
     // Main Camera
-    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.861, 0.569f, 0.504f), Vector(-0.82+0.861, 0.5643-0.569, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);  //Texture* blacktex = new ConstantTexture(RGBColor::rep(0.1f));
+    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.821, 0.489f, 0.544f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);
+    DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.821, 0.489f, 0.544f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
 
     // ImageTexture* stonetex = new ImageTexture("models/stones_diffuse.png");
     // ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
@@ -195,13 +213,15 @@ void a_scene() {
     MatLib* matlib_table = getTableMatlib();
     loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
     MatLib* matlib_pot = getTeapotMatlib();
-    MatLib* bottle = getWineBottleMatlib();
+    // MatLib* bottle = getWineBottleMatlib();
+    MatLib* cups = getGlassCups();
     MatLib* bread = getBreadMatlib();
     MatLib* plate = getPlateMatlib();
     loadOBJ(scene,"models/","plate.obj",plate);
     loadOBJ(scene,"models/","kettle.obj",matlib_pot);
     loadOBJ(scene,"models/", "Bread.obj",bread);
-    loadOBJ(scene,"models/", "glass_2.obj",bottle);
+    // loadOBJ(scene,"models/", "glass_2.obj",bottle);
+    loadOBJ(scene,"models/", "empty_and_filled_cup.obj",cups);
 
     // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
@@ -211,30 +231,37 @@ void a_scene() {
     //loadOBJ(scene,"models/","floor.obj",wall);
     //loadOBJ(scene,"models/","mirror_boundary.obj");
     
-    //wall
-    float scale = 0.01f;
-    scene->add(new Triangle(Point(-200.f,000.f,360.f)*scale, Point(-200.f,550.f,360.f)*scale, Point(350.f,000.f,360.f)*scale, nullptr, &white));
-    scene->add(new Triangle(Point(350.f,550.f,360.f)*scale, Point(350.f,000.f,360.f)*scale, Point(-200.f,550.f,360.f)*scale, nullptr, &white));
 
-    scene->add(new Triangle(Point(-200.f,000.f,000.f)*scale, Point(-200.f,000.f,560.f)*scale, Point(350.f,000.f,000.f)*scale, nullptr, &white));
-    scene->add(new Triangle(Point(350.f,000.f,560.f)*scale, Point(350.f,000.f,000.f)*scale, Point(-200.f,000.f,560.f)*scale, nullptr, &white));
+    //back wall
+    float scale = 0.01f;
+    scene->add(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white));
+
+    //floor
+    scene->add(new Triangle(Point(-200.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, nullptr, &white));
+
+    //left wall
+    scene->add(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white));
+
 
     //lighting
-    //area light
     RGBColor lightColor = RGBColor(1.0,0.99,0.98);
+    // world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
+    //area light
     ConstantTexture* lightsrctex = new ConstantTexture(lightColor);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
-    Disc* light = new Disc(Point(-1.4424,0.376,1.105), Point(-0.11,0.3761,1.105)-Point(-1.4424,0.376,1.105), 5, nullptr, lightsource);
+    Disc* light = new Disc(Point(-1.2424,0.376,1.105), Point(-0.11,0.3761,1.105)-Point(-1.4424,0.376,1.105), 5, nullptr, lightsource);
     AreaLight als(light);
     world.light.push_back(&als);
 
-    // world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(20);
+    engine.setSamples(10);
     engine.render(img);
     img.writePNG("scene.png");
 }
