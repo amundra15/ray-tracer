@@ -30,9 +30,6 @@
 *.out
 *.app
 
-# Mac files
-.DS_Store
-
 # Folders
 build*/
 models/
