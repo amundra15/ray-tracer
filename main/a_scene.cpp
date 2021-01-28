@@ -1,5 +1,3 @@
-
-
 #include <core/image.h>
 #include <core/color.h>
 #include <core/random.h>
@@ -17,6 +15,7 @@
 #include <rt/solids/quad.h>
 #include <rt/solids/sphere.h>
 #include <rt/solids/triangle.h>
+#include <rt/solids/disc.h>
 
 #include <rt/textures/constant.h>
 #include <rt/textures/imagetex.h>
@@ -157,15 +156,25 @@ MatLib* getPlateMatlib() {
 
 
 MatLib* getWineBottleMatlib() {
-        MatLib* matlib = new MatLib;
-        Texture* phong1_bclr = new ConstantTexture(RGBColor(0.035f, 0.252f, 1.0f));
-            matlib->insert(std::pair<std::string, Material*>("wire_225088199",new GlassMaterial(2.0f)));
+    MatLib* matlib = new MatLib;
 
-   
+    //combined material
+    // PhongMaterial* phong = new PhongMaterial(new ConstantTexture(RGBColor::rep(0.35f)), 31.999996f);  //Ks, Ns
+    // LambertianMaterial* lambertian = new LambertianMaterial(new ConstantTexture(RGBColor::rep(0.0f)), new ConstantTexture(RGBColor(0.8824, 0.3451, 0.7804)));   //Ka, Kd
+    // GlassMaterial* glass = new GlassMaterial(1.45f);
+
+    // CombineMaterial* combine = new CombineMaterial();
+    // combine->add(phong,0.25f);
+    // combine->add(lambertian,0.25f);
+    // combine->add(glass,0.5f);
+
+    // matlib->insert(std::pair<std::string, Material*>("wire_225088199",combine));
+    matlib->insert(std::pair<std::string, Material*>("wire_225088199", new GlassMaterial(1.45f)));
     return matlib;
 }
 void a_scene() {
-        Image img(720,720);
+    
+    Image img(256,256);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
     World world;
@@ -174,15 +183,16 @@ void a_scene() {
   
 
     // Main Camera
-PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.861, 0.569f, 0.504f), Vector(-0.82+0.86, 0.5643-0.5679, 0.54-0.50), Vector(-0.026, 0.997714, 0.062), pi/2, pi/4);  //Texture* blacktex = new ConstantTexture(RGBColor::rep(0.1f));
-//PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.127f, 0.68f, -1.23f), Vector(-0.107+0.127, -0.029-0.62, 1.12+1.23), Vector(0, 0.96, 0.26), pi/2, pi/4);  //Texture* blacktex = new ConstantTexture(RGBColor::rep(0.1f));
-    ImageTexture* whitetex = new ImageTexture("models/stones_diffuse.png");
-    ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
-    ConstantTexture* greentex = new ConstantTexture(RGBColor(0.f,.7f,0.f));
-    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
-        LambertianMaterial white(blacktex, whitetex);
+    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.861, 0.569f, 0.504f), Vector(-0.82+0.861, 0.5643-0.569, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);  //Texture* blacktex = new ConstantTexture(RGBColor::rep(0.1f));
 
-MatLib* matlib_table = getTableMatlib();
+    // ImageTexture* stonetex = new ImageTexture("models/stones_diffuse.png");
+    // ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
+    // ConstantTexture* greentex = new ConstantTexture(RGBColor(0.f,.7f,0.f));
+    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
+    ConstantTexture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
+    LambertianMaterial white(blacktex, whitetex);
+
+    MatLib* matlib_table = getTableMatlib();
     loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
     MatLib* matlib_pot = getTeapotMatlib();
     MatLib* bottle = getWineBottleMatlib();
@@ -192,38 +202,39 @@ MatLib* matlib_table = getTableMatlib();
     loadOBJ(scene,"models/","kettle.obj",matlib_pot);
     loadOBJ(scene,"models/", "Bread.obj",bread);
     loadOBJ(scene,"models/", "glass_2.obj",bottle);
-//lighting
-    MatLib* frame = getFrameMatlib();
+
+    // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
-    MatLib* wall = getWallMatlib();
-    loadOBJ(scene,"models/","wall.obj",wall);
-    MatLib* floor = getFloorMatlib();
-    float scale = 0.01f;
+    // MatLib* wall = getWallMatlib();
+    // loadOBJ(scene,"models/","wall.obj",wall);
+    // MatLib* floor = getFloorMatlib();
     //loadOBJ(scene,"models/","floor.obj",wall);
     //loadOBJ(scene,"models/","mirror_boundary.obj");
-//lighting//wall
+    
+    //wall
+    float scale = 0.01f;
     scene->add(new Triangle(Point(-200.f,000.f,360.f)*scale, Point(-200.f,550.f,360.f)*scale, Point(350.f,000.f,360.f)*scale, nullptr, &white));
     scene->add(new Triangle(Point(350.f,550.f,360.f)*scale, Point(350.f,000.f,360.f)*scale, Point(-200.f,550.f,360.f)*scale, nullptr, &white));
 
     scene->add(new Triangle(Point(-200.f,000.f,000.f)*scale, Point(-200.f,000.f,560.f)*scale, Point(350.f,000.f,000.f)*scale, nullptr, &white));
     scene->add(new Triangle(Point(350.f,000.f,560.f)*scale, Point(350.f,000.f,000.f)*scale, Point(-200.f,000.f,560.f)*scale, nullptr, &white));
 
-    RGBColor yellow_clr =  RGBColor(0.467f, 0.14f, 0.09f);
-    RGBColor blue_clr = RGBColor(0.035f, 0.252f, 1.0f);
-    RGBColor red_clr = RGBColor(1.0f, 0.02f, 0.02f);
+    //lighting
+    //area light
+    RGBColor lightColor = RGBColor(1.0,0.99,0.98);
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor);
+    Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
+    Disc* light = new Disc(Point(-1.4424,0.376,1.105), Point(-0.11,0.3761,1.105)-Point(-1.4424,0.376,1.105), 5, nullptr, lightsource);
+    AreaLight als(light);
+    world.light.push_back(&als);
 
-    world.light.push_back(new PointLight(Point(-0.127f, 0.68f, -1.23f), yellow_clr )); // BL1 yellow
-
-    world.light.push_back(new PointLight(Point(-0.116f, 3.86f, 1.09f), yellow_clr )); // BL1 yellow
-
-    world.light.push_back(new DirectionalLight(Vector(0.2f ,-0.5f , 1.0f).normalize(), RGBColor(1.0f, 1.0f, 1.0f) )); // white
-    world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), yellow_clr * 1.f)); // yellow
+    // world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(25);
+    engine.setSamples(20);
     engine.render(img);
     img.writePNG("scene.png");
 }
