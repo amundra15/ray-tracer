@@ -212,8 +212,8 @@ void a_scene() {
     // ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
     // ConstantTexture* greentex = new ConstantTexture(RGBColor(0.f,.7f,0.f));
     ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
-    ConstantTexture* whittex = new ConstantTexture(RGBColor::rep(1.0f));
-        ImageTexture* whitetex = new ImageTexture("models/wood.png");
+    ConstantTexture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
+    // ImageTexture* whitetex = new ImageTexture("models/wood.png");
 
     LambertianMaterial white(blacktex, whitetex);
 
@@ -225,7 +225,7 @@ void a_scene() {
     MatLib* plate = getPlateMatlib();
 
     loadOBJ(scene,"models/","plate2.obj",plate);
-    // loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
+    loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
     loadOBJ(scene,"models/","kettle.obj",matlib_pot);
     loadOBJ(scene,"models/","plate.obj",plate);
     loadOBJ(scene,"models/", "Bread.obj",bread);
@@ -243,16 +243,19 @@ void a_scene() {
     
     //back wall
     float scale = 0.01f;
-    scene->add(
-        new BumpMapper(
-            new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr,&white),
-            whitetex, Point(0.0f,0.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f), 0.f)
-            );
-    scene->add(
-        new BumpMapper(
-            new Triangle(Point(-200.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, nullptr, &white),
-            whitetex, Point(0.0f,0.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f), 0.f)
-            ); 
+    // scene->add(
+    //     new BumpMapper(
+    //         new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr,&white),
+    //         whitetex, Point(0.0f,0.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f), 0.f)
+    //         );
+    // scene->add(
+    //     new BumpMapper(
+    //         new Triangle(Point(-200.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, nullptr, &white),
+    //         whitetex, Point(0.0f,0.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f), 0.f)
+    //         ); 
+    scene->add(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white));
+
 
     //floor
     scene->add(new Triangle(Point(-200.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, nullptr, &white));
