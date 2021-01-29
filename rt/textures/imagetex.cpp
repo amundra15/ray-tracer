@@ -1,3 +1,4 @@
+
 #include <rt/textures/imagetex.h>
 #include <math.h>
 #include <core/point.h>
@@ -85,10 +86,16 @@ RGBColor ImageTexture::getColor(const Point& coord) {
 }
 
 RGBColor ImageTexture::getColorDX(const Point& coord) {
-    
+  Point p1 = Point(coord.x, coord.y, 0.0f);
+  Point p2 = Point(coord.x + (1.0f/ img.width()), coord.y, 0.0f);
+  RGBColor first = getColor(p1);
+  RGBColor second = getColor(p2);
+  return first - second; 
 }
 
 RGBColor ImageTexture::getColorDY(const Point& coord) {
-    
+  RGBColor first = getColor(Point(coord.x, coord.y, 0.0f));
+  RGBColor second = getColor(Point(coord.x , coord.y + (1.0f/ img.height()), 0.0f));
+  return first - second; 
 }
 }

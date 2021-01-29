@@ -1,13 +1,17 @@
+  
 #include <core/scalar.h>
-#include <core/random.h>
 #include <core/image.h>
+#include <core/random.h>
 #include <rt/renderer.h>
 #include <rt/ray.h>
-#include <iostream>
 #include <rt/cameras/camera.h>
+#include <iostream>
 #include <rt/integrators/integrator.h>
+#include <future>
+#include <vector>
+#include<functional>
 
-#include <omp.h>
+
 
 namespace rt {
 
@@ -16,48 +20,95 @@ Renderer::Renderer(Camera* cam, Integrator* integrator)
 {}
 
 void Renderer::render(Image& img) {
-
-	const uint height = img.height();
-	const uint width = img.width();
-
-	const float two_by_width = 2.0/width;
-	const float two_by_height = 2.0/height;
-
-	// #pragma omp parallel for 									//31.81 seconds
-	// #pragma omp parallel for collapse(2) schedule(static)		//30.93 seconds
-	#pragma omp parallel for collapse(2) schedule(dynamic)		//11.71seconds
-	for(uint j = 0; j < height; j++) 
-	{
-		for(uint i = 0; i < width; i++) 
-		{
-			RGBColor radiance = RGBColor::rep(0.0f);
-			float disp_x, disp_y;
+    //iterate over every pixel in the image
 	
-			for(int iter = 0; iter < this->samples; iter++)
-			{
-				if(this->samples == 1)
-				{
-					disp_x = 0.5f;
-					disp_y = 0.5f;
+	std::size_t numPixels = img.width() * img.height();
+	std::size_t numThreads = std::thread::hardware_concurrency();
+	volatile std::atomic<std::size_t> count(0);
+	std::vector<std::future<void>> promoses;
+
+	
+
+	while(numThreads --){
+		promoses.emplace_back(
+			std::async(
+				[=,&count, &img](){
+					while(true){
+						std::size_t index = count++;
+						if(index >= numPixels){
+							break;
+						}
+
+						uint i = index % img.width();
+						uint j = index / img.width();
+						std::cout<<j<<std::endl;
+						RGBColor accumulator = RGBColor::rep(0.f);
+						//accounting for supersampling
+						std::vector<std::future<RGBColor>> colors;
+						for(uint k = 0; k < this->samples; k++){
+							//getting the normalized device coords [0, 1]
+							float ndcx;
+							float ndcy;
+							if(k>0){
+								ndcx = (float(i) + random()) / float(img.width());
+								ndcy = (float(j) + random()) / float(img.height());
+							}
+							else{
+								ndcx = (float(i) + 0.5f) / float(img.width());
+								ndcy = (float(j) + 0.5f) / float(img.height());
+							}
+
+							//getting the screen space coordinates [-1, 1]
+							float sscx = (ndcx * 2.0f) - 1.0f;
+							float sscy = (ndcy * 2.0f) - 1.0f;
+
+							//generating the ray from the camera
+							Ray ray = cam->getPrimaryRay(sscx, -sscy);
+							accumulator = accumulator + integrator->getRadiance(ray);
+						}
+
+						img(i,j) = accumulator/(float)this->samples;
+						img(i,j) = img(i,j).gamma(1.1f/2.0f);
+					}	
 				}
-				else
-				{
-					//super sampling
-					disp_x = random();
-					disp_y = random();
-				}
-					
-				float x = (two_by_width*(i+disp_x)) - 1.0;
-				float y = 1.0- (two_by_height*(j+disp_y));
-		
-				rt::Ray r = cam->getPrimaryRay(x,y);
-				radiance = radiance + integrator->getRadiance(r);
-			}
-			
-			img(i,j) = radiance / this->samples;
-			img(i,j) = img(i,j).gamma(1.0f/2.2f);
-		}
+			)
+		);
 	}
+
+
+ 
+	// for(uint i = 0; i < img.width(); i++){
+	// 	for(uint j = 0; j< img.height(); j++){
+
+	// 		RGBColor accumulator = RGBColor::rep(0.f);
+	// 		//accounting for supersampling
+	// 		std::vector<std::future<RGBColor>> colors;
+	// 		for(uint k = 0; k < this->samples; k++){
+	// 			//getting the normalized device coords [0, 1]
+	// 			float ndcx;
+	// 			float ndcy;
+	// 			if(k>0){
+	// 				ndcx = (float(i) + random()) / float(img.width());
+	// 				ndcy = (float(j) + random()) / float(img.height());
+	// 			}
+	// 			else{
+	// 				ndcx = (float(i) + 0.5f) / float(img.width());
+	// 				ndcy = (float(j) + 0.5f) / float(img.height());
+	// 			}
+
+	// 			//getting the screen space coordinates [-1, 1]
+	// 			float sscx = (ndcx * 2.0f) - 1.0f;
+	// 			float sscy = (ndcy * 2.0f) - 1.0f;
+
+	// 			//generating the ray from the camera
+	// 			Ray ray = cam->getPrimaryRay(sscx, -sscy);
+	// 			 //std::cout<< accumulator.r<<std::endl;
+	// 			accumulator = accumulator + integrator->getRadiance(ray);
+	// 		}
+
+	// 		img(i,j) = accumulator/(float)this->samples;
+	// 	}
+	// }
 }
 
 }
@@ -67,18 +118,11 @@ rt::RGBColor a1computeColor(rt::uint x, rt::uint y, rt::uint width, rt::uint hei
 namespace rt {
 
 void Renderer::test_render1(Image& img) {
-	
-	uint height = img.height();
-	uint width = img.width();
-
-	for(uint y = 0; y < height; y++)
-	{
-		for(uint x = 0; x < width; x++)
-		{
-			img(x,y) = a1computeColor(x,y,width,height);
+	for (uint i = 0; i < img.width(); i++) {
+		for (uint j = 0; j < img.height(); j++) {
+			img(i,j) = a1computeColor(i,j,img.width(), img.height());
 		}
 	}
-
 }
 }
 
@@ -87,24 +131,21 @@ rt::RGBColor a2computeColor(const rt::Ray& r);
 namespace rt {
 
 void Renderer::test_render2(Image& img) {
+	for (uint i = 0; i < img.width(); i++) {
+		for (uint j = 0; j < img.height(); j++) {
+			
+			//getting the normalized device coords [0, 1]
+			float ndcx = (float(i) + 0.5f) / float(img.width());
+			float ndcy = (float(j) + 0.5f) / float(img.height());
 
-	uint height = img.height();
-	uint width = img.width();
+			//getting the screen space coordinates [-1, 1]
+			float sscx = (ndcx * 2.0f) - 1.0f;
+			float sscy = (ndcy * 2.0f) - 1.0f;
 
-	float two_by_width = 2.0/width;
-	float two_by_height = 2.0/height;
-
-	for(uint j = 0; j < height; j++)
-	{
-		for(uint i = 0; i < width; i++)
-		{
-			float x = (two_by_width*(i+0.5)) - 1.0;
-			float y = 1.0- (two_by_height*(j+0.5));
-			rt::Ray r = cam->getPrimaryRay(x,y);
-			img(i,j) = a2computeColor(r);
+			Ray ray = cam->getPrimaryRay(sscx, -sscy);
+			img(i, j) = a2computeColor(ray);
 		}
 	}
-
 }
 
 }

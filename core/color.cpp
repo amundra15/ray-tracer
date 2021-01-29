@@ -44,6 +44,10 @@ RGBColor RGBColor::gamma(float gam) const {
 float RGBColor::luminance() const {
     /* TODO */ NOT_IMPLEMENTED;
 }
+float RGBColor::grayscale() const
+    {
+        return (this->r + this->g + this->b) / 3;
+    }
 
 RGBColor operator * (float scalar, const RGBColor& c) {
     return RGBColor(scalar*c.r, scalar*c.g, scalar*c.b);

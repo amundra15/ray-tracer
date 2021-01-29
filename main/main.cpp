@@ -2,7 +2,7 @@
 #include <chrono> 
 
 void a_scene();
-
+void a_bumpmappers();
 using namespace std::chrono; 
 
 int main(int argc, char* argv[]) {
