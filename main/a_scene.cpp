@@ -201,8 +201,12 @@ void a_scene() {
     //decreasing z takes it away from the back wall
 
     // Main Camera
-    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.821, 0.489f, 0.544f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);
-    DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.821, 0.489f, 0.544f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
+    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.821, 0.519f, 0.544f), Vector(-0.82+0.857, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);
+    DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.821, 0.519f, 0.544f), Vector(-0.82+0.857, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
+
+    //debug camera
+    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.321, 0.489f, -1.444f), Vector(-0.82+0.861, 0.5043-0.509, 0.54+1.404), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);
+
 
     // ImageTexture* stonetex = new ImageTexture("models/stones_diffuse.png");
     // ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
@@ -214,14 +218,16 @@ void a_scene() {
     LambertianMaterial white(blacktex, whitetex);
 
     MatLib* matlib_table = getTableMatlib();
-    loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
     MatLib* matlib_pot = getTeapotMatlib();
     // MatLib* bottle = getWineBottleMatlib();
     MatLib* cups = getGlassCups();
     MatLib* bread = getBreadMatlib();
     MatLib* plate = getPlateMatlib();
+
     loadOBJ(scene,"models/","plate2.obj",plate);
+    // loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
     loadOBJ(scene,"models/","kettle.obj",matlib_pot);
+    loadOBJ(scene,"models/","plate.obj",plate);
     loadOBJ(scene,"models/", "Bread.obj",bread);
     // loadOBJ(scene,"models/", "glass_2.obj",bottle);
     loadOBJ(scene,"models/", "empty_and_filled_cup.obj",cups);
@@ -233,8 +239,8 @@ void a_scene() {
     // MatLib* floor = getFloorMatlib();
     //loadOBJ(scene,"models/","floor.obj",wall);
     //loadOBJ(scene,"models/","mirror_boundary.obj");
-    
 
+    
     //back wall
     float scale = 0.01f;
     scene->add(
@@ -259,20 +265,23 @@ void a_scene() {
 
     //lighting
     RGBColor lightColor = RGBColor(1.0,0.99,0.98);
-    world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
-    //area light
-    ConstantTexture* lightsrctex = new ConstantTexture(lightColor);
+    // world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));        //front - kartik
+    // world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*10 ));                     //front - kartik
+     //area light
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*120.0);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
-    Disc* light = new Disc(Point(-1.2424,0.376,1.105), Point(-0.11,0.3761,1.105)-Point(-1.4424,0.376,1.105), 2.0f, nullptr, lightsource);
+    // Disc* light = new Disc(Point(-0.6424,0.576,1.155), Point(-0.11,0.3761,1.105)-Point(-1.4424,0.376,1.105), 0.25, nullptr, lightsource);    //side
+    Disc* light = new Disc(Point(0.27f, 0.99f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
     AreaLight als(light);
     world.light.push_back(&als);
+    // scene->add(light);      //for verifying the light location
 
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(50);
+    engine.setSamples(10);
     engine.render(img);
     img.writePNG("scene.png");
 }
