@@ -160,8 +160,8 @@ namespace rt {
         nodes.push_back(this->root);
         // mtx.unlock();
 
-        BVHNode* n = new BVHNode();
-
+        // BVHNode* n = new BVHNode();
+        BVHNode* n = nullptr;
         
         while (nodes.size() > 0) {
 
