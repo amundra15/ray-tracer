@@ -55,29 +55,6 @@ MatLib* getTableMatlib() {
     return matlib;
 }
 
-MatLib* getTeapotMatlib() {
-    MatLib* matlib = new MatLib;
-    // Texture* black1 = new ConstantTexture(RGBColor(0.1f, 0.2f, 0.9f) * 0.6);
-    // ImageTexture* box4 = new ImageTexture("models/default.png");
-    // ImageTexture* box5 = new ImageTexture("models/dmr.png");
-    ImageTexture* whitetex = new ImageTexture("models/lambert2SG_diffuse.png");
-    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(1.0f));
-    // ConstantTexture* blacktex = new ConstantTexture(RGBColor(242.0/255,242.0/255,35.0/255));
-    // LambertianMaterial white(blacktex, blacktex);
-
-    // Texture* light = new ConstantTexture(RGBColor(0.6f, 0.6f, 0.9f) * 0.6);
-    // LambertianMaterial* mat = new LambertianMaterial(blacktex,blacktex);
-      
-    CombineMaterial* combined = new CombineMaterial();
-    combined->add(new LambertianMaterial(blacktex, whitetex), 0.5f);
-    combined->add( new PhongMaterial(blacktex, 50.0f),0.5f);
-
-    matlib->insert(std::pair<std::string, Material*>("Default.001",combined));
-    matlib->insert(std::pair<std::string, Material*>("default.001",combined));
-
-    return matlib;
-}
-
 MatLib* getFloorMatlib() {
     MatLib* matlib = new MatLib;
     ImageTexture* box6 = new ImageTexture("models/wood.png");
@@ -235,8 +212,8 @@ MatLib* getGlassCups() {
     CombineMaterial* combined = new CombineMaterial();
     PhongMaterial* phong = new PhongMaterial(new ConstantTexture(teaColor), 225.0);  //Ks, Ns
     LambertianMaterial* lambertian = new LambertianMaterial(new ConstantTexture(RGBColor::rep(0.0f)), new ConstantTexture(teaColor));   //Ka, Kd
-    combined->add(phong, 0.5);
-    combined->add(lambertian, 0.5);
+    combined->add(phong, 0.8);
+    combined->add(lambertian, 0.2);
  
     matlib->insert(std::pair<std::string, Material*>("water-air.001", combined));
     matlib->insert(std::pair<std::string, Material*>("water-air.004", combined));
@@ -246,6 +223,55 @@ MatLib* getGlassCups() {
     return matlib;
 }
 
+MatLib* getCup() {
+    MatLib* matlib = new MatLib;
+
+    matlib->insert(std::pair<std::string, Material*>("Glass.001", new GlassMaterial(1.45f)));
+    // matlib->insert(std::pair<std::string, Material*>("Glass.001", new MirrorMaterial(0,0)));
+
+    return matlib;
+}
+
+
+MatLib* getKnifeMatlib() {
+    MatLib* matlib = new MatLib;
+       ImageTexture* whitetex = new ImageTexture("models/Diffuse_Roughness.png");
+           ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
+     
+    CookTorranceMaterial* mat = new CookTorranceMaterial(whitetex, 0.6f, 0.4f, 0.1f,0.3f);
+    matlib->insert(std::pair<std::string, Material*>("None", mat));   
+
+    return matlib;
+}
+
+MatLib* getTeapotMatlib() {
+    MatLib* matlib = new MatLib;
+    // Texture* black1 = new ConstantTexture(RGBColor(0.1f, 0.2f, 0.9f) * 0.6);
+    // ImageTexture* box4 = new ImageTexture("models/default.png");
+    // ImageTexture* box5 = new ImageTexture("models/dmr.png");
+//    ImageTexture* whitetex = new ImageTexture("models/DefaultMaterial_metallicRoughness.png");
+        ImageTexture* whitetex = new ImageTexture("models/teapot_baseColor.png");
+
+ 
+
+    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
+     
+    LambertianMaterial* mat = new LambertianMaterial(blacktex,whitetex);
+    // ConstantTexture* blacktex = new ConstantTexture(RGBColor(242.0/255,242.0/255,35.0s/255));
+    // LambertianMaterial white(blacktex, blacktex);
+
+    // Texture* light = new ConstantTexture(RGBColor(0.6f, 0.6f, 0.9f) * 0.6);
+    // LambertianMaterial* mat = new LambertianMaterial(blacktex,blacktex);
+      
+    CombineMaterial* combined = new CombineMaterial();
+    combined->add(mat, 0.5f);
+    combined->add( new PhongMaterial(whitetex, 100.0f),0.5f);
+
+    matlib->insert(std::pair<std::string, Material*>("teapot",combined));
+    //matlib->insert(std::pair<std::string, Material*>("default.001",combined));
+
+    return matlib;
+}
 
 void a_scene() {
     
@@ -268,7 +294,6 @@ void a_scene() {
     sea->add(fuzzy_mat, 0.4f);
     sea->add(glass_mat, 0.1f);
 
-    ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
 
     ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
     ConstantTexture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
@@ -276,8 +301,6 @@ void a_scene() {
 
     MatLib* matlib_table = getTableMatlib();
     loadOBJ(scene, "models/", "wooden_table.obj", matlib_table);
-    MatLib* matlib_pot = getTeapotMatlib();
-    loadOBJ(scene,"models/","teapot_utah.obj",matlib_pot); 
     MatLib* cups = getGlassCups();
     loadOBJ(scene,"models/", "glass_empty_filled.obj",cups);
     MatLib* bread = getBreadMatlib();
@@ -288,11 +311,15 @@ void a_scene() {
     loadOBJ(scene,"models/", "fl1.obj",flower);
     loadOBJ(scene,"models/", "fl2.obj",flower);
     loadOBJ(scene,"models/", "fl3.obj",flower);
+    MatLib* knife = getKnifeMatlib();
+    loadOBJ(scene,"models/", "knife.obj",knife);
+    MatLib* matlib_pot = getTeapotMatlib();
+    loadOBJ(scene,"models/","teapot_2obj.obj",matlib_pot);
+    loadOBJ(scene,"models/", "wall.obj");       //back wall
+    loadOBJ(scene,"models/", "wall2.obj");   //side wall
     
     // MatLib* cup = getCupMatlib();
     //loadOBJ(scene,"models/","cup.obj",cup);
-    loadOBJ(scene,"models/", "wall.obj");       //back wall
-    loadOBJ(scene,"models/", "wall2.obj");   //side wall
     //loadOBJ(scene,"models/", "bf.obj"); 
     // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
@@ -303,6 +330,11 @@ void a_scene() {
     //loadOBJ(scene,"models/","mirror_boundary.obj");
     // MatLib* plate = getPlateMatlib();
     //loadOBJ(scene,"models/","plate2.obj",plate);
+    // MatLib* matlib_pot = getTeapotMatlib();
+    // loadOBJ(scene,"models/","teapot_utah.obj",matlib_pot); 
+    // ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
+    // MatLib* cup2 = getCup();
+    // loadOBJ(scene,"models/","glass3.obj",cup2);
 
     float scale = 0.01f;
     //back wall
