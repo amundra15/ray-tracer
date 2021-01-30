@@ -238,7 +238,9 @@ MatLib* getGlassCups() {
     combined->add(phong, 0.5);
     combined->add(lambertian, 0.5);
  
+    matlib->insert(std::pair<std::string, Material*>("water-air.001", combined));
     matlib->insert(std::pair<std::string, Material*>("water-air.004", combined));
+    matlib->insert(std::pair<std::string, Material*>("water-glass.001", combined));
     matlib->insert(std::pair<std::string, Material*>("water-glass.004", combined));
     
     return matlib;
@@ -247,9 +249,8 @@ MatLib* getGlassCups() {
 
 void a_scene() {
     
-    // Image img(128,128);
     Image img(540,360);
-    // Image img(512,512);
+    // Image img(1080,720);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
     World world;
@@ -290,8 +291,8 @@ void a_scene() {
     
     // MatLib* cup = getCupMatlib();
     //loadOBJ(scene,"models/","cup.obj",cup);
-    loadOBJ(scene,"models/", "wall.obj");
-    loadOBJ(scene,"models/", "wall2.obj");
+    loadOBJ(scene,"models/", "wall.obj");       //back wall
+    loadOBJ(scene,"models/", "wall2.obj");   //side wall
     //loadOBJ(scene,"models/", "bf.obj"); 
     // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
@@ -337,10 +338,11 @@ void a_scene() {
     // world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*10 )); // BL1 yellow
 
     //area light
-    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*80.0);
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*160.0);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
+    Disc* light = new Disc(Point(-0.12, 1.41f, -1.31f), Point(-0.12,0.586,2.059)-Point(-0.12, 0.31f, -1.31f), 0.25, nullptr, lightsource);     //side working
     // Disc* light = new Disc(Point(-0.07f, 0.79f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front-side
-    Disc* light = new Disc(Point(-0.37f, 1.79f, -0.47f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
+    // Disc* light = new Disc(Point(-0.37f, 1.79f, -0.47f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front - top
     AreaLight als(light);
     world.light.push_back(&als);
 
@@ -358,7 +360,7 @@ void a_scene() {
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    // engine.setSamples(100);
+    engine.setSamples(10);
     engine.render(img);
     img.writePNG("scene.png");
 }
