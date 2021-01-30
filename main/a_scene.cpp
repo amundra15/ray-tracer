@@ -53,30 +53,30 @@ MatLib* getTableMatlib() {
    
     return matlib;
 }
+
 MatLib* getTeapotMatlib() {
     MatLib* matlib = new MatLib;
-    Texture* black1 = new ConstantTexture(RGBColor(0.1f, 0.2f, 0.9f) * 0.6);
-    ImageTexture* box4 = new ImageTexture("models/default.png");
-   ImageTexture* box5 = new ImageTexture("models/dmr.png");
-       ImageTexture* whitetex = new ImageTexture("models/lambert2SG_diffuse.png");
-           ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(1.0f));
-               LambertianMaterial white(blacktex, blacktex);
+    // Texture* black1 = new ConstantTexture(RGBColor(0.1f, 0.2f, 0.9f) * 0.6);
+    // ImageTexture* box4 = new ImageTexture("models/default.png");
+    // ImageTexture* box5 = new ImageTexture("models/dmr.png");
+    ImageTexture* whitetex = new ImageTexture("models/lambert2SG_diffuse.png");
+    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(1.0f));
+    // ConstantTexture* blacktex = new ConstantTexture(RGBColor(242.0/255,242.0/255,35.0/255));
+    // LambertianMaterial white(blacktex, blacktex);
 
-    //Texture*   whitetex = new ConstantTexture(RGBColor::rep(1.0f));
-
-    Texture* light = new ConstantTexture(RGBColor(0.6f, 0.6f, 0.9f) * 0.6);
-    LambertianMaterial* mat = new LambertianMaterial(blacktex,blacktex);
-      CombineMaterial* combined = new CombineMaterial();
+    // Texture* light = new ConstantTexture(RGBColor(0.6f, 0.6f, 0.9f) * 0.6);
+    // LambertianMaterial* mat = new LambertianMaterial(blacktex,blacktex);
+      
+    CombineMaterial* combined = new CombineMaterial();
     combined->add(new LambertianMaterial(blacktex, whitetex), 0.5f);
     combined->add( new PhongMaterial(blacktex, 50.0f),0.5f);
-    matlib->insert(std::pair<std::string, Material*>("Default.001",combined));
 
+    matlib->insert(std::pair<std::string, Material*>("Default.001",combined));
     matlib->insert(std::pair<std::string, Material*>("default.001",combined));
 
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
     return matlib;
 }
+
 MatLib* getFloorMatlib() {
     MatLib* matlib = new MatLib;
     ImageTexture* box6 = new ImageTexture("models/wood.png");
@@ -96,6 +96,7 @@ MatLib* getFloorMatlib() {
 
     return matlib;
 }
+
 MatLib* getWallMatlib() {
     MatLib* matlib = new MatLib;
     ImageTexture* box6 = new ImageTexture("models/wood.png");
@@ -115,6 +116,7 @@ MatLib* getWallMatlib() {
 
     return matlib;
 }
+
 MatLib* getFrameMatlib() {
     MatLib* matlib = new MatLib;
        Texture* dirt = new ConstantTexture(RGBColor::rep(0.25f));
@@ -130,7 +132,9 @@ MatLib* getFrameMatlib() {
     
     return matlib;
 }
+
 MatLib* getFlowerMatlib() {
+    //https://sketchfab.com/3d-models/twigs-in-a-glass-c82d93cf80d246a990d166a33680910a
     MatLib* matlib = new MatLib;
        ImageTexture* whitetex = new ImageTexture("models/vetvicka_bobule_albedo.png");
            ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
@@ -138,11 +142,9 @@ MatLib* getFlowerMatlib() {
     LambertianMaterial* mat = new LambertianMaterial(blacktex,whitetex);
     matlib->insert(std::pair<std::string, Material*>("vetvicka_bobule", mat));
 
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
-   
     return matlib;
 }
+
 MatLib* getBreadMatlib() {
     MatLib* matlib = new MatLib;
        ImageTexture* whitetex = new ImageTexture("models/Bread.png");
@@ -161,12 +163,9 @@ MatLib* getBreadMatlib() {
     LambertianMaterial* mat2 = new LambertianMaterial(blacktex2,whitetex2);
     matlib->insert(std::pair<std::string, Material*>("cuttingboard_top.001", mat2));
 
-
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
-   
     return matlib;
 }
+
 MatLib* getCupMatlib() {
     MatLib* matlib = new MatLib;
        ImageTexture* whitetex = new ImageTexture("models/BHPS_PinkCupSaucer_Cup_HR_Color.png");
@@ -180,12 +179,9 @@ MatLib* getCupMatlib() {
     LambertianMaterial* mat1 = new LambertianMaterial(blacktex1,whitetex1);
     matlib->insert(std::pair<std::string, Material*>("lambert5", mat1));
 
-
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
-   
     return matlib;
 }
+
 MatLib* getPlateMatlib() {
     MatLib* matlib = new MatLib;
     Texture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
@@ -194,22 +190,17 @@ MatLib* getPlateMatlib() {
     combined->add( new PhongMaterial(whitetex, 10.0f),0.5f);
 
     matlib->insert(std::pair<std::string, Material*>("initialShadingGroup.002", combined));
-
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
    
     return matlib;
 }
+
 MatLib* getVaseMatlib() {
     MatLib* matlib = new MatLib;
-    Texture* whitetex = new ConstantTexture(RGBColor(.3,.2,.5));
     CombineMaterial* combined = new CombineMaterial();
-    combined->add(new LambertianMaterial(whitetex, whitetex), 0.5f);
-    combined->add( new PhongMaterial(whitetex, 10.0f),0.5f);
-    matlib->insert(std::pair<std::string, Material*>("glass.002", combined));
-
-    //matlib->insert(std::pair<std::string, Material*>("default", combined));
-   
+    combined->add(new LambertianMaterial(new ConstantTexture(RGBColor::rep(0.1f)), new ConstantTexture(RGBColor(0.588235, 0.800000, 0.917647))), 0.2f);
+    combined->add(new PhongMaterial(new ConstantTexture(RGBColor::rep(1.0f)), 144.0),0.5f);
+    combined->add(new MirrorMaterial(0.0f, 0.0f), 0.3f);
+    matlib->insert(std::pair<std::string, Material*>("glass.002", combined));   
    
     return matlib;
 }
@@ -247,17 +238,13 @@ MatLib* getGlassCups() {
 void a_scene() {
     
     // Image img(128,128);
-    Image img(360,360);
+    Image img(540,360);
     // Image img(512,512);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
     World world;
     BVH* scene = new BVH();
     world.scene = scene;
-  
-    //decreasing y takes it lower
-    //decreasing x takes things towards right side of the scene
-    //decreasing z takes it away from the back wall
 
 
     //objects
@@ -271,7 +258,6 @@ void a_scene() {
     sea->add(glass_mat, 0.1f);
 
     ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
-    // ImageTexture* stonetex = new ImageTexture("models/stones_diffuse.png");
 
     ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
     ConstantTexture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
@@ -281,14 +267,10 @@ void a_scene() {
     loadOBJ(scene, "models/", "wooden_table.obj", matlib_table);
     MatLib* matlib_pot = getTeapotMatlib();
     loadOBJ(scene,"models/","teapot_utah.obj",matlib_pot); 
-    //loadOBJ(scene,"models/","teapot.obj",matlib_pot);  
     MatLib* cups = getGlassCups();
     loadOBJ(scene,"models/", "glass_empty_filled.obj",cups);
     MatLib* bread = getBreadMatlib();
     loadOBJ(scene,"models/", "bread_french.obj",bread);
-    //loadOBJ(scene,"models/", "bread.obj",bread);
-    MatLib* plate = getPlateMatlib();
-    //loadOBJ(scene,"models/","plate2.obj",plate);
     MatLib* vase = getVaseMatlib();
     loadOBJ(scene,"models/", "vase.obj",vase);
     MatLib* flower = getFlowerMatlib();
@@ -308,13 +290,15 @@ void a_scene() {
     // MatLib* floor = getFloorMatlib();
     //loadOBJ(scene,"models/","floor.obj",wall);
     //loadOBJ(scene,"models/","mirror_boundary.obj");
+    // MatLib* plate = getPlateMatlib();
+    //loadOBJ(scene,"models/","plate2.obj",plate);
 
     float scale = 0.01f;
     //back wall
     scene->add(
-        new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, sea),
+        new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white),
             bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
-    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, sea),
+    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white),
         bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
 
     //floor
@@ -322,11 +306,15 @@ void a_scene() {
     scene->add(new Triangle(Point(350.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, nullptr, &white));
 
     //left wall
-    scene->add(new BumpMapper(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, sea),
+    scene->add(new BumpMapper(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white),
                     bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
-    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, sea),
+    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white),
                 bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
 
+  
+    //decreasing x takes things towards right side of the scene
+    //decreasing y takes it lower
+    //decreasing z takes it away from the back wall
 
 
     //Lighting
@@ -335,7 +323,7 @@ void a_scene() {
     //world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*120 )); // BL1 yellow
 
     //area light
-    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*60.0);
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*50.0);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
     Disc* light = new Disc(Point(-0.37f, 0.89f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
     AreaLight als(light);
@@ -343,15 +331,15 @@ void a_scene() {
 
 
     // Main Camera
-    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.92, 0.61f, 0.62f), Vector(-0.7+0.91, 0.49-0.54, 0.79-0.66), Vector(0.123, 0.967, 0.2216), pi/6, pi/6);
-    //DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.861, 0.509f, 0.504f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
+    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4);
+    // DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4, 0.585f, 0.004f);
         
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(6);
+    // engine.setSamples(10);
     engine.render(img);
     img.writePNG("scene.png");
 }
