@@ -51,14 +51,14 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 	float reflectance = 0.5f * (sqr(r_parallel) + sqr(r_perpendicular));
 
 	//half the rays are reflected, half are refracted
-	if(random() > 0.5f)
-	{
-		//reflected ray
-		Vector reflectedDirection = -outDir + 2 * dot(outDir,normal) * normal;
-		return SampleReflectance(reflectedDirection, 2*RGBColor::rep(reflectance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
-	}
-	else
-	{
+	// if(random() > 0.5f)
+	// {
+	// 	//reflected ray
+	// 	Vector reflectedDirection = -outDir + 2 * dot(outDir,normal) * normal;
+	// 	return SampleReflectance(reflectedDirection, 2*RGBColor::rep(reflectance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
+	// }
+	// else
+	// {
 		//refracted ray
 		int sign = (dot(outDir,normal)>0) ? 1 : -1;
 
@@ -69,8 +69,8 @@ Material::SampleReflectance GlassMaterial::getSampleReflectance(const Point& tex
 		//transmittance = (1 - reflectance) / sqr(eta of the refracted ray material) - this part is not entirely clear to me, and has been suggested by a tutor.
 		float transmittance = (1.0f-reflectance)/sqr(eta_t);
 
-		return SampleReflectance(refractedRay, 2*RGBColor::rep(transmittance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
-	}
+		return SampleReflectance(refractedRay, 1*RGBColor::rep(transmittance));			//multiplied by 2 to compensate for the energy loss, when not considering the other ray
+	// }
 }
 
 
