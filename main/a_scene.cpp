@@ -290,8 +290,8 @@ void a_scene() {
     
     // MatLib* cup = getCupMatlib();
     //loadOBJ(scene,"models/","cup.obj",cup);
-    //loadOBJ(scene,"models/", "wall.obj");
-    //loadOBJ(scene,"models/", "wall2.obj");
+    loadOBJ(scene,"models/", "wall.obj");
+    loadOBJ(scene,"models/", "wall2.obj");
     //loadOBJ(scene,"models/", "bf.obj"); 
     // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
@@ -305,8 +305,8 @@ void a_scene() {
 
     float scale = 0.01f;
     //back wall
-    scene->add(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white));
-    scene->add(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white));
+    // scene->add(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white));
+    // scene->add(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white));
     // scene->add(
     //     new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white),
     //         bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
@@ -318,8 +318,8 @@ void a_scene() {
     scene->add(new Triangle(Point(350.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, nullptr, &white));
 
     //left wall
-    scene->add(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white));
-    scene->add(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white));
+    // scene->add(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white));
+    // scene->add(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white));
     // scene->add(new BumpMapper(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white),
     //                 bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
     // scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white),
@@ -334,13 +334,13 @@ void a_scene() {
     //Lighting
     RGBColor lightColor = RGBColor(1.0,0.99,0.98);
     //world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
-    //world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*120 )); // BL1 yellow
+    // world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*10 )); // BL1 yellow
 
     //area light
-    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*50.0);
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*80.0);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
-    // Disc* light = new Disc(Point(-0.37f, 0.89f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
-    Disc* light = new Disc(Point(-0.07f, 0.79f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
+    // Disc* light = new Disc(Point(-0.07f, 0.79f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front-side
+    Disc* light = new Disc(Point(-0.37f, 1.79f, -0.47f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
     AreaLight als(light);
     world.light.push_back(&als);
 
@@ -358,7 +358,7 @@ void a_scene() {
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(20);
+    // engine.setSamples(100);
     engine.render(img);
     img.writePNG("scene.png");
 }
