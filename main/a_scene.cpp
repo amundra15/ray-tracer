@@ -30,6 +30,7 @@
 #include <rt/materials/combine.h>
 #include <rt/materials/cooktorrance.h>
 #include <rt/materials/mirror.h>
+#include <rt/materials/dummy.h>
 
 #include <rt/lights/arealight.h>
 #include <rt/lights/pointlight.h>
@@ -229,8 +230,17 @@ MatLib* getGlassCups() {
 
     matlib->insert(std::pair<std::string, Material*>("glass.009", new GlassMaterial(1.45f)));
     matlib->insert(std::pair<std::string, Material*>("glass.010", new GlassMaterial(1.45f)));
-    matlib->insert(std::pair<std::string, Material*>("water-air.004", new GlassMaterial(0.75f)));
-    matlib->insert(std::pair<std::string, Material*>("water-glass.004", new GlassMaterial(1.09f)));
+
+    RGBColor teaColor = RGBColor(38./255, 36./255, 5./255);
+    CombineMaterial* combined = new CombineMaterial();
+    PhongMaterial* phong = new PhongMaterial(new ConstantTexture(teaColor), 225.0);  //Ks, Ns
+    LambertianMaterial* lambertian = new LambertianMaterial(new ConstantTexture(RGBColor::rep(0.0f)), new ConstantTexture(teaColor));   //Ka, Kd
+    combined->add(phong, 0.5);
+    combined->add(lambertian, 0.5);
+ 
+    matlib->insert(std::pair<std::string, Material*>("water-air.004", combined));
+    matlib->insert(std::pair<std::string, Material*>("water-glass.004", combined));
+    
     return matlib;
 }
 
@@ -295,21 +305,25 @@ void a_scene() {
 
     float scale = 0.01f;
     //back wall
-    scene->add(
-        new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white),
-            bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
-    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white),
-        bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
+    scene->add(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white));
+    // scene->add(
+    //     new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, &white),
+    //         bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
+    // scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, &white),
+    //     bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
 
     //floor
     scene->add(new Triangle(Point(-200.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, nullptr, &white));
     scene->add(new Triangle(Point(350.f,-100.f,560.f)*scale, Point(350.f,-100.f,000.f)*scale, Point(-200.f,-100.f,560.f)*scale, nullptr, &white));
 
     //left wall
-    scene->add(new BumpMapper(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white),
-                    bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
-    scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white),
-                bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
+    scene->add(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white));
+    scene->add(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white));
+    // scene->add(new BumpMapper(new Triangle(Point(350.f,-100.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, nullptr, &white),
+    //                 bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
+    // scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,560.f)*scale, Point(350.f,450.f,000.f)*scale, Point(350.f,-100.f,560.f)*scale, nullptr, &white),
+    //             bumptex, Point(1.0f,1.0f,0.0f), Point(0.0f, 1.0f, 0.0f), Point(1.0f, 0.0f, 0.0f),  1.0f));
 
   
     //decreasing x takes things towards right side of the scene
@@ -325,21 +339,26 @@ void a_scene() {
     //area light
     ConstantTexture* lightsrctex = new ConstantTexture(lightColor*50.0);
     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
-    Disc* light = new Disc(Point(-0.37f, 0.89f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
+    // Disc* light = new Disc(Point(-0.37f, 0.89f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
+    Disc* light = new Disc(Point(-0.07f, 0.79f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
     AreaLight als(light);
     world.light.push_back(&als);
 
 
     // Main Camera
-    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4);
-    // DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4, 0.585f, 0.004f);
+    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4);
+    DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.421, 0.509f, 0.657f), Point(0,0.435,1.239)-Point(-0.541, 0.519f, 0.667f), Vector(0,1,0), pi/6, pi/4, 0.585f, 0.004f);
         
+    //debug camera
+    // PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.321, 0.489f, -1.444f), Vector(-0.82+0.861, 0.5043-0.509, 0.54+1.404), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6);
+
+
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    // engine.setSamples(10);
+    engine.setSamples(20);
     engine.render(img);
     img.writePNG("scene.png");
 }
