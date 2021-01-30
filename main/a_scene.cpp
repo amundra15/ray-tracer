@@ -259,14 +259,10 @@ void a_scene() {
     //decreasing x takes things towards right side of the scene
     //decreasing z takes it away from the back wall
 
-    // Main Camera
-     PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.92, 0.61f, 0.62f), Vector(-0.7+0.91, 0.49-0.54, 0.79-0.66), Vector(0.123, 0.967, 0.2216), pi/6, pi/6);
-    //DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.861, 0.509f, 0.504f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
-         ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
-             Texture* greytex = new ConstantTexture(RGBColor::rep(1.0f));
 
-  Material* grey_cook = new CookTorranceMaterial(greytex, 0.6f, 0.4f, 0.1f,0.3f);
-
+    //objects
+    Texture* greytex = new ConstantTexture(RGBColor::rep(1.0f));
+    Material* grey_cook = new CookTorranceMaterial(greytex, 0.6f, 0.4f, 0.1f,0.3f);
     Material* fuzzy_mat = new FuzzyMirrorMaterial(2.485f, 3.433f, 0.01f);
     Material* glass_mat = new GlassMaterial(2.f);
     CombineMaterial* sea = new CombineMaterial();
@@ -274,39 +270,37 @@ void a_scene() {
     sea->add(fuzzy_mat, 0.4f);
     sea->add(glass_mat, 0.1f);
 
+    ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
     // ImageTexture* stonetex = new ImageTexture("models/stones_diffuse.png");
-    // ConstantTexture* redtex = new ConstantTexture(RGBColor(.7f,0.f,0.f));
-    // ConstantTexture* greentex = new ConstantTexture(RGBColor(0.f,.7f,0.f));
-   ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
+
+    ConstantTexture* blacktex = new ConstantTexture(RGBColor::rep(0.0f));
     ConstantTexture* whitetex = new ConstantTexture(RGBColor::rep(1.0f));
     LambertianMaterial white(blacktex, whitetex);
 
     MatLib* matlib_table = getTableMatlib();
-    loadOBJ(scene, "models/", "Wooden_Table.obj", matlib_table);
+    loadOBJ(scene, "models/", "wooden_table.obj", matlib_table);
     MatLib* matlib_pot = getTeapotMatlib();
-    // MatLib* bottle = getWineBottleMatlib();
-    MatLib* cups = getGlassCups();
-    MatLib* bread = getBreadMatlib();
-    MatLib* plate = getPlateMatlib();
-    MatLib* vase = getVaseMatlib();
-    MatLib* flower = getFlowerMatlib();
-    MatLib* cup = getCupMatlib();
-    //loadOBJ(scene,"models/","plate2.obj",plate);
-    //loadOBJ(scene,"models/","teapot.obj",matlib_pot);  
     loadOBJ(scene,"models/","teapot_utah.obj",matlib_pot); 
-    //loadOBJ(scene,"models/", "wall.obj");
-    //loadOBJ(scene,"models/", "wall2.obj");
+    //loadOBJ(scene,"models/","teapot.obj",matlib_pot);  
+    MatLib* cups = getGlassCups();
+    loadOBJ(scene,"models/", "glass_empty_filled.obj",cups);
+    MatLib* bread = getBreadMatlib();
+    loadOBJ(scene,"models/", "bread_french.obj",bread);
+    //loadOBJ(scene,"models/", "bread.obj",bread);
+    MatLib* plate = getPlateMatlib();
+    //loadOBJ(scene,"models/","plate2.obj",plate);
+    MatLib* vase = getVaseMatlib();
     loadOBJ(scene,"models/", "vase.obj",vase);
+    MatLib* flower = getFlowerMatlib();
     loadOBJ(scene,"models/", "fl1.obj",flower);
     loadOBJ(scene,"models/", "fl2.obj",flower);
     loadOBJ(scene,"models/", "fl3.obj",flower);
+    
+    // MatLib* cup = getCupMatlib();
     //loadOBJ(scene,"models/","cup.obj",cup);
+    //loadOBJ(scene,"models/", "wall.obj");
+    //loadOBJ(scene,"models/", "wall2.obj");
     //loadOBJ(scene,"models/", "bf.obj"); 
-    loadOBJ(scene,"models/", "bread_french.obj",bread);
-    //loadOBJ(scene,"models/", "bread.obj",bread);
-    // loadOBJ(scene,"models/", "glass_2.obj",bottle);
-    loadOBJ(scene,"models/", "glass_empty_filled.obj",cups);
-
     // MatLib* frame = getFrameMatlib();
     //loadOBJ(scene,"models/","frame.obj",frame);
     // MatLib* wall = getWallMatlib();
@@ -314,10 +308,10 @@ void a_scene() {
     // MatLib* floor = getFloorMatlib();
     //loadOBJ(scene,"models/","floor.obj",wall);
     //loadOBJ(scene,"models/","mirror_boundary.obj");
-    float scale = 0.01f;
 
+    float scale = 0.01f;
     //back wall
-  scene->add(
+    scene->add(
         new BumpMapper(new Triangle(Point(-200.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, nullptr, sea),
             bumptex,Point(0.0f,0.0f,0.0f), Point(1.0f, 0.0f, 0.0f), Point(0.0f, 1.0f, 0.0f), 1.0f));
     scene->add(new BumpMapper(new Triangle(Point(350.f,450.f,360.f)*scale, Point(350.f,-100.f,360.f)*scale, Point(-200.f,450.f,360.f)*scale, nullptr, sea),
@@ -335,20 +329,23 @@ void a_scene() {
 
 
 
-    //lighting
+    //Lighting
     RGBColor lightColor = RGBColor(1.0,0.99,0.98);
     //world.light.push_back(new DirectionalLight(Vector(-0.2f ,-0.5f , 1.0f).normalize(), lightColor));
     //world.light.push_back(new PointLight(Point(-0.37f, 1.79f, -0.47f), lightColor*120 )); // BL1 yellow
 
     //area light
-    //ConstantTexture* lightsrctex = new ConstantTexture(lightColor);   
-     ConstantTexture* lightsrctex = new ConstantTexture(lightColor*60.0);
-
-     Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
+    ConstantTexture* lightsrctex = new ConstantTexture(lightColor*60.0);
+    Material* lightsource = new LambertianMaterial(lightsrctex, blacktex);
     Disc* light = new Disc(Point(-0.37f, 0.89f, -0.07f), Point(0.02,0.35,0.73)-Point(-0.37f, 1.79f, -0.47f), 0.25, nullptr, lightsource);     //front
     AreaLight als(light);
     world.light.push_back(&als);
 
+
+    // Main Camera
+    PerspectiveCamera* cam = new PerspectiveCamera(Point(-0.92, 0.61f, 0.62f), Vector(-0.7+0.91, 0.49-0.54, 0.79-0.66), Vector(0.123, 0.967, 0.2216), pi/6, pi/6);
+    //DOFPerspectiveCamera* cam = new DOFPerspectiveCamera(Point(-0.861, 0.509f, 0.504f), Vector(-0.82+0.861, 0.5043-0.509, 0.54-0.504), Vector(-0.026, 0.997714, 0.062), pi/6, pi/6, 0.725f, 0.006f);  
+        
 
     RecursiveRayTracingIntegrator integrator(&world);
     scene->rebuildIndex();
