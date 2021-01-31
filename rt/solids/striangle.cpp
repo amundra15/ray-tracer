@@ -34,24 +34,60 @@ SmoothTriangle::SmoothTriangle(const Point& v1, const Point& v2, const Point& v3
     this->n3 = n3;
 }
 
+BBox SmoothTriangle::getBounds() const {
+    return BBox(
+        Point(
+            std::min(std::min(v1.x, v2.x), v3.x),
+            std::min(std::min(v1.y, v2.y), v3.y),
+            std::min(std::min(v1.z, v2.z), v3.z)
+        ),
+        Point(
+            std::max(std::max(v1.x, v2.x), v3.x),
+            std::max(std::max(v1.y, v2.y), v3.y),
+            std::max(std::max(v1.z, v2.z), v3.z)
+        )
+    );
+}
+
 Intersection SmoothTriangle::intersect(const Ray& ray, float previousBestDistance) const {
-    Vector e1 = (v2 - v1);
-    Vector e2 = (v3 - v1);
+    Vector vec1 = (v2 - v1);
+    Vector vec2 = (v3 - v1);
+     Vector normal = cross(vec1, vec2).normalize();
     Vector s = ray.o - v1;
+    float rayNormal = dot(ray.d, normal);
 
-    float denom = dot(cross(ray.d, e2), e1);
-    if (denom == 0) {return Intersection::failure();}
+    if(rayNormal == 0.0f){
+        return Intersection::failure();
+    }
 
-    float t = dot(cross(s, e1), e2) / denom;
-    if (t < 0 || t > previousBestDistance) { return Intersection::failure(); };
-    float b1 = dot(cross(ray.d, e2), s) / denom;
-    float b2 = dot(cross(s, e1), ray.d) / denom;
+    float t = dot(v1 - ray.o, normal) / rayNormal;
+    
+    if(t > previousBestDistance ||  t < 0){
+        return Intersection::failure();
+    }
+    Point intPoint = ray.getPoint(t);
+    Vector P = intPoint - v1;
+    
+    if(dot(cross(vec1,P),cross(vec1,P)) < 0.0f){
+        return Intersection::failure();
+    }
 
-    if (b1 < 0 || b2 < 0 || b1 + b2 >= 1) {return Intersection::failure(); };
+    if(dot(cross(vec2,P),cross(vec2,vec1)) < 0.0f){
+        return Intersection::failure();
+    }
 
-    float b3 = 1 - b1 - b2;
-    Vector n = n1 * b3 + n2 * b1 + n3 * b2;
-    return Intersection(t, ray, this, n, Point(b1, b2, b3));
+    float denom = cross(vec2,vec1).length();
+    float c = cross(vec1,P).length()/denom;
+    float b = cross(vec2,P).length()/denom;
+    float a = 1-b-c;
+
+    if(b+c >= 1.0f){
+        return Intersection::failure();
+    }
+
+    Vector pNormal = (n1 * a + n2 * b + n3 * c).normalize();
+
+    return Intersection(t, ray, this, pNormal, Point(a, b, c));
 }
 
 }
