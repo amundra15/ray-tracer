@@ -72,7 +72,8 @@ set(ASSIGNMENT_SOURCES
 )
 
 file(COPY
-    models/bread_french.obj         
+    models/bread_french.obj     
+    models/bread_french.mtl         
     models/fl3.obj                 
     models/bread_french_spec.png    
     models/glass_empty_filled.mtl  
