@@ -330,15 +330,13 @@ void loadOBJ(Group* dest, const std::string& path, const std::string& filename, 
                 READ_VERTEX(2, true)
 
                 do {
-                    CoordMapper* mapper = nullptr;
-
-
 #ifdef DISABLE_SMOOTH_TRIANGLE
                     bool skipnormal = true;
 #else
                     bool skipnormal = v[0].nidx == 0 || v[1].nidx == 0 || v[2].nidx == 0;
 #endif
-
+                    
+                    CoordMapper* mapper = nullptr;
 #ifndef DISABLE_COORDMAPPERS
                     bool skiptex = v[0].tidx == 0 || v[1].tidx == 0 || v[2].tidx == 0;
                     if (skiptex) {
