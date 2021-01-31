@@ -1,4 +1,4 @@
-#define DISABLE_COORDMAPPERS
+// #define DISABLE_COORDMAPPERS
 #define DISABLE_SMOOTH_TRIANGLE
 // #define DISABLE_MATERIALS
 
@@ -331,6 +331,14 @@ void loadOBJ(Group* dest, const std::string& path, const std::string& filename, 
 
                 do {
                     CoordMapper* mapper = nullptr;
+
+
+#ifdef DISABLE_SMOOTH_TRIANGLE
+                    bool skipnormal = true;
+#else
+                    bool skipnormal = v[0].nidx == 0 || v[1].nidx == 0 || v[2].nidx == 0;
+#endif
+
 #ifndef DISABLE_COORDMAPPERS
                     bool skiptex = v[0].tidx == 0 || v[1].tidx == 0 || v[2].tidx == 0;
                     if (skiptex) {
@@ -349,11 +357,7 @@ void loadOBJ(Group* dest, const std::string& path, const std::string& filename, 
 #endif
 
                     Solid* t;
-#ifdef DISABLE_SMOOTH_TRIANGLE
-                    bool skipnormal = true;
-#else
-                    bool skipnormal = v[0].nidx == 0 || v[1].nidx == 0 || v[2].nidx == 0;
-#endif
+
                     if (skipnormal) {
                         t = new Triangle(Point(vertices[v[0].vidx]), Point(vertices[v[1].vidx]), Point(vertices[v[2].vidx]), mapper, material);
                     } else {
