@@ -137,8 +137,9 @@ MatLib* getTeapotMatlib() {
 
 void a_scene() {
     
-    Image img(216,144);
+    // Image img(216*2,144*2);
     // Image img(1080,720);
+    Image img(2160,1440);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
     World world;
@@ -204,7 +205,7 @@ void a_scene() {
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    engine.setSamples(1);
+    engine.setSamples(150);
     engine.render(img);
     img.writePNG("scene.png");
 }
