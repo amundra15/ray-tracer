@@ -181,7 +181,8 @@ void a_scene() {
 
 
     //Lighting
-    RGBColor lightColor = RGBColor(1.0,0.99,0.98);
+    // RGBColor lightColor = RGBColor(1.0,0.99,0.98);
+    RGBColor lightColor = RGBColor(255.0/255,250.0/255,233.0/255);
 
     //area light
     ConstantTexture* lightsrctex = new ConstantTexture(lightColor*160.0);
