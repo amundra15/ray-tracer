@@ -1,5 +1,5 @@
 // #define DISABLE_COORDMAPPERS
-#define DISABLE_SMOOTH_TRIANGLE
+// #define DISABLE_SMOOTH_TRIANGLE
 // #define DISABLE_MATERIALS
 
 #include <core/assert.h>
