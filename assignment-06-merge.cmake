@@ -72,6 +72,40 @@ set(ASSIGNMENT_SOURCES
 )
 
 file(COPY
-    models/stones_diffuse.png
+    models/bread_french.obj         
+    models/fl3.obj                 
+    models/bread_french_spec.png    
+    models/glass_empty_filled.mtl  
+    models/vase.mtl
+    models/bread_french_Text.png    
+    models/glass_empty_filled.obj  
+    models/vase.obj
+    models/stones_bump.png         
+    models/wall2.mtl
+    models/stones_diffuse.png      
+    models/wall2.obj
+    models/fl1.mtl                  
+    models/stones_spec.png         
+    models/wall.mtl
+    models/fl1.obj                  
+    models/teapot_2obj.mtl         
+    models/wall.obj
+    models/fl2.mtl                  
+    models/teapot_2obj.obj         
+    models/wooden_table.mtl
+    models/fl2.obj                  
+    models/teapot_baseColor.png    
+    models/wooden_table.obj
+    models/table_bot.png
+    models/table_top.png
+    models/Bread.png
+    models/cuttingboard_base_normal.png
+    models/cuttingboard_base_text.png
+    models/cuttingboard_top_normal.png
+    models/cuttingboard_top_text.png
+    models/vetvicka_bobule_albedo.png
+    models/Diffuse_Roughness.png
+    models/linka01_DiffuseMap.png
+
     DESTINATION ${CMAKE_BINARY_DIR}/models
 )

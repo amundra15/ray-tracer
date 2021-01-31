@@ -311,8 +311,6 @@ void a_scene() {
     loadOBJ(scene,"models/", "fl1.obj",flower);
     loadOBJ(scene,"models/", "fl2.obj",flower);
     loadOBJ(scene,"models/", "fl3.obj",flower);
-    MatLib* knife = getKnifeMatlib();
-    loadOBJ(scene,"models/", "knife.obj",knife);
     MatLib* matlib_pot = getTeapotMatlib();
     loadOBJ(scene,"models/","teapot_2obj.obj",matlib_pot);
     loadOBJ(scene,"models/", "wall.obj");       //back wall
@@ -335,6 +333,8 @@ void a_scene() {
     // ImageTexture* bumptex = new ImageTexture("models/stones_bump.png", ImageTexture::REPEAT, ImageTexture::BILINEAR);
     // MatLib* cup2 = getCup();
     // loadOBJ(scene,"models/","glass3.obj",cup2);
+    // MatLib* knife = getKnifeMatlib();
+    // loadOBJ(scene,"models/", "knife.obj",knife);
 
     float scale = 0.01f;
     //back wall

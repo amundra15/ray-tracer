@@ -1,0 +1,14 @@
+# Blender MTL File: 'scene.blend'
+# Material Count: 1
+
+newmtl vetvicka_bobule
+Ns 29.241091
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.260000 0.260000 0.260000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump -bm 0.300000 vetvicka_bobule_albedo.png
+map_Kd vetvicka_bobule_albedo.png
