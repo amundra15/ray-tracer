@@ -48,6 +48,9 @@
                     <a class="nav-link" href="#concept">Concept</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="#construction">Construction</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="#gtco-features">Features</a>
                 </li>
                 <li class="nav-item">
@@ -90,13 +93,14 @@
   <!--==========================
   Concept Section
   ============================-->
-  <section id="concept" class="bg-white">
+<!--   <section id="concept" class="bg-white">
     <div class="container wow fadeInUp" style="width: 80%; visibility: visible; animation-name: fadeInUp;">
+        <div class="title-wrap">
+                <h2 class="section-title">
+                    Concept
+                </h2>
+            </div>
       <div class="row">
-        <div class="col-md-12">
-          <h3 class="section-title">Concept</h3>
-          <div class="section-title-divider"></div>
-        </div>
        </div>
     <div class="col-md-12">
       <div class="row">
@@ -109,6 +113,50 @@
         to incorporate that, we designed our scene around it. The result is our 
         rendition (and rendering) of what a weekend morning looks like. 
           </p>
+  </div>
+
+    </div>
+  </div></section> -->
+
+
+<!-- Concept section -->
+<section id="concept" class="bg-white">
+    <div class="container" style="width: 80%; visibility: visible; animation-name: fadeInUp;">
+        <div class="section-content">
+            <div class="title-wrap">
+                <h1 class="section-title">Concept</h1>
+                <p class="section-sub-title">
+        While brainstorming for the scene, it was decided that we want to keep 
+        the scene elements simple and want to focus on details to showcase the 
+        features of our ray tracer, and generate an image which looks realistic. 
+        Going through rendering competitions of some institutes, the Utah teapot - the quintessential graphics object - really resonated with us. Wanting 
+        to incorporate that, we designed our scene around it. The result is our 
+        rendition (and rendering) of what a weekend morning looks like. 
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+  <!--==========================
+  Construction Section
+  ============================-->
+  <section id="construction" class="bg-white">
+    <div class="container wow fadeInUp" style="width: 80%; visibility: visible; animation-name: fadeInUp;">
+        <div class="title-wrap">
+                <h2 class="section-title">
+                    Construction
+                </h2>
+            </div>
+      <div class="row">
+       </div>
+    <div class="col-md-12">
+      <div class="row">
+          <p class="about-text">
+            To avoid the hassle of arranging the objects blindly in the ray tracer, we use Blender to compose the scene. Upon facing issues with getting the correct camera coordinates in Blender, we loaded the object meshes in ParaView and read the camera coordinates. The scene definition can be found in a_scene.cpp. Only the features implemented during the course were used, and no new implementaions were done.
+          </p>
+          <img src="img/blender.png" alt="Blender Screenshot">
   </div>
 
     </div>
@@ -136,7 +184,8 @@
                                 <i class="lnr lnr-star fs-40"></i>
                             </div>
                             <h4>AREA LIGHT</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                            <p>An area light is used to create an effect of a window in the room, and a slightly warm colour was chosen to resemble morning sunlight.
+</p>
                         </div>
                         <!-- End of Feature Item -->
                         <!-- Features Item -->
@@ -145,26 +194,27 @@
                                 <i class="lnr lnr-camera fs-40"></i>
                             </div>
                             <h4>DOF CAMERA</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                            <p>A Depth of Field camera is placed close to the table, which focusses on the table objects and blurs the walls.</p>
                         </div>
-                        <!-- End of Feature Item -->
-                        <!-- Features Item -->
-                        <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
-                            <div class="my-4">
-                                <i class="lnr lnr-drop fs-40"></i>
-                            </div>
-                            <h4>TEXTURES</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
-                        </div>
-                        <!-- End of Feature Item -->
+                                                <!-- End of Feature Item -->
                         <!-- Features Item -->
                         <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
                             <div class="my-4">
                                 <i class="lnr lnr-rocket fs-40"></i>
                             </div>
-                            <h4>OpenMP</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                            <h4>ACCELERATION</h4>
+                            <p> We implement multithreading using the OpenMP library to achieve a faster rendering. The middle-split BVH implementation also gives a significant speed boost.</p>
                         </div>
+                        <!-- End of Feature Item -->
+                        <!-- Features Item -->
+                        <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
+                            <div class="my-4">
+                                <i class="lnr lnr-heart fs-40"></i>
+                            </div>
+                            <h4>SMOOTH TRIANGLES</h4>
+                            <p>We use smooth triangles to correct for the tessellation which result due to normal triangle mapping. </p>
+                        </div>
+
                         <!-- End of Feature Item -->
                         <!-- Features Item -->
                         <div class="col-md-4 col-sm-6 feature-item item mb-3 text-center">
@@ -172,7 +222,8 @@
                                 <i class="lnr lnr-eye fs-40"></i>
                             </div>
                             <h4>GAMMA CORRECTION</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                            <p>We use gamma correction to improve the perceptive brightness.
+</p>
                         </div>
                         <!-- End of Feature Item -->
                         <!-- Features Item -->
@@ -181,7 +232,8 @@
                                 <i class="lnr lnr-shirt fs-40"></i>
                             </div>
                             <h4>MATERIALS</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod.</p>
+                            <p>We use a combination of materials: Cook Torrance, Phong, Glass, and Lambertian to get a realistic rendering.
+</p>
                         </div>
                         <!-- End of Feature Item -->
                     </div>
@@ -201,28 +253,28 @@
         <div class="section-content">
             <div class="row">
                 <!-- Counter Item -->
-                <div class="col-md-3 col-sm-6 counter-item">
+                <div class="col-md-4 col-sm-6 counter-item">
                     <i class="lnr lnr-location"></i>
                     <span class="number" data-from="0" data-to="34" data-refresh-interval="100">148K</span>
                     <h4>PRIMITIVES</h4>
                 </div>
                 <!-- End of Counter Item -->
                 <!-- Counter Item -->
-                <div class="col-md-3 col-sm-6 counter-item">
+                <div class="col-md-4 col-sm-6 counter-item">
                     <i class="lnr lnr-layers"></i>
-                    <span class="number" data-from="0" data-to="32" data-refresh-interval="100">256</span>
+                    <span class="number" data-from="0" data-to="32" data-refresh-interval="100">150</span>
                     <h4>SAMPLES</h4>
                 </div>
                 <!-- End of Counter Item -->
                 <!-- Counter Item -->
-                <div class="col-md-3 col-sm-6 counter-item">
+                <!-- <div class="col-md-3 col-sm-6 counter-item">
                     <i class="lnr lnr-arrow-right"></i>
                     <span class="number" data-from="0" data-to="38" data-refresh-interval="100">38</span>
                     <h4>RAYS INTERSECTED</h4>
-                </div>
+                </div> -->
                 <!-- End of Counter Item -->
                 <!-- Counter Item -->
-                <div class="col-md-3 col-sm-6 counter-item">
+                <div class="col-md-4 col-sm-6 counter-item">
                     <i class="lnr lnr-clock"></i>
                     <span class="number" data-from="0" data-to="29" data-refresh-interval="100">3.9h</span>
                     <h4>RENDER TIME</h4>
