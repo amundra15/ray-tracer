@@ -17,7 +17,7 @@ public:
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
     CoordMapper* texMapper;
     Material* material;
-    
+     virtual BBox getBounds() const;
     Triangle t1;
     Point v1, v2, v3;
     Vector n1, n2, n3;
