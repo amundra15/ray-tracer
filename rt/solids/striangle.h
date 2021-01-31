@@ -20,8 +20,8 @@ public:
     virtual Intersection intersect(const Ray& ray, float previousBestDistance = FLT_MAX) const;
 
 
-    Point v[3];
-    Vector n[3];
+    Point verteces[3];
+    Vector normals[3];
 };
 
 }
