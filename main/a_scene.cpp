@@ -42,7 +42,6 @@ using namespace rt;
 
 
 MatLib* getTableMatlib() {
-
     MatLib* matlib = new MatLib;    
     Texture* black1 = new ConstantTexture(RGBColor::rep(0.0f));
     ImageTexture* box4 = new ImageTexture("models/table_top.png");
@@ -138,7 +137,7 @@ MatLib* getTeapotMatlib() {
 
 void a_scene() {
     
-    Image img(540,360);
+    Image img(216,144);
     // Image img(1080,720);
 
     std::cout << "Resolution is " << img.width() << ", " << img.height() << std::endl;
@@ -205,7 +204,7 @@ void a_scene() {
     scene->rebuildIndex();
 
     Renderer engine(cam, &integrator);
-    // engine.setSamples(100);
+    engine.setSamples(1);
     engine.render(img);
     img.writePNG("scene.png");
 }
