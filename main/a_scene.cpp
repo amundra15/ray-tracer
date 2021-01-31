@@ -101,7 +101,7 @@ MatLib* getVaseMatlib() {
 MatLib* getGlassCups() {
     MatLib* matlib = new MatLib;
 
-    matlib->insert(std::pair<std::string, Material*>("glass.009", new GlassMaterial(1.45f)));
+    matlib->insert(std::pair<std::string, Material*>("glass.003", new GlassMaterial(1.45f)));
     matlib->insert(std::pair<std::string, Material*>("glass.010", new GlassMaterial(1.45f)));
 
     RGBColor teaColor = RGBColor(38./255, 36./255, 5./255);
@@ -111,9 +111,9 @@ MatLib* getGlassCups() {
     combined->add(phong, 0.8);
     combined->add(lambertian, 0.2);
  
-    matlib->insert(std::pair<std::string, Material*>("water-air.001", combined));
+    matlib->insert(std::pair<std::string, Material*>("water-air.003", combined));
     matlib->insert(std::pair<std::string, Material*>("water-air.004", combined));
-    matlib->insert(std::pair<std::string, Material*>("water-glass.001", combined));
+    matlib->insert(std::pair<std::string, Material*>("water-glass.003", combined));
     matlib->insert(std::pair<std::string, Material*>("water-glass.004", combined));
     
     return matlib;
