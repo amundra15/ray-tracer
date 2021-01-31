@@ -42,7 +42,7 @@ using namespace rt;
 
 
 MatLib* getTableMatlib() {
-    // https://sketchfab.com/3d-models/japanese-house-20-5ae0121e33b54b7789c6b9113da444bf
+
     MatLib* matlib = new MatLib;    
     Texture* black1 = new ConstantTexture(RGBColor::rep(0.0f));
     ImageTexture* box4 = new ImageTexture("models/table_top.png");
