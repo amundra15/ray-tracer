@@ -1,93 +1,93 @@
+
 #include <rt/solids/striangle.h>
 #include <rt/intersection.h>
-#include <rt/solids/infiniteplane.h>
-#include <rt/solids/solid.h>
-#include <core/interpolate.h>
+
+#define LOG(x) std::cout<<x<<std::endl;
+
 
 namespace rt {
 
-SmoothTriangle::SmoothTriangle(Point vertices[3], Vector normals[3], CoordMapper* texMapper, Material* material)
+SmoothTriangle::SmoothTriangle(Point vertices[3], Vector n[3], CoordMapper* texMapper, Material* material)
 {
+    this->n[0] = n[0];
+    this->n[1] = n[1];
+    this->n[2] = n[2];
+    this-> v[0] = vertices[0];
+    this-> v[1] = vertices[1];
+    this-> v[2] = vertices[2];
     this->texMapper = texMapper;
     this->material = material;
-
-    this->v1 = vertices[0];
-    this->v2 = vertices[1];
-    this->v3 = vertices[2];
-
-    this->n1 = normals[0];
-    this->n2 = normals[1];
-    this->n3 = normals[2];
 }
 
 SmoothTriangle::SmoothTriangle(const Point& v1, const Point& v2, const Point& v3, const Vector& n1, const Vector& n2, const Vector& n3, CoordMapper* texMapper, Material* material)
 {
+    this->n[0] = n1;
+    this->n[1] = n2;
+    this->n[2] = n3;
+    this-> v[0] = v1;
+    this-> v[1] = v2;
+    this-> v[2] = v3;
     this->texMapper = texMapper;
     this->material = material;
-    
-    this->v1 = v1;
-    this->v2 = v2;
-    this->v3 = v3;
-
-    this->n1 = n1;
-    this->n2 = n2;
-    this->n3 = n3;
 }
 
 BBox SmoothTriangle::getBounds() const {
     return BBox(
         Point(
-            std::min(std::min(v1.x, v2.x), v3.x),
-            std::min(std::min(v1.y, v2.y), v3.y),
-            std::min(std::min(v1.z, v2.z), v3.z)
+            std::min(std::min(v[0].x, v[1].x), v[2].x),
+            std::min(std::min(v[0].y, v[1].y), v[2].y),
+            std::min(std::min(v[0].z, v[1].z), v[2].z)
         ),
         Point(
-            std::max(std::max(v1.x, v2.x), v3.x),
-            std::max(std::max(v1.y, v2.y), v3.y),
-            std::max(std::max(v1.z, v2.z), v3.z)
+            std::max(std::max(v[0].x, v[1].x), v[2].x),
+            std::max(std::max(v[0].y, v[1].y), v[2].y),
+            std::max(std::max(v[0].z, v[1].z), v[2].z)
         )
     );
 }
 
 Intersection SmoothTriangle::intersect(const Ray& ray, float previousBestDistance) const {
-    Vector vec1 = (v2 - v1);
-    Vector vec2 = (v3 - v1);
-     Vector normal = cross(vec1, vec2).normalize();
-    Vector s = ray.o - v1;
+
+    Vector vec1 = this->v[1] - this->v[0];
+    Vector vec2 = this->v[2] - this->v[0];
+    Vector normal = cross(vec1, vec2).normalize();
     float rayNormal = dot(ray.d, normal);
 
     if(rayNormal == 0.0f){
+
         return Intersection::failure();
     }
 
-    float t = dot(v1 - ray.o, normal) / rayNormal;
-    
+    float t = dot(this->v[0] - ray.o, normal) / rayNormal;
+
     if(t > previousBestDistance ||  t < 0){
         return Intersection::failure();
     }
-    Point intPoint = ray.getPoint(t);
-    Vector P = intPoint - v1;
-    
-    if(dot(cross(vec1,P),cross(vec1,P)) < 0.0f){
+
+   Point intPoint = ray.getPoint(t);
+    Vector vecP = intPoint - this->v[0];
+
+    if(dot(cross(vec1,vecP),  cross(vec1,vec2)) < 0.0f){
         return Intersection::failure();
     }
 
-    if(dot(cross(vec2,P),cross(vec2,vec1)) < 0.0f){
+    if(dot(cross(vec2,vecP),  cross(vec2,vec1)) < 0.0f){
         return Intersection::failure();
     }
 
-    float denom = cross(vec2,vec1).length();
-    float c = cross(vec1,P).length()/denom;
-    float b = cross(vec2,P).length()/denom;
+
+    float denominator = cross(vec2,vec1).length();
+    float c = cross(vec1,vecP).length()/denominator;
+    float b = cross(vec2,vecP).length()/denominator;
     float a = 1-b-c;
 
     if(b+c >= 1.0f){
         return Intersection::failure();
     }
 
-    Vector pNormal = (n1 * a + n2 * b + n3 * c).normalize();
+    Vector New_Normal = (this->n[0] * a + this->n[1] * b + this->n[3] * c).normalize();
 
-    return Intersection(t, ray, this, pNormal, Point(a, b, c));
+    return Intersection(t, ray, this, New_Normal, Point(a, b, c));
+    
 }
-
 }
